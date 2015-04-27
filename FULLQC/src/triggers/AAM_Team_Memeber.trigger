@@ -21,6 +21,7 @@ trigger AAM_Team_Memeber on Opportunity (after update) {
             (o.AAM_Team_Member__c!=Null && o.Stage_HighLevel__c=='Partial')){
             System.debug('************>>>'+o.Stage_HighLevel__c);
              oppids.add(o.id);
+             System.debug('==>'+oppids);
          }
     }
     if(!oppids.IsEmpty()){
