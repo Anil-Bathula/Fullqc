@@ -1,0 +1,11 @@
+<apex:page standardController="Opportunity" extensions="create_cams_user_ctrlr" action="{!init}">
+<!--
+    Page      : create_cams_user
+    Class     : create_cams_user_ctrlr
+    Developer : Harsha Simha S
+    Date      : 9/23/2013
+    Comment   : This PAge is called from Button Click " Create CAMS USER" on Opportunity.
+-->
+    <apex:pagemessages escape="false"/>
+
+</apex:page>

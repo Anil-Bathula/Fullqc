@@ -1,0 +1,4 @@
+<apex:page showHeader="false">
+ <iframe src="https://hult-international-business-school.fullqc.cs9.force.com/portal" id="onlineFrame" name="onlineFrame" marginwidth="0" marginheight="0" vspace="0" hspace="0" frameborder="0" width="80%" height="700" align="center" scrolling="yes">
+ </iframe>
+</apex:page>

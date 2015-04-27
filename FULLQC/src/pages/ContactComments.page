@@ -1,0 +1,91 @@
+<apex:page standardController="Contact" extensions="Con_Comments" standardStylesheets="False">
+<apex:form id="main" >
+<apex:pageMessages ></apex:pageMessages>
+<!--
+    Developer : Anil.B
+        This VF used as an inline VF page of Contact detail page, 
+        displays list of Comments,
+        Create New Comment, 
+        Edit & Delete Existing Comments
+ -->
+
+    <style type="text/css">
+        .newLink { color: #4483C2; font-weight: bold;}
+        .sample { color: #0000ff; font-weight:bold;}
+        .newLinks { color:#548E37 ; font-weight: bold;}
+        .hidelink {display:none}
+        
+    </style>
+
+<div style="overflow:auto; height: 230px; width:480px;">
+<apex:pageblock >
+ 
+    <b style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:13.1px;font-weight:700;">Comments </b>
+      <apex:commandButton value="New" action="{!custNew}" id="nc" reRender="main,ref" rendered="{!hidebutton}" />
+
+      
+      
+        
+            
+        <apex:pageBlock rendered="{!Property}" id="ref">      
+           <apex:pageBlockSection columns="1"  > 
+                    <apex:panelGrid columns="2">
+                        <apex:commandLink action="{!custCancel}" title="cancel" value="Return to Comments" reRender="main,reff"  style="Color:#4483C2;"/>       
+                        <apex:commandbutton action="{!custSave}" title="Save" value="Save" reRender="main,reff" />  
+                    </apex:panelGrid>
+                                        
+                        <apex:inputField value="{!com.Comments__c}" style="width:280px;height:80px"  /> 
+<!--                  <apex:panelGrid columns="4" width="650px;" id="ges" rendered="{!hideblock}">                     
+                        <apex:outputText value="{!now()}" styleClass="newLink" / >          
+                 </apex:panelGrid>-->
+                 <!-- by shs : 3/7/2013 commented above as date is in gmt we need to display in local. -->
+            </apex:pageBlockSection>              
+         </apex:pageBlock> 
+         
+    <div rendered="{!hidebutton}" id="reff" >   <br>
+        <apex:repeat value="{!listCom}" var="s"  >    
+              
+<!--               <apex:outputText value="  {0,date,E MMM dd [hh:mm a] yyyy}" styleClass="newLink" >
+                 <apex:Param value="{!s.CreatedDate}" /> 
+                </apex:outputText>   -->
+                                 <!-- by shs : 3/7/2013 commented above as date is in gmt we need to display in local. and added outputfield instead -->                   
+                <apex:outputText value=" {!s.CreatedDate}" styleClass="newLink" />
+                 &nbsp;      
+                <apex:outputText value="{!s.Owner.Name}" styleClass="newLink" /> 
+                &nbsp;  
+                <apex:outputText value="{!s.Role__c}" styleClass="newLinks" />                
+                 &nbsp;  
+               
+               
+                <span class="{!if($User.Id != s.Owner.Id,'hidelink','')}" > 
+               
+                 
+                <apex:commandlink id="myEditButton" value="Edit"   action="{!custEdit}" reRender="main,ref,ges" > 
+                <apex:param name="cid" value="{!s.id}" assignTo="{!selid}" />
+                </apex:commandlink>       
+                |
+                <apex:commandLink value="Del" action="{!custDel}" reRender="main,nc,reff"  >
+                <apex:param name="cid" value="{!s.id}" assignTo="{!delid}"/>
+                </apex:commandlink>   
+                </span>         
+                
+                 
+                <br>
+                <apex:outputText value="{!s.Comments__c}" style="overflow:auto;width:350px;color:#414141;" />  
+                </br><br>   
+                <div style="width:100%; height:1px; background:grey;" />      
+                </br>
+          
+        </apex:repeat>   </br>  
+    </div> 
+   
+    
+ </apex:pageblock>
+   
+</div>
+
+
+
+</apex:form>
+
+</apex:page>

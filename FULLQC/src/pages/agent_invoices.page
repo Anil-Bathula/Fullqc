@@ -1,0 +1,135 @@
+<apex:page controller="agent_invoices" showHeader="false">
+    <style>
+        .customselectList{
+            background-repeat:repeat-x;
+            background-color:#f2f2f2;
+            border:2px solid #DDDDDD;
+            width: 100px;
+            font-size:14px;     
+            color:#5e5e5e;
+            padding:3px;
+            margin-right:4px;
+            margin-bottom:8px;
+            font-family: Arial, Helvetica, sans-serif;
+            height:30px;
+        }
+    
+    </style>
+    <script> 
+        function showHide(str){alert(document.getElementById(str).value);
+            if(str=='page:disp:handicap:0'){
+                //var pickval=document.getElementById(str).value;
+                document.getElementById('hcap').style.display='table-row';
+                document.getElementById('hcap1').style.display='table-row';
+                
+            }
+            else if(str=='page:disp:handicap:1'){
+                document.getElementById('hcap').style.display='none';
+                document.getElementById('hcap1').style.display='none';
+            }
+        }
+        
+        window.onload = function(){
+            jQuery('input[type=text]').blur();
+            jQuery('[id$=pList]').focus();
+            
+        };
+        
+    </script>
+    
+    <apex:form id="frm">
+        <table width="40%" class="innerpadding" border="0" cellpadding="0" cellspacing="0" align="center" style="padding-top:5%;">
+            <tr>
+                <td class="formlable" align="Center" Style="font-weight: bold;font-family:verdana;font-size:120%;">Select Year</td>
+                <td class="formlable">
+                    <apex:selectList value="{!selctd_yr}" size="1" id="pList" styleClass="customselectList" onchange="methodOneInJavascript();">
+                        <apex:selectOptions value="{!years}"/>
+                    </apex:selectList>
+                    <apex:actionFunction action="{!commission_method}" name="methodOneInJavascript" rerender="frm">
+                        
+                    </apex:actionFunction>
+                </td>
+            </tr>
+        </table>
+        <apex:outputPanel >
+            <table style="padding-top:5%;padding-left:5%;">
+                <tr id="hcap1"> 
+                    <td Style="font-weight: bold;font-family:verdana;font-size:200%;">{!Acc.Name} {!selctd_yr} Invioce Statement</td>
+                </tr>
+            </table>
+            
+            <table width="80%" style="padding-top:5%;padding-left:5%;"> <tr><th bgcolor="#E8E8E8" style="color:black">Application Name</th>
+                <th bgcolor="#E8E8E8" style="color:black">Commission Type</th>
+                <th bgcolor="#E8E8E8" style="color:black">Commission Amount</th></tr>
+                
+                <apex:repeat value="{!comm_lst}" var="op">
+                    <tr><td>
+                        <apex:outputText value="{!op.oppname}"/>
+                        </td><td>
+                        <apex:outputText value="{!op.type}"/>
+                        </td><td>
+                        <apex:outputText value="{!op.amount}"/>
+                        </td>
+                    </tr>
+                </apex:repeat> 
+                <tr><td> </td></tr>
+                <tr class="desFont">
+                   <td height="4" colspan="4" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <apex:outputText value="Total" rendered="{!if((comm_total!=0 && comm_total!=null),true,false)}"/>
+                    </td>
+                    <td></td>
+                    <td>
+                        <apex:outputText value="{!comm_total}" rendered="{!if((comm_total!=0 && comm_total!=null),true,false)}"/>
+                    </td>
+                </tr>
+            </table>
+            
+            <table width="80%" style="padding-top:5%;padding-left:5%;"> <tr>
+                <th bgcolor="#E8E8E8" style="color:black">Commission Type</th>
+                <th bgcolor="#E8E8E8" style="color:black">Commission Sub Type</th>
+                <th bgcolor="#E8E8E8" style="color:black">Commission Amount</th>
+                <th bgcolor="#E8E8E8" style="color:black">Attachment</th></tr>
+                
+                <apex:repeat value="{!inv_lst}" var="inv">
+                    <tr><td>
+                        <apex:outputText value="{!inv.type}"/>
+                        </td><td>
+                        <apex:outputText value="{!inv.subtype}"/>
+                        </td><td>
+                        <apex:outputText value="{!inv.amount}"/>
+                        </td>
+                        <td><apex:dataTable cellpadding="3px;" style="width:100%" value="{!inv.attch}" var="att">
+                            <apex:column >
+                                <apex:outputLink target="blank"
+                                    value="/servlet/servlet.FileDownload?file={!att.id}">
+                                    <apex:outputText value="{!att.name}" />
+                                </apex:outputLink>
+                            </apex:column>
+                        </apex:dataTable></td>
+                    </tr>
+                </apex:repeat> 
+                <tr><td> </td></tr>
+                <tr class="desFont">
+                   <td height="4" colspan="4" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                <tr><td>
+                        <apex:outputText value="Total" rendered="{!if((inv_total!=0 && inv_total!=null),true,false)}"/>
+                    </td>
+                    <td></td>
+                    <td>
+                    <apex:outputText value="{!inv_total}" rendered="{!if((inv_total!=0 && inv_total!=null),true,false)}"/>
+                    </td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        
+        
+    </apex:form>
+    
+    
+    
+    
+</apex:page>

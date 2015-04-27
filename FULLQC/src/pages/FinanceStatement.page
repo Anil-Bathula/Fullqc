@@ -1,0 +1,145 @@
+<apex:page showHeader="false" controller="FinanceStatementController">
+<apex:form >
+<table class="innertable" border="0" cellpadding="0" cellspacing="0">
+<tr>     
+<td>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+        <tr>
+            <td class="menu"><c:ApplicantHeader /></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding-top:70px;">
+           <apex:outputPanel rendered="{!isShow }">
+            <table width="100%" class="innerpadding"  border="0" cellpadding="0" cellspacing="0"><tr><td>
+        <tr>
+            <td colspan="2" class="formheader4">Finance Statement</td>
+        </tr>
+        
+        <tr>
+            <td height="19" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="formlable">
+            
+            Hult International Business School has partnered with PaytoStudy to offer a cost efficient, safe and reliable payment solution which allows 
+you to pay your fees in your home country in your home currency. The PaytoStudy service eliminates international bank transfer fees and 
+guarantees good exchange rates when paying your tuition fees. When you are ready to make your payment click on the relevant link below 
+and you will be taken to the integrated PaytoStudy payment portal. Step by step instructions on using the PaytoStudy service are available 
+here. If you have any questions or want further information you can always contact us at <a href="mailto:hult.finance@hult.edu">hult.finance@hult.edu</a> or PaytoStudy directly at 
+<a href="mailto:info@paytostudy.com">info@paytostudy.com</a>. 
+<br/><br/>Please start by selecting your payment options from "Hult Installment Plan".  You can view your tuition statement by clicking on "View 
+Statement". We look forward to welcoming you at Hult.
+          <br/><br/>
+            </td>
+        </tr>
+        <apex:outputPanel >
+        <tr style="text-align:left"><td colspan="2" >
+        <apex:pageMessages escape="false" showDetail="false"  />
+</td></tr>
+        <tr>
+            <td valign="top">
+                <table width="100%">
+                    <tr>
+                        <td class="formlable" align="right">Hult Installment Plan
+                        </td>
+                        <td>
+                        <apex:selectList value="{!Installment_Plan_c}" styleClass="form-selectList" disabled="{!Lock_Installment_Plan_c}" multiselect="false" size="1">
+                            <apex:selectOptions value="{!InstallmentPlan}" />
+                         </apex:selectList>
+                        </td>
+                    </tr>
+                </table>
+</td></tr>
+<tr><td >&nbsp;</td></tr>
+          <tr>
+<td background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;">&nbsp;</td>
+</tr></apex:outputPanel>
+<tr>
+    <td align="center">   
+    <span class="button primary">
+<apex:commandLink action="{!isSubmit}" >
+Save
+</apex:commandLink>
+</span>    
+
+<span class="button primary">
+<apex:outputLink target="blank" title="View Statement" id="cbtneditlogin" value="/FinanceStatementPDF" >
+View Statement
+<!-- apex:param name="id" value="{!id}"/ -->
+</apex:outputLink>
+</span>
+
+ <span class="divider">|</span>
+        <apex:outputLink value="/secur/logout.jsp" styleClass="secondary" >
+    Logout
+    </apex:outputLink>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">&nbsp;
+    </td>
+</tr>
+<style>
+
+span.button.primary a {
+    background: url("{!URLFOR($Resource.buttons, 'buttons/btnRightSecondary_large.png')}") no-repeat scroll right top transparent;
+}
+
+span.button.primary a:hover {
+    background: url("{!URLFOR($Resource.buttons, 'buttons/btnRightSecondary_large.png')}") no-repeat scroll right top transparent;
+    color: #677A94;
+}
+
+</style>
+<tr>
+    <td colspan="2" align="center">
+           <span class="button primary"> 
+                <apex:commandLink value="I am ready to make my first payment"  title="I am ready to make my first payment" id="insI" action="{!PayToStudy1}" />
+           </span> 
+           <span class="button primary"> 
+                <apex:commandLink value="I am ready to make my second payment"  title="I am ready to make my second payment" id="insII" action="{!PayToStudy2}" />
+           </span> 
+    </td>
+</tr>
+</td></tr></table>
+<!-- code for statement 
+<table width="100%" border="0" style="margin-top:-30px">
+  <tr>
+    <td class="formlable" align="left" style="font-size:16px; font-weight:bold">
+        HOW TO PAY YOUR TUITION VIA THE ONLINE STUDENT PORTAL<br /><br /></td></tr>
+  <tr><td class="formlable" align="left" style="font-size:14px; font-weight:bold">      
+        HULT INTERNATIONAL BUSINESS SCHOOL ARE DELIGHTED TO INTRODUCE THE MOST MODERN, <br />COST EFFICIENT AND SAFE WAY TO MAKE PAYMENTS OVERSEAS! 
+        (IN PARTNERSHIP WITH PAYTOSTUDY)<br /><br />
+    </td></tr>
+    <tr><td class="formlable" style="text-align:justify">    
+        <p>
+<b>PAYING YOUR TUITION VIA THE ONLINE STUDENT PORTAL</b><br /><br />
+Hult International Business School has partnered with PaytoStudy to offer a cost efficient, safe and reliable payment solution which allows you to pay your fees in your home country in your home currency. The PaytoStudy service eliminates international bank transfer fees and guarantees good exchange rates when paying your tuition fees.
+When you are ready to make your payment click on the relevant link above and you will be taken to the integrated PaytoStudy payment portal. Step by step instructions on using the PaytoStudy service are available&nbsp;
+<apex:outputLink Value="{!$Resource.StudentDoc}">here</apex:outputLink>. If you have any questions or want further information you can always contact us at hult.finance@hult.edu or PaytoStudy directly at info@paytostudy.com
+
+        </p>
+    </td>
+  </tr>
+</table>
+-->
+</apex:outputPanel>
+<apex:outputPanel rendered="{! NOT isShow}">
+<table width="100%">
+    <tr>
+        <td class="formlableheader" align="center">
+            Not available yet
+        </td>
+    </tr>
+</table>
+</apex:outputPanel>
+</td>
+</tr></table>
+<script>
+document.getElementById('FinanceStatement').style.backgroundImage="url('{!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')}')";
+document.getElementById('FinanceStatement').style.backgroundPosition="center";
+document.getElementById('FinanceStatement1').className="headertabonload";
+</script>
+</td></tr></table>
+</apex:form>
+</apex:page>

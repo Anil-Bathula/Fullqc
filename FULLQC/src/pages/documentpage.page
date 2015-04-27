@@ -1,0 +1,346 @@
+<apex:page controller="documentpagecontroller" showHeader="false" cache="false" action="{!init}" >
+  
+  <style>
+        .customlink {
+            color: #000000;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight:bold;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #ffffff;
+        }
+        .headertabonload{
+            color: #ffffff;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight:bold;
+            background-repeat:no-repeat;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #333333;           
+        }
+        .headertabonload:hover {
+            color: #C0C0C0;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight:bold;
+            background-repeat:no-repeat;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #‎C0C0C0;
+        }
+        .headerpart
+        {
+            vertical-align: middle;
+            background-image:url({!URLFOR($Resource.Images, 'new-images/tabimage.jpg')});
+            color:red;
+            background-size:250px 40px;
+            background-repeat:no-repeat;
+            padding-bottom:23px;
+            
+        }
+        .headerpart1
+        {
+            vertical-align: middle;
+            background-image:url({!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')});
+            background-size:250px 45px;
+            background-repeat:no-repeat;
+            padding-top:10px;
+            padding-bottom:35px;
+            
+        }
+        .cusformheader2 {
+            font-size: 21px;
+            color: black;
+            font-weight: bold;
+            font-style: normal;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .css_button { 
+           padding: 10px 20px 10px 20px;
+           background-color: #157DFB;
+           border-radius: 2px;    
+           color: #FFFFFF;
+           font-size: 12px;
+           font-family: Sans-Serif;
+           text-decoration: none;
+           font-weight: bold;     
+           //cursor: pointer;
+        }
+        .css_button:hover {       
+           background-color: #549ffb;  
+           color: #FFFFFF;    
+           text-decoration: none;
+        }
+        .css_button:active {
+          // top: 1px;
+        //   position: relative;
+        }
+        
+    </style>
+    <script>        
+        function DynamicDatePicker(d_id){
+            DatePicker.pickDate(false,d_id.id,false);
+        }
+    </script>
+  <apex:stylesheet value="{!$Resource.style}" /> 
+ 
+  <apex:form id="atth">
+    
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="innertable">  
+    <tr><td colspan="2" align="right">&nbsp;
+    <span style="font-weight:bold;padding-right:53px;">
+    {!stu_name}&nbsp;-&nbsp;
+    {!pro_pars}&nbsp;-&nbsp;
+    {!camp_pars}&nbsp;-&nbsp;
+    {!stu_id}&nbsp;&nbsp;
+    <a href="{!$Site.Prefix}/secur/logout.jsp?retURL=/apex/student_login">Log Out</a>
+    </span>
+    </td></tr></table>
+    <apex:outputPanel >
+        <tr>
+            <td height="50px"></td>
+        </tr> 
+        <table height="10" width="68%" border="0" cellpadding="0" cellspacing="0" style="margin-top:47px;" align="center">
+          
+          <tr >
+            <td align="center" valign="middle" width="110" id="home" class="headerpart" >
+                <table>
+                    <tr>
+                        <td  valign="top" align="top">
+                            <apex:commandLink styleClass="customlink" action="{!tabmethod}"><span id="home1">HOME</span>
+                                <apex:param value="home" name="tab1"/>
+                            </apex:commandLink>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" valign="middle" width="110" id="rotation" class="headerpart">
+                <table>
+                    <tr>    
+                        <td align="top" valign="middle">
+                            <apex:commandLink styleClass="customlink" action="{!tabmethod}"><span id="rotation1">ROTATION INFORMATION</span>
+                                <apex:param value="Rotationinfo" name="tab2"/>
+                            </apex:commandLink>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            
+            <td align="center" valign="middle" width="110" id="dependent" class="headerpart">
+                <table>
+                    <tr>
+                        <td  valign="top" align="top">
+                            <apex:commandLink styleClass="customlink" action="{!tabmethod}"><span id="dependent1">DEPENDENTS</span>
+                                <apex:param value="dependents" name="tab3"/>
+                            </apex:commandLink>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            
+            <td align="center" valign="middle" width="110" id="accomm" class="headerpart">
+                <table>
+                    <tr>
+                        <td  valign="top" align="top">
+                            <apex:commandLink styleClass="customlink" action="{!tabmethod}"><span id="accomm1">ACCOMMODATION</span>
+                                <apex:param value="accommdat" name="tab4"/>
+                            </apex:commandLink>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            
+            <td align="center" valign="middle" width="110" id="docs" class="headerpart1">
+                <table>
+                    <tr>
+                        <td align="top" valign="middle">
+                            <apex:commandLink styleClass="headertabonload" action="{!tabmethod}"><span id="docs1">DOCUMENTS</span>
+                                <apex:param value="Document" name="tab5"/>
+                            </apex:commandLink>
+                        </td>
+                    </tr>
+                </table>
+            </td>    
+          </tr>            
+       </table>
+       <table width="68%" align="center" style="background-color:#E8E8E8;" cellpadding="0" cellspacing="0" >
+           <tr style="background-color:#E8E8E8;">
+               <td align="left" class="cusformheader2" style="padding-left:10px;" >{!disp_rot.Type__c}</td>
+               <td align="right" class="cusformheader2" style="padding-right:10px;">{!visatrack}{!disp_rot.Rotation_Campus__c}<br/>{!amountdue}</td>
+           </tr>
+       </table>
+    </apex:outputPanel>
+    
+    
+    <div><br/><br/>
+        <apex:outputPanel >
+            <table width="100%" class="innertable" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+            <td valign="top">
+                <table width="100%" cellspacing="0">
+                    <tr>
+                        <!--<td colspan="2" class="formheader3">Document Attachments</td> -->
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 10px;" valign="top">
+                        <apex:panelGrid columns="1">
+                            <table>
+                                <tr height="15px;">
+                                </tr>
+                            </table>
+                          <!--  <apex:pageBlockSection columns="1" >         -->
+                          <b  Class="formheader4" style="font-size:14px;"> My Documents</b>
+                                <apex:dataTable value="{!rotdocs}" var="d" cellpadding="3px;" headerClass="hclass" style="width:100%; bgcolor:#FFFFFF;">
+                                    <apex:column headerClass="formheader4"  rendered="{!d.Dependent__c==null}" style="background-color:#E8E8E8;border-bottom: solid 1px #157DFB; height:30px;width:230px; font-weight: bold;"><center style="padding-top:6px;">
+                                        <apex:commandLink action="{!dispdocs}"> {!d.Name} <apex:outputLabel rendered="{!d.Dependent__c!=null}">({!d.Dependent__r.First_Name__c} {!d.Dependent__r.Last_Name__c})</apex:outputLabel> 
+                                            <apex:param value="{!d.Id}" name="doc"/>
+                                        </apex:commandLink></center> 
+                                    </apex:column>
+                                    <apex:column >
+                                    <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!AND(d.Dependent__c==null,d.Supplied__c)}"  width="25px" height="25px"/>
+                                    <apex:image url="{!URLFOR($Resource.redmark)}" rendered="{!AND(d.Dependent__c==null,NOT(d.Supplied__c))}"  width="25px" height="25px"/>
+                                    </apex:column>
+                                </apex:dataTable>
+                                <apex:outputLabel value="My Dependent's Documents" styleClass="formheader4" style="font-size:14px;" rendered="{!dispdocblock}"></apex:outputLabel>
+                             <!-- <span style="display:none" id="myid"><b Class="formheader4" style="font-size:14px;"> My Dependent's Documents</b> </span> -->
+                                <apex:dataTable value="{!rotdocs}" var="d" cellpadding="3px;" headerClass="hclass" style="width:100%;"><!-- bgcolor:#FFFFFF;">-->
+                                    <apex:column headerClass="formheader4" rendered="{!d.Dependent__c!=null}" style="background-color:#E8E8E8;border-bottom: solid 1px #157DFB; height:30px;width:230px; font-weight: bold;"><center style="padding-top:6px;">
+                                        <apex:commandLink action="{!dispdocs}"> {!d.Name} <apex:outputLabel rendered="{!d.Dependent__c!=null}" style="text-decoration:none"> ({!d.Dependent__r.First_Name__c} {!d.Dependent__r.Last_Name__c})</apex:outputLabel> 
+                                            <apex:param value="{!d.Id}" name="doc"/> 
+                                        </apex:commandLink></center>
+                                    </apex:column>
+                                    <apex:column >
+                                    <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!AND(d.Dependent__c!=null,d.Supplied__c)}" width="25px" height="25px"/>
+                                    <apex:image url="{!URLFOR($Resource.redmark)}" rendered="{!AND(d.Dependent__c!=null,NOT(d.Supplied__c))}" width="25px" height="25px"/>
+                                    </apex:column>
+                                </apex:dataTable>
+                           <!-- </apex:pageBlockSection>-->
+                        </apex:panelGrid>
+                        </td>
+                        <td valign="top" style="padding-right: 57px;">
+                            <table border="0" cellspacing="0" cellpadding="0" class="leftborder">
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <apex:outputPanel id="doc1" rendered="{!display}">
+                                        <tr>
+                                            <td colspan="2" class="formheader4">{!selecteddoc.Name} 
+                                                <apex:outputLabel rendered="{!selecteddoc.Dependent__c!=null}">({!selecteddoc.Dependent__r.First_Name__c} {!selecteddoc.Dependent__r.Last_Name__c})</apex:outputLabel>                                                
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2">&nbsp;<apex:pageMessages /></td></tr>
+                                        <apex:outputPanel rendered="{!pasprtfields}">
+                                            <tr>
+                                                <td class="formlable" align="right">Passport Issued By<span
+                                                    class="error_star">*</span></td>
+                                                <td><apex:selectList value="{!selecteddoc.Passport_issued_country__c}"
+                                                        styleClass="form-selectList" size="1">
+                                                    <apex:selectOptions value="{!clist}" />
+                                                </apex:selectList></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="formlable" align="right">Passport Number <span
+                                                    class="error_star">*</span></td>
+                                                <td><apex:inputField styleClass="form-text-box" value="{!selecteddoc.Passport_Number__c}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="formlable" align="right">Passport Issue Date<span
+                                                    class="error_star">*</span></td>
+                                                <td> <!-- <apex:inputField styleClass="form-text-box" value="{!selecteddoc.Passport_Issue_Date__c}"/> -->
+                                                    <A HREF="" TITLE="(DD/MM/YYYY)"> 
+                                                    <apex:inputText styleClass="form-text-box" value="{!pass_issudt}"/></A>(DD/MM/YYYY)
+                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="formlable" align="right">Passport Expiration Date<span
+                                                    class="error_star">*</span></td>
+                                                <td><!-- <apex:inputfield styleClass="form-text-box" value="{!selecteddoc.Passport_Expiration_Date__c}"/> -->
+                                                    <A HREF="" TITLE="(DD/MM/YYYY)"> 
+                                                    <apex:inputText styleClass="form-text-box" value="{!pass_expdt}"/></A>(DD/MM/YYYY)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="formlable" align="right">EXACT Passport First Name<span
+                                                    class="error_star">*</span></td>
+                                                <td> <apex:inputfield styleClass="form-text-box" value="{!selecteddoc.EXACT_Passport_First_Name__c}"/></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="formlable" align="right">EXACT Passport Middle Name</td>
+                                                <td><apex:inputfield styleClass="form-text-box" value="{!selecteddoc.EXACT_Passport_Middle_Name__c}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="formlable" align="right">EXACT Passport Family Name<span
+                                                    class="error_star">*</span></td>
+                                                <td> <apex:inputfield styleClass="form-text-box" value="{!selecteddoc.EXACT_Passport_Family_Name__c}"/></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="formlable" align="right">Passport Type<span
+                                                    class="error_star">*</span></td>
+                                                <td><apex:inputfield styleClass="form-selectList" value="{!selecteddoc.Passport_Type__c}"/>
+                                                </td>
+                                            </tr>
+                                        </apex:outputPanel>
+                                        <tr>
+                                            <td class="formlable" align="right">File<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputFile size="35" styleclass="formlable" id="infile" value="{!attach.body}" filename="{!attach.Name}"/></td>
+                                        </tr><tr><td colspan="2">&nbsp;</td></tr>
+                                        <tr>
+                                            <td class="formlable" align="center"></td>
+                                            <td style="padding-left:10px;"><span> 
+                                             <!--   <apex:commandButton value="SAVE" title="Attach" id="attach" action="{!saveand}" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;">
+                                                    <apex:param value="save_andatach" name="savetype" assignTo="{!savetype}"/>
+                                                </apex:commandButton>  -->
+                                                <apex:commandLink value="SAVE" title="Save" id="save" action="{!saveand}" rendered="{!display}" styleClass="css_button" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;">
+                                                    <apex:param value="save_optatach" name="savetype"/>
+                                                </apex:commandLink>
+                                                </span> 
+                                            </td>
+                                        </tr>
+                                        <tr style="padding-top:25px;">
+                                            <td colspan="2" class="formheader3" style="padding-top:25px;">Uploaded file(s)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><apex:dataTable cellpadding="3px;" style="width:100%" value="{!hisList}" var="att">
+                                                <apex:column width="15%">
+                                                    <apex:outputLink target="blank"
+                                                        value="/servlet/servlet.FileDownload?file={!att.id}">
+                                                        <apex:outputText value="{!att.name}" />
+                                                    </apex:outputLink> <!--&nbsp; [Delete]-->
+                                                </apex:column>
+                                            </apex:dataTable></td>
+                                        </tr>
+                                        
+                                    </apex:outputPanel>
+                                    <tr>
+                                        <td colspan="2"
+                                            background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}"
+                                            style="background-repeat: repeat-x"></td>
+                                    </tr>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+            </table>
+            
+        </apex:outputPanel></div>
+        <apex:outputPanel style="padding-left:45%;padding-top:5%;position:absolute;">
+         <span>
+            <apex:commandLink value="SUBMIT" action="{!saveand}" styleClass="css_button" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" rendered="{!disp_subbtn}">
+                <apex:param value="hme_redct" name="home_page"/>
+            </apex:commandLink>
+         </span><br/><br/> 
+        </apex:outputPanel>
+        
+  </apex:form>
+</apex:page>

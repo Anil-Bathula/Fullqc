@@ -1,0 +1,14 @@
+<apex:page controller="ebrite_ctrlr">
+<br/><br/><br/><center>
+    <Apex:form >
+        <Apex:commandButton value="Login" action="{!authen}"/>  <br/><Br/>
+        {!resp_string}<br/>
+        <apex:commandButton value="Get Token" action="{!gettoken}"/>
+        <br/><br/>
+        <apex:commandButton value="User Info" action="{!current_user}"/>
+        <br/><br/>
+        <apex:commandButton value="Event Info" action="{!check_event}"/>
+        
+    </Apex:form>
+    </center>
+</apex:page>

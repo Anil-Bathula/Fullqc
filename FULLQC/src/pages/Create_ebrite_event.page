@@ -1,0 +1,16 @@
+<apex:page standardController="Campaign" extensions="create_ebrite_event_ctrlr" action="{!create_Event}">
+  <center>   
+  <apex:form >
+      <Br/><br/>
+      <apex:pagemessages ></apex:pagemessages>
+      <h3>Step 2: </h3><br/>
+          <apex:commandButton value="Create Ticket" action="{!create_ticket}"/><br/><br/>
+      <h3>Step 3: </h3><br/>
+          <apex:commandButton value="Publish Event" action="{!Publish_event}"/>  <br/><br/>
+      <h3>Step 4: </h3><br/>
+          <apex:commandButton value="Sync Attendees" action="{!Sync_Attendees}"/> 
+       <br/><br/>   <apex:commandLink action="{!back}" value="Back"/>          
+       
+       
+  </apex:form></center>
+</apex:page>

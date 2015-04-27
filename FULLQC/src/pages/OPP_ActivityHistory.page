@@ -1,0 +1,148 @@
+<apex:page id="p" standardController="Opportunity" extensions="OPP_ActivityHistory">
+ <apex:form id="f">
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:pageBlock id="pb" title="Activity History" >
+        <apex:commandLink action="{!Cancel}" title="cancel" value="{!opp.Name}"   style="Color:#4483C2;"/><br/> <br/>
+        
+        <style>
+            .activeTab {background-color: #73A3D5; color:white; background-image:none}
+            .inactiveTab { background-color: lightgrey; color:black; background-image:none}
+        </style>
+        <apex:tabPanel value="{!currentTab}" id="tp" switchType="client" tabClass="activeTab" inactiveTabClass="inactiveTab" onclick="fun();">
+            
+            <apex:tab label="Recruiting" name="name1" id="tabOne">
+                <apex:pageBlockTable value="{!recruit}" var="a"  > 
+                    <apex:column width="100px" headerValue="Edit / Del">
+                        <apex:commandLink value="Edit" action="{!pagerd}">
+                            <apex:param value="{!a.id}" name="Rec"/>
+                        </apex:commandLink>
+                        /
+                        <apex:commandLink value="Del" action="{!del}">
+                            <apex:param value="{!a.id}" name="Rec1"/>
+                        </apex:commandLink>
+                    </apex:column> 
+                    <apex:column headerValue="Subject">
+                        <apex:commandLink value="{!a.Subject}" action="{!sub}" target="_blank">
+                             <apex:param value="{!a.id}" name="sub1"/>
+                         </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Description" value="{!a.Description}"/>
+                    <apex:column headerValue="Created Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Createddate}"/>
+                        </apex:outputText>
+                    </apex:column> 
+                    <apex:column headerValue="Due Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Duedate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Assigned To" value="{!a.Assignedto}"/>     
+                </apex:pageBlockTable>
+            </apex:tab>
+            
+            <apex:tab label="Marketing" name="name2" id="tabTwo">
+                <apex:pageBlockTable value="{!recruit}" var="a"  > 
+                    <apex:column width="100px" headerValue="Edit / Del">
+                        <apex:commandLink value="Edit" action="{!pagerd}">
+                            <apex:param value="{!a.id}" name="Rec"/>
+                        </apex:commandLink>
+                        /
+                        <apex:commandLink value="Del" action="{!del}">
+                            <apex:param value="{!a.id}" name="Rec1"/>
+                        </apex:commandLink>
+                    </apex:column> 
+                    <apex:column headerValue="Subject">
+                        <apex:commandLink value="{!a.Subject}" action="{!sub}" target="_blank">
+                             <apex:param value="{!a.id}" name="sub1"/>
+                         </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Description" value="{!a.Description}"/>
+                    <apex:column headerValue="Created Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Createddate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Due Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Duedate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Assigned To" value="{!a.Assignedto}"/>     
+                </apex:pageBlockTable>
+            </apex:tab>
+            
+            <apex:tab label="Visa" name="name3" id="tabThree">
+                <apex:pageBlockTable value="{!recruit}" var="a"  > 
+                    <apex:column width="100px" headerValue="Edit / Del">
+                        <apex:commandLink value="Edit" action="{!pagerd}">
+                            <apex:param value="{!a.id}" name="Rec"/>
+                        </apex:commandLink>
+                        /
+                        <apex:commandLink value="Del" action="{!del}">
+                            <apex:param value="{!a.id}" name="Rec1"/>
+                        </apex:commandLink>
+                    </apex:column> 
+                    <apex:column headerValue="Subject">
+                        <apex:commandLink value="{!a.Subject}" action="{!sub}" target="_blank">
+                             <apex:param value="{!a.id}" name="sub1"/>
+                         </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Description" value="{!a.Description}"/>
+                    <apex:column headerValue="Created Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Createddate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Due Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Duedate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Assigned To" value="{!a.Assignedto}"/>     
+                </apex:pageBlockTable>
+            </apex:tab>
+            
+            <apex:tab label="Confirmation" name="name4" id="tabFour">
+                <apex:pageBlockTable value="{!recruit}" var="a"  > 
+                    <apex:column width="100px" headerValue="Edit / Del">
+                        <apex:commandLink value="Edit" action="{!pagerd}">
+                            <apex:param value="{!a.id}" name="Rec"/>
+                        </apex:commandLink>
+                        /
+                        <apex:commandLink value="Del" action="{!del}">
+                            <apex:param value="{!a.id}" name="Rec1"/>
+                        </apex:commandLink>
+                    </apex:column> 
+                    <apex:column headerValue="Subject">
+                        <apex:commandLink value="{!a.Subject}" action="{!sub}" target="_blank">
+                             <apex:param value="{!a.id}" name="sub1"/>
+                         </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Description" value="{!a.Description}"/>
+                    <apex:column headerValue="Created Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Createddate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Due Date">
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.Duedate}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Assigned To" value="{!a.Assignedto}"/>     
+                </apex:pageBlockTable>
+            </apex:tab>
+        </apex:tabPanel>
+        
+        <apex:actionFunction name="selectTabActionFunction" action="{!Data}" reRender="tp">
+        </apex:actionFunction>
+        
+        <script type="text/javascript">
+            function fun() {
+                selectTabActionFunction();
+            }
+        </script>
+    </apex:pageBlock>
+ </apex:form>
+</apex:page>

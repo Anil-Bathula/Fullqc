@@ -1,0 +1,89 @@
+<apex:page controller="FinStatementController"  >
+
+    <apex:form >
+        <apex:pageBlock title="Stage Filters" id="theStageFilters">
+            <c:MultiselectPicklist leftLabel="Available Stages"
+                                   leftOptions="{!allStages}"
+                                   rightLabel="Selected Stags"
+                                   rightOptions="{!selectedStages}"
+                                   size="14"
+                                   width="150px"/>
+        </apex:pageBlock>
+
+
+        <apex:pageBlock title="Non-BBA / BBA" id="theYears">
+            <c:MultiselectPicklist leftLabel="Available Non-BBA / BBA"
+                                   leftOptions="{!allBbaUnLockedYears}"
+                                   rightLabel="Selected Non-BBA / BBA"
+                                   rightOptions="{!selectedBbaUnLockedYears}"
+                                   size="14"
+                                   width="150px"/>
+        </apex:pageBlock>
+
+
+        <apex:pageblock title="Other Filters"  id="theOtherFilters">
+            <!--   ///TODO
+            <apex:selectList value="{!TheTerm}"  size="1" id="theTerms"  >
+                <apex:selectOptions value="{!Terms}"/>
+            </apex:selectList>
+
+            <apex:selectList title="Program" value="{!TheProgramId}"  size="1" id="theProgramId"  >
+                <apex:selectOptions value="{!ProgramIds}"/>
+            </apex:selectList>
+            -->
+
+            <apex:outputText >&nbsp; &nbsp; Program : &nbsp; </apex:outputText>
+            <apex:selectList title="Program" value="{!TheProgramName}"  size="1" id="theProgramName"  >
+                <apex:selectOptions value="{!ProgramNames}"/>
+            </apex:selectList>
+            
+            <apex:outputText >&nbsp; &nbsp; Term : &nbsp; </apex:outputText>
+            <apex:selectList label="Term" value="{!TheTerm}"  size="1" id="theStage"  >
+                <apex:selectOptions value="{!Terms}"/>
+            </apex:selectList>
+            
+            
+            <!--
+            <apex:outputText >&nbsp; &nbsp; Is Non BBA : &nbsp; </apex:outputText>
+            <apex:inputCheckbox value="{!IsNonBBA}"/>
+			-->
+            
+            <!--
+            <apex:outputText >&nbsp; &nbsp; Stage : &nbsp; </apex:outputText>
+            <apex:selectList label="Stage" value="{!TheStage}"  size="1" id="theStage"  >
+                <apex:selectOptions value="{!Stages}"/>
+            </apex:selectList>
+            -->
+        </apex:pageblock>
+
+
+
+        <apex:pageblock title="Extraction"  id="theControl">
+            <apex:commandButton value="Extract" action="{!Extract}" id="theExtractButton"  />
+        </apex:pageblock>
+     	<!--
+         <apex:commandButton value="Preview" action="{!Preview}" id="thePreviewButton"  />
+        <apex:outputText value="{!ThePreviewMessage}"></apex:outputText>
+        -->
+
+    </apex:form>
+    
+    
+    <apex:form >
+        <apex:actionPoller action="{!doFinStatementExtracts}" reRender="theStatus" interval="7"/>
+
+        <apex:pageBlock >
+            <apex:pageBlockTable title="Status" id="theStatus" value="{!FinStatementExtracts}" var="r">
+                <apex:column value="{!r.Name}" />
+                <apex:column value="{!r.Status__c}" />
+                <apex:column value="{!r.CreatedDate}" />
+                <apex:column headerValue="Download" >
+                    <apex:outputLink rendered="{!r.Status__c = 'Finish'}" value="../apex/ManifestContent?id={!r.Id}"  target="_blank">download</apex:outputLink>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+        
+    </apex:form>
+    
+</apex:page>

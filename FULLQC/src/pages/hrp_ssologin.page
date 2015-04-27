@@ -1,0 +1,77 @@
+<apex:page showHeader="false" sidebar="false" cache="false" controller="hrp_ssologin_errs" action="{!init}">
+<apex:form forceSSL="true" >
+
+<head>
+    <title>Hult Rotation Point</title>
+</head>
+
+<!--<apex:image value="{!$Resource.Hult_Logo}" width="260px;" height="80px;"/>-->
+<div id="wrapper">
+    <div id="page">
+
+<header>
+            
+            <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/style.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/base.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/grid.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/light.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/blue.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/calendar.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/jobboard.css"
+    rel="stylesheet" type="text/css" />
+            
+            <h1 id="logo">
+                <a href="#">
+                
+                <img alt="logo" src="https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/img/HultLogo.png" title="logo" />
+                    
+                                  </a>
+            </h1>
+            
+            <br class="cl" />
+        </header>
+        
+        <h2 class="ribbon blue full" style="text-align:left;">Hult Rotation Point</h2>
+        <div class="triangle-ribbon blue">
+        </div>
+
+
+
+<apex:panelGrid id="login" columns="2">
+<!--<table style="margin:5% auto 15% 0;">
+<thead align="center"> <span style="font-size:20px; font-weight:bold;">You are now Signed Out</span></thead><tr><td></td></tr>
+</table>
+-->
+<apex:pageMessages />
+
+<br/><br/> <br/><br/><br/><br/><apex:outputLabel ><apex:outputLink value="/apex/hrp_sso_init"> Click Here</apex:outputLink> to login through onelogin.</apex:outputLabel>
+</apex:panelGrid>
+   <!-- 
+    <apex:pageMessage severity="info" strength="1"  summary="Please ensure you log in using any of the following browsers: Firefox, Safari or Chrome. *Internet Explorer IS NOT supported."/>
+    <apex:pagemessages />
+-->    
+    </div>
+</div> 
+
+ 
+ 
+</apex:form> 
+
+
+
+
+
+</apex:page>

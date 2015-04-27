@@ -1,0 +1,54 @@
+<apex:page standardController="Opportunity" extensions="opp_Accomodation_Status" standardStylesheets="false">
+    <apex:form id="main">
+        <div style="overflow:auto; height:230px;width:480px;">
+        <apex:pageblock mode="Edit" >
+        <apex:pageMessages />
+           <b style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:13.1px;font-weight:700;">Accommodation Stage Details</b>
+             &nbsp;&nbsp;           
+            <apex:commandButton value="Edit" action="{!cusnew}" id="nc" rendered="{!hidebutton}" /><br/><br/>     
+            <apex:outputpanel >
+             &nbsp;&nbsp;<apex:outputLabel value="Accommodation Stage: " style="font-weight:bold;font-size:11px;" id="nc1" rendered="{!hidebutton}"/> 
+             &nbsp; <apex:outputField value="{!op.Accommodation_Status__c}" label="" id="nc2" rendered="{!hidebutton}" />            
+            </apex:outputpanel>
+           
+            <!-- After clciking the New Button The Field block will appear -->
+            <apex:pageBlock rendered="{!fildblock}" id="ne2">
+                <apex:pageBlockSection columns="1">
+                    <apex:outputPanel >
+                        <!-- On clciking the Save Button the Application page will refresh -->
+                        
+                            <apex:outputPanel >
+                                <apex:inputField value="{!op.Accommodation_Status__c}" /> 
+                                <apex:actionSupport event="onchange" status="App"/>                      
+                                <apex:actionStatus startText="applying value..." id="App"/> 
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel id="Sal">
+                                <apex:pageBlockSection rendered="{!op.Accommodation_Status__c=='2c. Not Interested (Alternative accom.)'}"  columns="1" >
+                                   <apex:inputField value="{!Op.Name_of_alternative_accommodation__c}" label="Name of alternative accomodation"/>                        
+                                <!--   <apex:inputField value="{!Op.Proof_of_Alternative_accomm_uploaded__c }" label="Proofof alternative accomodation uploaded" required="True" /> -->
+                                   <br/>
+                                   <apex:outputText value="Proof of alternative accommodation"></apex:outputText>
+                                   <apex:inputFile value="{!attchmnt.Body}" contentType="{!attchmnt.ContentType}" fileName="{!attchmnt.Name}" fileSize="{!attchmnt.BodyLength}" style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:10.1px;font-weight:700;"/>
+                                   
+                                   <br/>
+                                </apex:pageBlockSection>
+                            </apex:outputPanel> 
+                        <apex:commandbutton action="{!cusSave}" title="Save" value="Save"> <!-- reRender="main,ne2" -->
+                          <apex:outputPanel id="refresh11" rendered="true">
+                                <apex:outputPanel id="refresh12" rendered="{!refreshPage}">
+                                    <script>
+                                    window.top.location='/{!op.id}';
+                                    </script>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:commandButton> 
+                        <apex:commandButton action="{!custCancel}" title="cancel" value="Cancel"/> <!-- reRender="main,ne2" -->
+                    </apex:outputPanel>
+                   
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+         </apex:pageBlock>
+         </div>
+    </apex:form>
+</apex:page>

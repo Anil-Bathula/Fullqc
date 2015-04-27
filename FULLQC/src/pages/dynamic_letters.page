@@ -1,0 +1,22 @@
+<apex:page controller="dynamic_letters_ctrlr" showHeader="false"> <!--contentType="application/vnd.ms-word#paras.doc" >    <!--renderAs="pdf"  >-->
+<style>
+.watermark
+        {
+         position:absolute;
+         bottom:5px;
+         right:500px;
+         opacity:0.5;
+         z-index:99;
+         color:white;
+        }
+</style>
+    <html xmlns:w="urn:schemas-microsoft-com:office:word" style="background-image: url('https://pbs.twimg.com/profile_images/875763231/Hult_logo.jpg')" >
+        <apex:outputLabel value="{!temp.Para_1__c}" rendered="{!If(temp.Para_2__c==null,false,true)}" escape="false" ></apex:outputLabel><br/>
+         <apex:outputLabel value="{!temp.Para_2__c}" rendered="{!If(temp.Para_2__c==null,false,true)}" escape="false"></apex:outputLabel>
+<!--         <center> <div class="watermark">
+          <img src="https://pbs.twimg.com/profile_images/875763231/Hult_logo.jpg"/>
+          </div></center>-->
+         
+        
+    </html>     
+</apex:page>

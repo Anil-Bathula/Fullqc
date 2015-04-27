@@ -1,0 +1,398 @@
+<apex:page controller="opp_EmailTemplate" showHeader="false" renderAs="{!ispdf}" contentType="{!isword}">
+    <form>
+        <apex:pageMessages />
+        <apex:outputpanel rendered="{!firstblock}" style="width:100%">
+            <table width="100%"><tr>
+                <td align="left" width="60%"><img src="https://cs10.salesforce.com/servlet/servlet.ImageServer?id=015U00000006w04&oid=00DJ00000006yEv"/></td>
+                <td align="right" width="40%">
+                <table style="padding-left:15%"><tr><td style="text-align:left;font-size:0.9em">
+                <b>Hult International Business School</b><br/>
+                {!street}<br/> 
+                {!addr}<br/>
+                Tel :  {!ph}<br/>
+                www.hult.edu 
+                </td></tr></table>
+            </td></tr></table>
+        </apex:outputpanel>
+        <!--If Program is BBA-->
+       
+        <apex:outputText rendered="{!block1}" >
+            <br/>
+            <table>
+                <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                <td>
+                    <p style='margin-left:70px;font-size:0.9em'> Bachelor Conditional Acceptance 2013</p>
+                </td>
+            </table>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                <p style="font-size:0.9em">
+                  On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission 
+                  into the Hult Bachelor of Business Administration Program for the Fall 2013 class. A place has been reserved for you at Hult’s London campus. 
+                  As a condition of your acceptance, you are <b>required to submit as soon as possible</b>, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li  style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus. <br/><br/>
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. 
+                Hult’s Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. 
+                The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                To confirm your place in the Fall 2013 class, please submit the original documents mentioned above. We also ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                Once again, congratulations on your conditional admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!block2}">
+            <br/>
+            <table>
+                <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                <td>
+                    <p style='margin-left:70px;font-size:0.9em'>Bachelor Conditional Acceptance 2013</p>
+                </td>
+            </table><br/>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                
+                <p style="font-size:0.9em">
+                  On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission 
+                  into the Hult Bachelor of Business Administration Program for the Fall 2013 class. A place has been reserved for you at Hult’s London campus. 
+                  As a condition of your acceptance,  you are <b>required to submit as soon as possible</b>, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus. <br/><br/>
+                The Admissions Committee has determined that your educational record allows you direct entry onto the program and to be awarded up to {!bbacredits} 
+                US semester hours of academic credit for work successfully completed beyond US 12th grade standard, subject to receipt of official transcripts documenting evidence of success at required grade levels.<br/><br/>
+                
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult’s Bachelor of Business Administration Program will help 
+                you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching.
+                 Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                 
+                To confirm your place in the Fall 2013 class, please submit the original documents mentioned above. We also ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. 
+                Once again, congratulations on your conditional admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!block3}">
+            <br/>
+            <table>
+                <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                <td>
+                    <p style='margin-left:70px;font-size:0.9em'> Bachelor Conditional Acceptance 2013</p>
+                </td>
+            </table><br/>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                <p style="font-size:0.9em">
+                  On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted 
+                  for admission into the Hult Bachelor of Business Administration Program for the Fall 2013 class. A place has been reserved for you at Hult’s London campus.
+                   As a condition of your acceptance, you are <b>required to submit as soon as possible</b>, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus. <br/><br/>
+                The Admissions Committee has determined that your educational record allows you direct entry on to the program and to transfer up to {!bbacredits}
+                academic credits for your previous work in higher education, subject to receipt of official transcripts documenting successful completion of these credits. <br/><br/>
+                
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult’s Bachelor of Business Administration Program 
+                will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. The Hult student body is unique,
+                 talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures. <br/> <br/>
+                 
+                To confirm your place in the Fall 2013 class, please submit the original documents mentioned above. We also ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/.
+                Once again, congratulations on your conditional admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!block4}">
+            <br/>
+            <table>
+                <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                <td>
+                    <p style='margin-left:70px;font-size:0.9em'> Bachelor Conditional Acceptance 2013</p>
+                </td>
+            </table><br/>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration Program for the Fall 2013 class. A place has been reserved for you at Hult’s London campus. <br/><br/>
+                   
+                   The Admissions Committee has determined that your educational record allows you direct entry onto the program and to be awarded up to 
+                   {!bbacredits} US semester hours of academic credit for work successfully completed beyond US 12th grade standard, 
+                   subject to receipt of official transcripts documenting evidence of success at required grade levels.<br/>br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult’s Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence 
+                   as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions
+                   engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   To confirm your place in the Fall 2013 class, we ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!block5}">
+            <br/>
+            <table>
+                <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                <td>
+                    <p style='margin-left:70px;font-size:0.9em'> Bachelor Conditional Acceptance 2013</p>
+                </td>
+            </table><br/>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult Bachelor of Business Administration Program for the Fall 2013 class. A place has been reserved for you at Hult’s London campus. <br/><br/>
+                   
+                   The Admissions Committee has determined that your educational record allows you direct entry on to the program and to transfer up to 
+                   {!bbacredits} academic credits for your previous work in higher education, 
+                   subject to receipt of official transcripts documenting successful completion of these credits.<br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult’s Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment.
+                   The Hult student body is unique, talented, and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   To confirm your place in the Fall 2013 class, we ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- If Program is Not BBA-->
+        <apex:outputText rendered="{!IF(stage=='Conditionally Accepted'||stage=='Conditionally Confirmed',True, False)}">
+            <table>
+                <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                <td>
+                    <p style='margin-left:70px;font-size:0.9em'> 
+                    {!Contact.OP_Program__c} 
+                    <apex:outputText rendered="{!IF(stage=='Conditionally Accepted',True, False)}">
+                        Conditional Acceptance 2013
+                    </apex:outputText>
+                    <apex:outputText rendered="{!IF(stage=='Conditionally Confirmed',True, False)}">
+                        Conditional Confirmed 2013
+                    </apex:outputText>
+                    </p>
+                </td>
+            </table>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission into the Hult {!Contact.Program_formatted_for_letters__c} 
+                   ({!Contact.OP_Program__c}) Program for the Fall 2013 class. A place has been reserved for you at Hult’s {!Contact.Campus__c} campus.
+                    As a condition of your acceptance, you are required to submit as soon as possible, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult {!Contact.Program_formatted_for_letters__c} Program will help you realize your leadership potential by strengthening your managerial skills and sharpening your business acumen. 
+                It will also give you confidence as a decision-maker in a global business environment. The Hult student body is unique, talented, and culturally diverse which makes our classroom discussions engaging and enriching. Our graduates are eminently qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                To confirm your place in the Fall 2013 class, please submit the original documents mentioned above. We also ask you to submit a non-refundable deposit of {!fin} online at www.hult.edu/en/apply-now/. <br/><br/>
+                Once again, congratulations on your conditional admission to our world-class {!Contact.Program_formatted_for_letters__c} Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!IF(stage=='Accepted'||stage=='Confirmed',True, False)}">
+            <Table>
+                <tr>
+                    <td style='text-align: left;'>
+                    <h3>Congratulations </h3>
+                </td>
+                    <td >
+                        <p style='margin-left:70px;font-size:0.9em'> 
+                            {!Contact.OP_Program__c}
+                            <apex:outputText rendered="{!IF(stage=='Accepted',True, False)}">
+                                Full Acceptance 2013
+                            </apex:outputText>
+                            <apex:outputText rendered="{!IF(stage=='Confirmed',True, False)}">
+                                Confirmed 2013
+                            </apex:outputText>
+                        </p>
+                    </td>
+                </tr> 
+            </Table>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult
+                    {!Contact.Program_formatted_for_letters__c} ({!Contact.OP_Program__c}) Program for the Fall 2013 class. A place has been reserved for you at Hult’s {!Contact.Campus__c} campus.<br/><br/>
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. 
+                The Hult {!Contact.Program_formatted_for_letters__c} Program will help you realize your leadership potential by strengthening your 
+                managerial skills and sharpening your business acumen. It will also give you confidence as a decision-maker in a global business environment.
+                 The Hult student body is unique, talented and culturally diverse making classroom discussions engaging, and enriching. 
+                 Our graduates are eminently qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                To confirm your place in the Fall 2013 class, we ask you to submit the non-refundable deposit of {!fin} online at www.hult.edu/en/apply-now/. <br/><br/>
+                Once again, congratulations on your admission to our world-class {!Contact.Program_formatted_for_letters__c}Program. I look forward to seeing you in the Fall.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!IF(stage=='Admissions Endorsed'||stage=='Admissions Endorsed Confirmed',True, False)}">
+            <Table>
+                <tr>
+                    <td style='text-align: left;'>
+                        <h3>Congratulations </h3>
+                    </td>
+                    <td >
+                        <p style='margin-left:70px;font-size:0.9em'>
+                        {!Contact.OP_Program__c}
+                        <apex:outputText rendered="{!IF(stage=='Admissions Endorsed',True, False)}">
+                            Admission Endorsement 2013 
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF(stage=='Admissions Endorsed Confirmed',True, False)}">
+                            Admission Endorsement Confirmed 2013 
+                        </apex:outputText>
+                        </p>
+                    </td>
+                </tr> 
+            </Table>
+            <table>
+                <font style="font-size:0.9em">
+                    {!Contact.Name}<br/>
+                    {!Contact.Mailingcity},{!Contact.Mailingstate}<br/>
+                    {!Contact.Mailingpostalcode}<br/>
+                    {!Contact.MailingCountry}<br/><br/>
+                    <apex:outputText value="{0,date,MMMMMMMM d'th', yyyy}">
+                        <apex:param value="{!Today()}" /> 
+                    </apex:outputText><br/><br/>
+                    Dear {!Contact.FirstName},<br/>
+                </font>
+                <p style="font-size:0.9em">
+                    The Admissions Committee of Hult International Business School has reviewed your application, and we are pleased to inform you that your candidacy to the {!Contact.Program_formatted_for_letters__c}
+                    ({!Contact.OP_Program__c}) Program can be advanced if you submit the following item(s) as soon as possible: <br/>
+                </p>  
+                    <ul>
+                    <apex:repeat value="{!adminpick}" var="adm">
+                        <li style="font-size:0.9em"><apex:outputText value="{!adm}"/></li>
+                    </apex:repeat>
+                    </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult {!Contact.Program_formatted_for_letters__c} Program will help you discover your leadership potential by building management skills and expanding your business acumen, as well as gaining a new sense of confidence as a decision-maker in a global environment. 
+                    With a uniquely international student body, Hult’s classroom discussions are rich and our graduates are successfully able to work and communicate across communities, countries, and cultures.<br/><br/> 
+                    To advance your application for a place in the Fall 2013 class, please submit the original documents mentioned above. We also ask you to submit a non-refundable deposit of {!fin} online at www.hult.edu/en/apply-now/.<br/><br/>
+                    You are strongly encouraged to complete your application as soon as possible. Please let us know how we can assist you. 
+                </p> <br/><br/>
+            </table>
+        </apex:outputText>
+        
+        
+        <apex:outputText rendered="{!lastblock}">
+            <font style="font-size:0.9em">
+            Sincerely,<br/>
+            <img src="https://cs10.salesforce.com/servlet/servlet.ImageServer?id=015J00000001HNE&oid=00DJ00000006yEv" height="50" width="122" /><br/>
+            Mukul Kumar<br/>
+            Chief Academic Officer<br/>
+            Hult International Business School
+            </font>
+        </apex:outputText>   
+
+    </form>
+    <center>
+    <apex:form rendered="{!isvf}" id="frm1">
+        <apex:commandButton reRender="frm1" action="{!donothing}" value="Open in PDF" onclick="window.open('/apex/opp_EmailTemplate?id={!$CurrentPage.parameters.id}&type=pdf','_blank')"/>
+        <apex:commandButton reRender="frm1" action="{!donothing}" value="Open in Word" onclick="window.open('/apex/opp_EmailTemplate?id={!$CurrentPage.parameters.id}&type=word','_blank')"/>
+    </apex:form>
+    </center>
+
+</apex:page>

@@ -1,0 +1,2 @@
+<apex:page controller="FinStatementController" sidebar="false" action="{!fetch}" contentType="text/plain/#package.xml" cache="false">{!TheManifestContent} 
+</apex:page>

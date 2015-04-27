@@ -1,0 +1,59 @@
+<apex:page standardController="Opportunity" extensions="opp_confimation_Activity" standardStylesheets="false">
+    <apex:form id="main">
+        <apex:pageMessages ></apex:pageMessages>
+        <div style="overflow:auto; height: 230px;width:480px;">
+        <apex:pageblock mode="Edit">
+            <b style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:13.1px;font-weight:700;">Acceptance/Confirmation Activity</b>
+            <apex:commandButton value="New" action="{!cusnew}" id="nc" rendered="{!hidebutton}" /><br/><br/>
+            
+            <apex:outputLabel value="Engagement: " style="font-weight:bold;font-size:11px;" id="nc1" rendered="{!hidebutton}"/>&nbsp;
+            <apex:outputField value="{!op.Engagement1__c}" label="Engagement" id="nc2" rendered="{!hidebutton}"/>
+           
+           <!-- <apex:outputPanel rendered="{!hidelable}">
+                <apex:outputLabel value="Last activity entered: " style="font-weight:bold;font-size:11px;"/>&nbsp;&nbsp;&nbsp;
+                <apex:outputText value="{!Confirmation_Activity_c}" style="border-style: inset;font-size: 13px;border-width: 2px;width: 50em; background-color: white;"/>
+            </apex:outputPanel> -->
+            <!-- After clciking the New Button The Field block will appear -->
+            <apex:pageBlock rendered="{!fildblock}">
+                <apex:pageBlockSection columns="1">
+                    <apex:outputPanel >
+                        <!-- On clciking the Save Button the Application page will refresh -->
+                        <apex:commandbutton action="{!cusSave}" title="Save" value="Save" reRender="main,reff" >
+                        <apex:outputPanel id="refresh11" rendered="true">
+                        <apex:outputPanel id="refresh12" rendered="{!refreshPage}">
+                            <script>
+                            window.top.location='/{!op.id}';
+                            </script>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    </apex:commandButton> 
+                        <!-- on changing the Confirmation Activity field notes method is calling -->
+                        <apex:inputField value="{!opp.Confirmation_Activity__c}" onchange="fun()"/>
+                        <apex:actionFunction name="fun" action="{!notes}" reRender="a" Status="App" />
+                        <apex:actionStatus startText="applying value..." id="App"/>
+                        <apex:commandLink action="{!custCancel}" title="cancel" value="GoBack" reRender="main,reff"  style="Color:#4483C2;"/>
+                    </apex:outputPanel>
+                         
+                    <apex:outputPanel id="a">
+                        <apex:outputLabel value="Description: " style="font-weight:bold;font-size:11px;"/>&nbsp;&nbsp;
+                        <apex:outputText value="{!Confirmation_Activity_Help_Note_c}"/>
+                    </apex:outputPanel>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!opp.Confirmation_Activity_Notes__c}" style="width: 400px;"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            </apex:pageBlock>           
+            <apex:pageBlockTable value="{!vartsk}" var="t" rendered="{!hidebutton}">
+                <apex:column value="{!t.Subject}">
+                    <apex:facet name="header">Subject</apex:facet>
+                </apex:column>
+                
+                <apex:column value="{!t.CreatedDate}">  
+                   <apex:facet name="header">Created Date</apex:facet>
+                </apex:column> 
+            </apex:pageBlockTable>
+           
+         </apex:pageBlock>
+         </div>
+    </apex:form>
+</apex:page>

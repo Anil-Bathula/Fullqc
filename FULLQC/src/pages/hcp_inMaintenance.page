@@ -1,0 +1,53 @@
+<apex:page showHeader="false" sidebar="false" cache="false" >
+  <head>
+    <title>Hult Career Point</title>
+</head>
+<div id="wrapper">
+    <div id="page">
+
+<header>
+            
+            <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/style.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/base.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/grid.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/light.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/blue.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/calendar.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/jobboard.css"
+    rel="stylesheet" type="text/css" />
+            
+            <h1 id="logo">
+                <a href="#">
+                
+                <img alt="logo" src="https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/img/HultLogo.png" title="logo" />
+                    
+                                  </a>
+            </h1>
+            
+            <br class="cl" />
+</header>
+        
+        <h2 class="ribbon blue full" style="text-align:left;">Hult Career Point</h2>
+        <div class="triangle-ribbon blue">
+        </div>
+
+
+<center style="padding-top:180px;"><h2>This site is down for maintenance. </h2>
+Sorry for the inconvenience. We'll be back shortly.
+
+</center><div style="height:180px;"></div>
+</div></div>        
+</apex:page>

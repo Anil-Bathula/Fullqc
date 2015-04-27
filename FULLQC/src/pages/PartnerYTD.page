@@ -1,0 +1,88 @@
+<apex:page standardController="Account" extensions="PartnerYTD" standardStylesheets="False" action="{!loaddata}" >
+<apex:form id="main" >
+<apex:pageMessages ></apex:pageMessages>
+<!--
+    Developer : Anil.B
+        This VF used as an inline VF page of Account detail page, 
+        displays list of Patner Business
+        
+ -->
+<apex:pageblock >
+       <apex:pageBlockSection title="Size Of business" columns="2" >
+           <!-- <apex:outputField value="{!Acs.Name}"/>-->
+            <apex:outputField value="{!Acs.Recruitment_Year__c}" />
+             &nbsp;        
+            <apex:outputField value="{!Acs.Size_Of_Business_BBA__c}"/>
+            &nbsp;    
+            <apex:outputField value="{!Acs.Size_of_Business_Masters__c}"/>
+            &nbsp;    
+            <apex:outputField value="{!Acs.Size_of_Business_MBA__c}"/>
+            &nbsp;    
+            <apex:outputField value="{!Acs.Size_of_Business_EMBA__c}"/>
+            
+            <apex:pageBlockSectionItem >
+            <apex:outputPanel >
+            <!--<apex:outputText >*;font-size:12px</apex:outputText>-->
+            <apex:outputLabel value="Total Business with Hult Potential" for="account__name" style="color:Black"/>
+            </apex:outputPanel>
+            <apex:outputText value="{!Acs.Total_Business_with_Hult_Potential__c}" id="account__name"/>
+            </apex:pageBlockSectionItem>            
+                      
+            <apex:outputField value="{!Acs.Total_Size_of_Business__c}"/>
+            
+            <apex:pageBlockSectionItem >
+            <apex:outputPanel >
+            <!--<apex:outputText >*</apex:outputText>-->
+            <apex:outputLabel value="% of Business with Hult Potential" for="account__nam" style="color:Black"/>
+            </apex:outputPanel>
+            <apex:outputText value="{!Acs.of_Business_with_Hult_Potential__c}" id="account__nam"/>
+            </apex:pageBlockSectionItem>
+       
+       </apex:pageBlockSection>
+       
+       <apex:pageBlockSection title="YTD & Targets">
+       
+            <apex:outputField value="{!Acs.YTD_Partials_BBA__c}"/>
+            <apex:outputField value="{!Acs.Target_Partials_BBA__c}"/>
+            <apex:outputField value="{!Acs.YTD_Partials_EMBA__c}"/>
+            <apex:outputField value="{!Acs.Target_Partials_EMBA__c}"/>
+            <apex:outputField value="{!Acs.YTD_Partials_Masters__c}"/>
+            <apex:outputField value="{!Acs.Target_Partials_Masters__c}"/>
+            <apex:outputField value="{!Acs.YTD_Partials_MBA__c}"/>             
+            <apex:outputField value="{!Acs.Target_Partials_MBA__c}"/>
+            
+              
+            <apex:outputLabel ></apex:outputLabel>
+            &nbsp;    
+             <!--<apex:outputLabel ></apex:outputLabel>-->
+            <apex:outputField value="{!Acs.YTD_Confirmed_BBA__c}"/>
+            <apex:outputField value="{!Acs.Target_Confirmed_BBA__c}"/>
+            <apex:outputField value="{!Acs.YTD_Confirmed_EMBA__c}"/>
+            <apex:outputField value="{!Acs.Target_Confirmed_EMBA__c}"/>
+            <apex:outputField value="{!Acs.YTD_Confirmed_Masters__c}"/>
+            <apex:outputField value="{!Acs.Target_Confirmed_Masters__c}"/>
+            <apex:outputField value="{!Acs.YTD_Confirmed_MBA__c}"/> 
+            <apex:outputField value="{!Acs.Target_Confirmed_MBA__c}"/>
+       
+       </apex:pageBlockSection>
+       
+       
+       <apex:pageBlockSection title="Last Year's Performance">           
+            <apex:outputField value="{!Acs.Last_Year_Partials_BBA__c}"/>
+            <apex:outputField value="{!Acs.Last_Year_In_Class_BBA__c}"/>
+            <apex:outputField value="{!Acs.Last_Year_Partials_Masters__c}"/>
+            <apex:outputField value="{!Acs.Last_Year_In_Class_Masters__c}"/>
+            <apex:outputField value="{!Acs.Last_Year_Partials_MBA__c}"/>
+            <apex:outputField value="{!Acs.Last_Year_In_Class_MBA__c}"/>
+            <apex:outputField value="{!Acs.Last_Year_Partials_EMBA__c}"/> 
+            <apex:outputField value="{!Acs.Last_Year_In_Class_EMBA__c}"/>
+       </apex:pageBlockSection>
+       
+  </apex:pageblock>
+       
+       
+
+
+
+</apex:form>
+</apex:page>

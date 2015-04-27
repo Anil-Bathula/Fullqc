@@ -1,0 +1,6 @@
+<apex:page >
+  <center><br/><br/><h2>
+  <apex:outputLabel value="{!IF(ISBLANK($CurrentPage.parameters.Code),'Error','success : '+$CurrentPage.parameters.Code)}"></apex:outputLabel>
+  </h2></center>
+  
+</apex:page>

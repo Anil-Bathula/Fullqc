@@ -1,0 +1,577 @@
+<apex:page controller="opp_Acceptanceletters" renderAs="{!ispdf}" contentType="{!isword}" >
+<head>
+    <style type="text/css" media="print">
+        @page {
+            @top-center {
+                content: element(header);
+            }
+            @bottom-left {
+                content: element(footer);
+            }
+        }
+        div.header {
+            padding: 10px;
+            position: running(header);
+        }
+        div.footer {
+            padding:1px;  
+        padding-top:0px;   
+        padding-bottom:90px;
+            position: running(footer);
+        }
+        .pagenumber:before {
+            content: counter(page);
+        }
+        .pagecount:before {
+            content: counter(pages);
+        }
+         div.content {
+            padding-top: 10px;
+           
+        }
+    </style>
+</head>
+
+<!-- This block is for display the Header of Acceptance Letter -->
+<div class="header">
+    <div><form >
+     <apex:outputpanel rendered="{!firstblock}" style="width:100%">
+            <table width="100%"><tr>
+                <td align="left" width="{!IF(isword=='application/msWord','40%','60%')}"><apex:image url="{!logoURL}"/></td>
+                <td align="right" width="{!IF(isword=='application/msWord','60%','30%')}">
+                <table style="padding-left:15%"><tr><td style="text-align:left;font-size:0.8em">
+                <b>Hult International Business School</b><br/>
+                {!street}<br/> 
+                {!addr}<br/>
+                Tel :  {!ph}<br/>
+                www.hult.edu 
+                </td></tr></table>
+            </td></tr></table>
+         
+       </apex:outputpanel>
+    </form></div>
+</div>
+<div class="footer" style="{!IF(ispdf=='pdf',"display:block;","display:none;")}"> <!--style="{!disppdf}">-->
+<div><div style="display:none;">Page <span class="pagenumber"/> of <span class="pagecount"/></div><div><apex:image url="{!footerURL}" width="100%" height="70px;" rendered="{!footer_bool}"/></div></div>
+
+</div>
+<div class="content">
+<div>
+<form >
+        <apex:pageMessages />
+        
+         <apex:outputText rendered="{!firstblock}">
+            <br/>
+            <table width="100%"><tr>
+                <td align="left" width="{!IF(isword=='application/msWord','40%','60%')}"><h3>Congratulations </h3></td>
+                <td align="right" width="{!IF(isword=='application/msWord','60%','30%')}">
+                <table style="padding-left:15%"><tr><td style="text-align:left;font-size:0.9em">
+                 <p>{!prog_name}</p>
+                </td></tr></table>
+            </td></tr></table><br/>
+          
+            <table>
+                <font style="font-size:0.9em">
+                    {!opp.Contact__r.Name}<br/>
+                    {!opp.Contact__r.Mailingstreet}<br/>
+                    {!opp.Contact__r.Mailingcity}, {!opp.Contact__r.Mailingstate}<br/>
+                    {!opp.Contact__r.Mailingpostalcode}<br/>
+                    {!opp.Contact__r.MailingCountry}<br/><br/>
+                    {!curr_date}
+                    <br/><br/>
+                    
+                    Dear {!opp.Contact__r.FirstName},<br/>
+                </font>
+            </table>
+        </apex:outputText>
+       
+        <!--If Program is BIBA-->
+        <!--Admissions Endorsed -->
+        <apex:outputText rendered="{!block1}" >
+            <table>
+                <p style="font-size:0.9em">
+                  The Admissions Committee of Hult International Business School has reviewed your application, and we are pleased to inform you that your candidacy to the Bachelor of Business Administration (BBA) Program 
+                   can be advanced if you submit the following item(s) as soon as possible: <br/>
+                </p> 
+                <ul>
+                <apex:repeat value="{!adminpick}" var="adm">
+                    <li style="font-size:0.9em"><apex:outputText value="{!adm}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult Bachelor of Business Administration 
+                    Program will help you discover your leadership potential by expanding your horizons and giving a new sense of confidence as a decision-maker in a global environment.  
+                    With a uniquely international student body, classroom discussions are rich and our graduates are able to successfully work and communicate across communities, countries, and cultures.<br/><br/> 
+                    To advance your application for a place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above. We also ask you to submit with these forms a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/.<br/><br/>
+                    You are strongly encouraged to complete your application as soon as possible. Please let us know how we can assist you. 
+                </p> <br/><br/>
+            </table>
+        </apex:outputText>
+       
+       <!-- Admission Endorsed Confirmed -->
+       <apex:outputText rendered="{!block2}" >
+            <table>
+                <p style="font-size:0.9em">
+                  The Admissions Committee of Hult International Business School has reviewed your application, and we are pleased to inform you that your candidacy to the Bachelor of Business Administration (BBA) Program 
+                    can be advanced if you submit the following item(s) as soon as possible: <br/>
+                </p> 
+                <ul>
+                <apex:repeat value="{!adminpick}" var="adm">
+                    <li style="font-size:0.9em"><apex:outputText value="{!adm}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult Bachelor of Business Administration 
+                    Program will help you discover your leadership potential by expanding your horizons and giving a new sense of confidence as a decision-maker in a global environment.  
+                    With a uniquely international student body, classroom discussions are rich and our graduates are able to successfully work and communicate across communities, countries, and cultures.<br/><br/> 
+                    To advance your application for a place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above.<br/><br/>
+                    You are strongly encouraged to complete your application as soon as possible. Please let us know how we can assist you. 
+                </p> <br/><br/>
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted -->
+        <apex:outputText rendered="{!block3}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment.
+                   The Hult student body is unique, talented, and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   To confirm your place in the {!opp.Start_Term__c} class, we ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+       
+        <!-- Confirmed -->
+        <apex:outputText rendered="{!block4}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment.
+                   The Hult student body is unique, talented, and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                  
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions -->
+        <apex:outputText rendered="{!block5}">
+           <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult Bachelor of Business Administration (BBA) Program 
+                   ,{!opp.Primary_Campus__c} campus for the {!opp.Start_Term__c} class.
+                    Please note that you are <b>required to submit as soon as possible</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker 
+                    in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                    To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and before the start of the program. We also ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                    Once again, congratulations on your acceptance to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed with Conditions -->
+        <apex:outputText rendered="{!block6}">
+           <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult Bachelor of Business Administration (BBA) Program 
+                   ,{!opp.Primary_Campus__c} campus for the {!opp.Start_Term__c} class.
+                    Please note that you are <b>required to submit as soon as possible</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. 
+                    The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures. <br/> <br/>
+                    To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and before the start of the program. <br/><br/>
+                    Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with AP Credits -->
+        <apex:outputText rendered="{!block7}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   The Admissions Committee has determined that your educational record allows you direct entry onto the program and to be awarded up to 
+                   {!bbacredits} US semester hours of academic credit for work successfully completed beyond US 12th grade standard, 
+                   subject to receipt of official transcripts documenting evidence of success at required grade levels.<br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration will help you realize your leadership potential and will also give you confidence 
+                   as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions
+                   engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   To confirm your place in the {!opp.Start_Term__c} class, we ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed with AP Credits-->
+        <apex:outputText rendered="{!block8}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   The Admissions Committee has determined that your educational record allows you direct entry onto the program and to be awarded up to 
+                   {!bbacredits} US semester hours of academic credit for work successfully completed beyond US 12th grade standard, 
+                   subject to receipt of official transcripts documenting evidence of success at required grade levels.<br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration will help you realize your leadership potential and will also give you confidence 
+                   as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions
+                   engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                  
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Transfer Credits -->
+        <apex:outputText rendered="{!block9}">
+            <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   The Admissions Committee has determined that your educational record allows you direct entry on to the program and to transfer up to 
+                   {!bbacredits} academic credits for your previous work in higher education, 
+                   subject to receipt of official transcripts documenting successful completion of these credits.<br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment.
+                   The Hult student body is unique, talented, and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   To confirm your place in the {!opp.Start_Term__c} class, we ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed with Transfer Credits -->
+        <apex:outputText rendered="{!block10}">
+            <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   The Admissions Committee has determined that your educational record allows you direct entry on to the program and to transfer up to 
+                   {!bbacredits} academic credits for your previous work in higher education, 
+                   subject to receipt of official transcripts documenting successful completion of these credits.<br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment.
+                   The Hult student body is unique, talented, and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions and AP Credits -->
+        <apex:outputText rendered="{!block11}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. 
+                   Please note that you are <b>required to submit as soon as possible,</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                
+                The Admissions Committee has determined that your educational record allows you direct entry onto the program and to be awarded up to
+                {!bbacredits} US semester hours of academic credit for work successfully completed beyond US 12th grade standard, subject to receipt of official transcripts documenting evidence of success at required grade levels.<br/><br/>
+                   
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential 
+                and will also give you confidence as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. 
+                Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                  
+                To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and by the start of the program. We also ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p>  
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed with Conditions and AP Credits -->
+        <apex:outputText rendered="{!block12}">
+            <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. 
+                   Please note that you are <b>required to submit as soon as possible,</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                
+                The Admissions Committee has determined that your educational record allows you direct entry onto the program and to be awarded up to
+                {!bbacredits} US semester hours of academic credit for work successfully completed beyond US 12th grade standard, subject to receipt of official transcripts documenting evidence of success at required grade levels.<br/><br/>
+                   
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential 
+                and will also give you confidence as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. 
+                Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                  
+                To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and by the start of the program.<br/><br/>
+                Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p>  
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions and Transfer Credits -->
+        <apex:outputText rendered="{!block13}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. 
+                   Please note that you are <b>required to submit as soon as possible,</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                
+                The Admissions Committee has determined that your educational record allows you direct entry on to the program and to transfer up to 
+                {!bbacredits} academic credits for your previous work in higher education, subject to receipt of official transcripts documenting successful completion of these credits.<br/><br/>
+                   
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential 
+                and will also give you confidence as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. 
+                Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                  
+                To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and by the start of the program. We also ask you to submit a {!fin} non-refundable deposit online at www.hult.edu/en/apply-now/. <br/><br/>
+                Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p>  
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed with Conditions and Transfer Credits -->
+        <apex:outputText rendered="{!block14}">
+            <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!opp.Start_Term__c} class. 
+                   Please note that you are <b>required to submit as soon as possible,</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                Please note: If you require a visa, you will need original documents for your visa application. As such, you are advised to keep these with you until your first day on campus.<br/><br/> 
+                
+                The Admissions Committee has determined that your educational record allows you direct entry on to the program and to transfer up to 
+                {!bbacredits} academic credits for your previous work in higher education, subject to receipt of official transcripts documenting successful completion of these credits.<br/><br/>
+                   
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential 
+                and will also give you confidence as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. 
+                Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                  
+                To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and before the start of the program.<br/><br/>
+                Once again, congratulations on your acceptance to our world-class Bachelor of Business Administration Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p>  
+            </table>
+        </apex:outputText>
+        
+        <!-- If Program is Not BBA-->
+        <!--Admission Endorsed Confirmed -->
+        <apex:outputText rendered="{!block15}">
+            <table>
+                <p style="font-size:0.9em">
+                  The Admissions Committee of Hult International Business School has reviewed your application, and we are pleased to inform you that your candidacy to the {!opp.Program_formatted_for_emails_letters__c}
+                    ({!opp.Program__r.Department__r.Name}) Program can be advanced if you submit the following item(s) as soon as possible: <br/>
+                </p> 
+                <ul>
+                <apex:repeat value="{!adminpick}" var="adm">
+                    <li style="font-size:0.9em"><apex:outputText value="{!adm}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult {!opp.Program_formatted_for_emails_letters__c} 
+                    Program will help you discover your leadership potential by building management skills and expanding your business acumen, as well as gaining a new sense of confidence as a decision-maker in a global environment. 
+                    With a uniquely international student body, Hult's classroom discussions are rich and our graduates are successfully able to work and communicate across communities, countries, and cultures.<br/><br/> 
+                    To advance your application for a place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above.<br/><br/>
+                    You are strongly encouraged to complete your application as soon as possible. Please let us know how we can assist you. 
+                </p> <br/><br/>
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed -->
+        <apex:outputText rendered="{!block16}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult 
+                   {!opp.Program_formatted_for_emails_letters__c} ({!opp.Program__r.Department__r.Name}) Program for the {!opp.Start_Term__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus.<br/><br/>
+                  
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. 
+                   The Hult {!opp.Program_formatted_for_emails_letters__c} Program will help you realize your leadership potential by strengthening your managerial skills and sharpening your business acumen. 
+                   It will also give you confidence as a decision-maker in a global business environment. The Hult student body is unique, talented and culturally diverse making classroom discussions 
+                   engaging, and enriching. Our graduates are eminently qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                
+                   Once again, congratulations on your admission to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Confirmed with Conditions -->
+        <apex:outputText rendered="{!block17}">
+            <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult {!opp.Program_formatted_for_emails_letters__c} ({!opp.Program__r.Department__r.Name}) Program,{!opp.Primary_Campus__c} for the campus for the {!opp.Start_Term__c} class. 
+                   Please note that you are <b>required to submit as soon as possible,</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's {!opp.Program_formatted_for_emails_letters__c} Program 
+                will help you realize your leadership potential by strengthening your managerial skills and sharpening your business acumen. It will also give you confidence as a decision-maker in a global business environment. 
+                The Hult student body is unique, talented, and culturally diverse which makes our classroom discussions engaging and enriching. Our graduates are eminently qualified to work and communicate across communities, countries, and cultures. <br/> <br/>
+                  
+                To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and by the start of the program. <br/><br/>
+                Once again, congratulations on your acceptance to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p>  
+            </table>
+        </apex:outputText>
+        
+        <!-- Admission Endorsed -->
+        <apex:outputText rendered="{!block18}" >
+            <table>
+                <p style="font-size:0.9em">
+                  The Admissions Committee of Hult International Business School has reviewed your application, and we are pleased to inform you that your candidacy to the {!opp.Program_formatted_for_emails_letters__c}
+                    ({!opp.Program__r.Department__r.Name}) Program can be advanced if you submit the following item(s) as soon as possible: <br/> 
+                </p> 
+                <ul>
+                <apex:repeat value="{!adminpick}" var="adm">
+                    <li style="font-size:0.9em"><apex:outputText value="{!adm}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult {!opp.Program_formatted_for_emails_letters__c} 
+                    Program will help you discover your leadership potential by building management skills and expanding your business acumen, as well as gaining a new sense of confidence as a decision-maker in a global environment. 
+                    With a uniquely international student body, Hult's classroom discussions are rich and our graduates are successfully able to work and communicate across communities, countries, and cultures.<br/><br/> 
+                    To advance your application for a place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above. We also ask you to submit a non-refundable deposit of {!fin} online at www.hult.edu/en/apply-now/.<br/><br/>
+                    You are strongly encouraged to complete your application as soon as possible. Please let us know how we can assist you. 
+                </p> <br/><br/>
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted --> 
+        <apex:outputText rendered="{!block19}">
+            <table>
+                
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult {!opp.Program_formatted_for_emails_letters__c} ({!opp.Program__r.Department__r.Name}) program for the {!opp.Start_Term__c} class. 
+                   A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's {!opp.Program_formatted_for_emails_letters__c} Program will help you realize your leadership potential by strengthening your managerial skills and sharpening your business acumen. 
+                   It will also give you confidence as a decision-maker in a global business environment. The Hult student body is unique, talented and culturally diverse making classroom discussions engaging, 
+                   and enriching. Our graduates are eminently qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   To confirm your place in the {!opp.Start_Term__c} class, we ask you to submit the non-refundable deposit of {!fin} online at www.hult.edu/apply-now/. <br/><br/>
+                    
+                   Once again, congratulations on your admission to our world-class {!opp.Program_formatted_for_emails_letters__c}. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions -->
+        <apex:outputText rendered="{!block20}">
+           <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult {!opp.Program_formatted_for_emails_letters__c}
+                   ({!opp.Program__r.Department__r.Name}) Program,{!opp.Primary_Campus__c} campus for the {!opp.Start_Term__c} class.
+                    Please note that you are <b>required to submit as soon as possible</b> the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. The Hult {!opp.Program_formatted_for_emails_letters__c} 
+                    Program will help you realize your leadership potential by strengthening your managerial skills and sharpening your business acumen. It will also give you confidence as a decision-maker 
+                    in a global business environment. The Hult student body is unique, talented, and culturally diverse which makes our classroom discussions engaging and enriching. Our graduates are 
+                    eminently qualified to work and communicate across communities, countries, and cultures. <br/> <br/>
+                    
+                    To confirm your place in the {!opp.Start_Term__c} class, please submit the original documents mentioned above as soon as possible and before the start of the program. We also ask you to submit a non-refundable deposit of {!fin} online at www.hult.edu/en/apply-now/. <br/><br/>
+                    Once again, congratulations on your acceptance to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in our {!opp.Start_Year__c} class.<br/><br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!lastblock}">
+            <font style="font-size:0.9em">
+                Sincerely,<br/>
+                <apex:image url="{!signURL}" width="150" height="50"/><br/>
+                Mukul Kumar<br/>
+                Chief Academic Officer<br/>
+                Hult International Business School
+            </font>
+        </apex:outputText>
+       
+    </form>
+        <center>
+        <apex:form rendered="{!isvf}" id="frm1">
+            <apex:commandButton reRender="frm1" action="{!donothing}" value="Open in PDF" onclick="window.open('/apex/opp_Acceptanceletters?id={!$CurrentPage.parameters.id}&type=pdf','_blank')" rendered="{!buttons}"/>
+            <apex:commandButton reRender="frm1" action="{!donothing}" value="Open in Word" onclick="window.open('/apex/opp_Acceptanceletters?id={!$CurrentPage.parameters.id}&type=word','_blank')" rendered="{!buttons}"/>
+        </apex:form>
+    </center>
+    
+</div></div>
+<div class="footer">
+ <div>
+    <apex:image value="{!footerURL}" style="{!IF(ispdf=='word',"display:block;Padding-bottom:0px;","display:none;")}" width="720" height="120" rendered="{!footer_bool}"/>
+ </div>
+</div>
+</apex:page>

@@ -1,0 +1,149 @@
+<apex:page standardcontroller="Opportunity" extensions="requirementsmatrix">
+     <apex:form >
+         <apex:pageBlock >
+             
+             <Table width="100%">
+             <tr>
+                 <td>  
+                     <apex:outputLabel value="Converter: " style="font-weight:800"/> 
+                     <apex:selectList value="{!rolevals}" onchange="FetchData();" size="1">
+                           <apex:selectOptions value="{!roles}"/>   
+                     </apex:selectList>
+                     <apex:actionStatus startstyle="color:green;" stopStyle="font-weight:800" startText=" (Searching for Applications...)"  stopText="({!countrec} records found)" id="Status"/>
+                    <!-- <apex:outputLabel id="cunt" style="font-weight:800">
+                          ({!countrec} records found)
+                     </apex:outputLabel> -->
+                 </td>
+                 <td>
+                     <div align="Right">
+                         <apex:image url="{!URLFOR($Resource.Text)}"/> <b>Not Supplied</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <apex:image url="{!URLFOR($Resource.Note)}"/> <b>Supplied</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <apex:image url="{!URLFOR($Resource.verifiedimg)}" width="25" height="25"/> <b> Verified</b>&nbsp;&nbsp;&nbsp;
+                         <apex:image url="{!URLFOR($Resource.Accept)}"/> <b> AAM Approved</b><br/>
+                     </div>
+                 </td>
+             </tr>
+             </Table><br/>
+             <apex:actionFunction name="FetchData" action="{!Search}" reRender="mn,Status" status="Status">
+             </apex:actionFunction>
+             <apex:actionFunction name="fun" action="{!Search}" reRender="mn,Status">
+                 <apex:param name="rec" value=""/>
+             </apex:actionFunction>
+             
+             <apex:pageBlockTable style="width:30%" value="{!matrixtbl}" var="mx" id="mn">
+                 <apex:column >
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Candidate" onclick="fun('Name');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                     <apex:outputLink value="/{!mx.oppid}" target="_blank"> {!mx.oppname} </apex:outputLink>
+                 </apex:column>
+                 
+                 <apex:column value="{!mx.owner}" style="width:50px;" >
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Recruiter" onclick="fun('Owner.Name');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column value="{!mx.program}" style="width:50px;" onmouseover="cursor: hand;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Program" onclick="fun('Program_Parsed__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column value="{!mx.Startterm}" style="width:50px;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Start Term" onclick="fun('Start_Term__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column style="width:50px;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Partial Date" onclick="fun('Partial_Application_Date__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                     <apex:outputText value="{0,date,E MMM dd yyyy}">
+                           <apex:param value="{!mx.partialapp}" /> 
+                     </apex:outputText>
+                 </apex:column>
+                 
+                 <apex:column style="width:50px;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Application<br/>Complete<br/>Deadline" escape="false" onclick="fun('Application_Complete_Deadline__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                     <apex:outputText value="{0,date,E MMM dd yyyy}">
+                           <apex:param value="{!mx.deadline}" /> 
+                    </apex:outputText>
+                 </apex:column>
+                 
+                 <apex:column > 
+                      <apex:facet name="header">Resume</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.CurrentResume=='Approved',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.CurrentResume=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.CurrentResume=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.CurrentResume=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">Essay</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.EssayStmt=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.EssayStmt=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.EssayStmt=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.EssayStmt=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">Undergrad-Postgrad<br/>Transcript</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.UndGrd=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.UndGrd=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.UndGrd=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.UndGrd=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">High school<br/> Transript</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.HighSch=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.HighSch=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.HighSch=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.HighSch=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">High School<br/>Diploma</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.Diploma=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.Diploma=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.Diploma=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.Diploma=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">Recomm.1</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.ProfRecm=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.ProfRecm=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.ProfRecm=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.ProfRecm=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">Recomm.2</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.Prof2=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.Prof2=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.Prof2=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.Prof2=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+                 <apex:column >
+                       <apex:facet name="header">Graduate<br/>Test</apex:facet>
+                       <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.GraduateTest=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                       <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.Prof2=='GraduateTest',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                       <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.GraduateTest=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                       <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.GraduateTest=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">English<br/> Test</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.Languageprof=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.Prof2=='Languageprof',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.Languageprof=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.Languageprof=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+             </apex:pageBlockTable>
+        </apex:pageBlock> 
+    </apex:form>
+</apex:page>

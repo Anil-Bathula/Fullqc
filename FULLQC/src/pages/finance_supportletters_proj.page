@@ -1,0 +1,109 @@
+<apex:page Controller="finance_supportletters_proj" renderAs="pdf" sidebar="false">
+<head>
+    <style type="text/css" media="print">
+        @page {
+            @top-center {
+                content: element(header);
+            }
+            @bottom-left {
+                content: element(footer);
+            }
+        }
+        div.header {
+            padding: 10px;
+            position: running(header);
+        }
+        div.footer {
+            padding:1px;  
+        padding-top:0px;   
+        padding-bottom:90px;
+            position: running(footer);
+        }
+        .pagenumber:before {
+            content: counter(page);
+        }
+        .pagecount:before {
+            content: counter(pages);
+        }
+         div.content {
+            padding-top: 10px;
+           
+        }
+    </style>
+</head>
+    <!-- This block is for display the Header of Acceptance Letter -->
+    <div class="header">
+     <div><form >
+        <apex:outputpanel style="width:100%" rendered="{!disp_block}">
+            <table width="100%"><tr>
+                <td align="left" width="60%">
+                <apex:image url="{!$Resource.Hult_Logo_for_Web}"/>
+                <!--<apex:image width="300" id="USD" value="{!URLFOR($Resource.Hult_Logo)}"/>--></td>
+            </tr></table>
+        </apex:outputpanel>
+    </form></div>
+    </div>
+    
+    <div class="content">
+    <div>
+    <form >
+        <apex:pageMessages />
+        <apex:outputLabel rendered="{!disp_block}">
+        <apex:outputText >
+            <table width="100%" ><tr>
+                <td align="left" width="60%"></td>
+                <td align="right" width="60%">
+                    <table style="padding-left:5%"><tr><td style="text-align:left;font-size:0.9em">
+                         <h3>Financial Support Letter {!oppfin.Opportunity__r.Start_Year__c}</h3>
+                    </td></tr></table>
+                </td>
+            </tr></table><br/>
+            <table>
+                <font style="font-size:0.9em">
+                    {!oppfin.Opportunity__r.Contact__r.Name}<br/>
+                    {!oppfin.Opportunity__r.Contact__r.Mailingstreet}<br/>
+                    {!oppfin.Opportunity__r.Contact__r.Mailingcity}, {!oppfin.Opportunity__r.Contact__r.Mailingstate}<br/>
+                    {!oppfin.Opportunity__r.Contact__r.Mailingpostalcode}<br/>
+                    {!oppfin.Opportunity__r.Contact__r.MailingCountry}<br/><br/>
+                    {!curr_date}
+                    <br/><br/>
+                    
+                    Dear {!oppfin.Opportunity__r.Contact__r.Name},<br/>
+                </font>
+            </table>
+        </apex:outputText>
+    
+        <apex:outputText >
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of Hult International Business School, I am delighted to inform you that you have been awarded 
+                   <apex:outputLabel value="a Scholarship in the amount of {!oppfin.CurrencyIsoCode} {!oppfin.Scholarship_Amount__c}" rendered="{!IF(oppfin.Scholarship_Amount__c==null || oppfin.Scholarship_Amount__c==0,false,true)}" /> 
+                   <apex:outputLabel value="as well as " rendered="{!IF(oppfin.Scholarship_Amount__c!=null && oppfin.Scholarship_Amount__c>0 && oppfin.Hult_Financial_Aid__c!=null && oppfin.Hult_Financial_Aid__c>0,true,false)}"/>
+                   <apex:outputLabel value="Hult Financial Aid in the amount of {!oppfin.CurrencyIsoCode} {!finaid_hotel}" rendered="{!IF((oppfin.Hult_Financial_Aid__c!=null && oppfin.Hult_Financial_Aid__c>=0) || (oppfin.Fin_Aid_Hotel_and_Flight__c!=null && oppfin.Fin_Aid_Hotel_and_Flight__c>0 && oppfin.Opportunity__r.Program_Parsed__c=='EMBA'),true,false)}"/>
+                   for the {!start_term} class. <br/><br/>
+                   
+                   This award applies to the class beginning in {!start_term} only. Please note that Hult considers all scholarship, 
+                   fellowship, loan, and financial aid information private and confidential and does not release information to third parties. 
+                   Hult asks that all recipients of scholarships, fellowships, loans and financial aid keep this information strictly private. 
+                   Hult reserves the right to withdraw any offered financial aid in the event of unauthorized disclosure. <br/><br/>
+                   
+                   Prior to Hult conferring your {!oppfin.Opportunity__r.Program_formatted_for_emails_letters__c} degree, all outstanding balances 
+                   must be paid in full to Hult International Business School.<br/><br/>
+                    
+                   {!oppfin.Opportunity__r.Contact__r.Name}, I congratulate you again and I look forward to meeting you.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+         <apex:outputText >
+            <font style="font-size:0.9em">
+                Sincerely yours,<br/><br/>
+                <apex:image url="{!$Resource.Margaret_Sign}" width="150" height="50"/><br/>
+                Margaret Andrews<br/>
+                Vice Provost<br/>
+                Hult International Business School<br/><br/>
+            </font>
+        </apex:outputText>
+        </apex:outputLabel>
+    </form>
+    </div></div>
+</apex:page>

@@ -1,0 +1,104 @@
+<apex:page showHeader="false" controller="ApplicantFinalController">
+<table class="innertable" border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><c:Header /></td></tr>
+<tr>    
+<td>
+<apex:form >
+<table width="100%" border="0" class="innertable" cellpadding="0" cellspacing="0" align="center" >
+<tr><td  class="menu"><c:ApplicantHeader /> </td></tr>
+<tr>
+    <td colspan="2" style="padding-top:55px;"></td>
+</tr>
+<tr><td colspan="2">
+<table width="100%" class="innerpadding"   border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2" class="formheader4">Final Submission</td></tr>
+<tr><td>
+<tr>
+<td background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x">&nbsp;</td>
+</tr>
+<apex:outputPanel rendered="{!tab2}">
+<tr>
+<td valign="top">
+<table width="100%"  border="0"  cellpadding="0" cellspacing="0">
+
+
+  <apex:outputPanel rendered="{!finalsubmit}">
+  <tr>
+      <td class="formlable">
+      Your Application has been successfully submitted. The Admission committee may contact you if we still need additional documents enabling us to proceed with the review.
+        <br/><br/>
+      </td>    
+  </tr>  
+  </apex:outputPanel>
+   
+ 
+ 
+  <tr style="text-align:left"><td colspan="2" >
+<apex:pageMessages escape="false" showDetail="false"  />
+</td></tr>
+  <apex:outputPanel rendered="{!!finalsubmit}">  
+  <tr>
+      <td class="formlable">
+      Thank you for your Application Fee payment. Once you have submitted your application by choosing the submit option, a member of the admissions committee will be in contact with you shortly to discuss the next stages of the application. 
+<br/><br/>
+<br />Please note that once this is done, the « Program and Location » and « Personal Information » tabs will be locked for editing. If you want to make changes to these tabs, please contact your recruiter who will be able to access the system and make any changes for you. 
+<br/><br/>
+<br />We look forward to contacting you in the near future once our admission committee has reviewed your fully completed application. We hope to welcome you to Hult soon. Once you are done, please click Save and Continue.
+<br/><br/>
+      </td>    
+  </tr> 
+  </apex:outputPanel>
+  <tr>
+    <td class="formlableheader"  align="left">Confirmation<span class="error_star">*</span></td>
+  </tr>
+  <tr>
+    <td class="formlable" align="left">I attest that the information I have provided to Hult Business School is true and hereby apply for admission to the school.</td>
+  </tr>
+  <tr>
+    <td class="formlable" align="left">
+    <apex:selectList disabled="{!finalsubmit}" styleClass="form-selectList" value="{!Applicant_Confirmation_c}" multiselect="false" size="1">
+            <apex:selectOptions value="{!items}"/>
+        </apex:selectList></td>
+  </tr>
+
+</table>
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+<td background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x">&nbsp;</td>
+</tr>
+<tr><td style="padding-left:20px;padding-right:20px;vertical-align:text-bottom">
+<table width="100%"><tr>
+<td align="center">
+<apex:outputPanel rendered="{!!finalsubmit}">
+<span class="button primary">
+ <apex:commandLink rendered="{!!finalsubmit}" value="Save and Continue" title="Save and Continue"  id="cbtneditlogin" action="{!finalsaveandcontinue}"/>
+
+ </span>
+ <span class="divider">|</span>
+        <apex:commandLink value="Save and Logout"  rendered="{!NOT(finalsubmit)}" styleClass="secondary" id="saveandcontinueandlogout" action="{!finalsaveandcontinueandlogout}"/>
+</apex:outputPanel>
+</td>
+</tr></table>
+</td></tr></apex:outputPanel>
+<apex:outputPanel rendered="{!!tab2}">
+<tr><td class="uncompetetab_msg" align="center" height="200" valign="top">
+You must complete Program &amp; Location tab before Final Submission tab 
+</td></tr>
+</apex:outputPanel>
+</td></tr></table></td></tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+<script>
+document.getElementById('Final').style.backgroundImage="url('{!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')}')";
+document.getElementById('Final').style.backgroundPosition="center";
+document.getElementById('Final1').className="headertabonload";
+
+</script>
+</apex:form>
+</td>
+</tr>
+</table>
+<site:googleAnalyticsTracking ></site:googleAnalyticsTracking>
+
+</apex:page>

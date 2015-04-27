@@ -1,0 +1,275 @@
+<!-- Modified by harsha on 7/23/2014 for changing apex:outputfields(for lookup) into apex:outputlink for opening link in new tab/window. -->
+<apex:page standardController="opportunity" extensions="opp_contactpage">
+
+ <script type="text/javascript"> 
+  function openLookup(baseURL, width, modified, searchParam){
+    var originalbaseURL = baseURL;
+    var originalwidth = width;
+    var originalmodified = modified;
+    var originalsearchParam = searchParam;
+    
+    var lookupType = baseURL.substr(baseURL.length-3, 3);
+    if (modified == '1') baseURL = baseURL + searchParam;
+    
+    var isCustomLookup = false;
+    
+    // Following "003" is the lookup type for Account object so change this as per your standard or custom object
+    if(lookupType == "003"){
+  
+      var urlArr = baseURL.split("&");
+      var txtId = '';
+      if(urlArr.length > 2) {
+        urlArr = urlArr[1].split('=');
+        txtId = urlArr[1];
+      }
+      
+      // Following is the url of Custom Lookup page. You need to change that accordingly
+      baseURL = "/apex/CustomContactLookup?txt=" + txtId;
+      
+      // Following is the id of apex:form control "myForm". You need to change that accordingly
+      baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+      if (modified == '1') {
+        baseURL = baseURL + "&lksearch=" + searchParam;
+      }
+      
+      // Following is the ID of inputField that is the lookup to be customized as custom lookup
+      if(txtId.indexOf('Account') > -1 ){
+        isCustomLookup = true;
+      }
+    }
+    
+    
+    if(isCustomLookup == true){
+      openPopup(baseURL, "lookup", 350, 480, "width="+width+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    }
+    else {
+      if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+      openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    } 
+  }
+</script>
+
+    <apex:outputPanel id="myForm">
+       <apex:form >  
+            <apex:pageBlock id="pblk">
+            <table width="100%"><tr>
+                <td style="text-align: Left;">
+                    <apex:commandButton value="Edit" action="{!custEdit}" rendered="{!viewmode}" reRender="pblk" />
+                </td>
+                <td style="text-align: Right;">
+                    <apex:outputLabel value="{!UPPER(opp.StageName)}" rendered="{!viewmode}" style="font-weight: bold;font-family:verdana;font-size:1.2em;text-align: Right;"/>
+                </td>
+                <td style="text-align: Center;">
+                    <apex:commandButton value="Save" action="{!custSave}" rendered="{!editmode}"/>
+                    <apex:commandButton value="Cancel" action="{!custCancel}" rendered="{!editmode}"/>
+                    <apex:outputPanel id="refresh1" rendered="{!refreshPage}">
+                        <script>
+                        window.top.location='/{!opp.id}';
+                        </script>
+                    </apex:outputPanel>
+                </td>
+                </tr>
+            </table>
+                <apex:pageMessages ></apex:pageMessages>
+                <apex:inputField value="{!opportunity.Contact__c}" rendered="false"/> <!-- always keep it rendered=false -->
+                <apex:inputField value="{!opportunity.StageName}" rendered="false"/> <!-- always keep it rendered=false -->
+                <table width="100%" bgcolor="{!bcolor}">
+                    <tr width="100%">
+                        <td width="10%">
+                            <apex:outputText value="Name" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;" />
+                        </td>
+                        <td style="padding-bottom:8px;" width="20%">
+                            <apex:outputField value="{!con.FirstName}" rendered="{!viewmode}"/>&nbsp;
+                            <apex:outputField value="{!con.LastName}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.FirstName}" rendered="{!editmode}"/>
+                            <apex:inputField value="{!con.LastName}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Country Of Residence" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>    
+                            <apex:outputLink value="/{!con.Country_Of_Residence__c}" rendered="{!viewmode}" target="_blank"> {!con.Country_Of_Residence__r.Name} </apex:outputLink>                       
+<!--                            <apex:outputField value="{!con.Country_Of_Residence__c}" rendered="{!viewmode}"/>-->
+                            <apex:inputField value="{!con.Country_Of_Residence__c}" rendered="{!editmode}"/>
+                        </td>
+                        <td width="15%">
+                            <apex:outputText value="Region" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td width="17%">    
+                            <apex:outputField value="{!con.Region__c}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Region__c}" rendered="{!editmode}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputText value="Email" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="padding-bottom:8px;">
+                            <apex:outputField value="{!con.Email}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Email}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Mailing Street" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.MailingStreet}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.MailingStreet}" rendered="{!editmode}"/>
+                        </td>
+                        <td width="15%">
+                            <apex:outputText value="Do Not Route?" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td width="17%">
+                            <apex:outputField value="{!con.Do_Not_Route__c}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Do_Not_Route__c}" rendered="{!editmode}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputText value="Gender" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="padding-bottom:8px;">
+                            <apex:outputField value="{!con.Gender__c}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Gender__c}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Mailing City" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.MailingCity}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.MailingCity}" rendered="{!editmode}"/>
+                        </td>
+                        <td width="15%">
+                            <apex:outputText value="Student ID" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td width="17%">
+                            <apex:outputField value="{!con.Student_ID__c}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Student_ID__c}" rendered="{!editmode}"/>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputText value="Mobile" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="padding-bottom:8px;">
+                            <apex:outputField value="{!con.MobilePhone}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.MobilePhone}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Mailing State/Province" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.MailingState}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.MailingState}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Nationality 1" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputLink value="/{!con.Country_Of_Origin__c}" rendered="{!viewmode}" target="_blank"> {!con.Country_Of_Origin__r.Name} </apex:outputLink>                       
+<!--                            <apex:outputField value="{!con.Country_Of_Origin__c}" rendered="{!viewmode}"/>-->
+                            <apex:inputField value="{!con.Country_Of_Origin__c}" rendered="{!editmode}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputText value="Phone" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="padding-bottom:8px;">
+                            <apex:outputField value="{!con.Phone}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Phone}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Mailing Zip/Postal Code" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>    
+                        <td>
+                            <apex:outputField value="{!con.MailingPostalCode}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.MailingPostalCode}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Nationality 2" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputLink value="/{!con.Country_Of_Citizenship__c}" rendered="{!viewmode}" target="_blank"> {!con.Country_Of_Citizenship__r.Name} </apex:outputLink>                                               
+<!--                            <apex:outputField value="{!con.Country_Of_Citizenship__c}" rendered="{!viewmode}"/>-->
+                            <apex:inputField value="{!con.Country_Of_Citizenship__c}" rendered="{!editmode}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputText value="Age" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.Age__c}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Age__c}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Mailing Country" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.MailingCountry}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.MailingCountry}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Birthdate" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="padding-bottom:8px;">
+                            <apex:outputField value="{!con.Birthdate}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Birthdate}" rendered="{!editmode}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="{!IF(con.Program_Parsed__c=='BBA','display:none;','')}">
+                            <apex:outputText value="Do Not Call" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="{!IF(con.Program_Parsed__c=='BBA','display:none;','')}">
+                            <apex:outputField value="{!con.DoNotCall}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.DoNotCall}" rendered="{!editmode}"/>
+                        </td>
+                        
+                        <td style="{!IF(con.Program_Parsed__c=='BBA','','display:none;')}">
+                            <apex:outputText value="Applicant's Parent" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td style="{!IF(con.Program_Parsed__c=='BBA','','display:none;')}">
+                            <apex:outputLink value="/{!con.opportunities__r[0].Applicant_s_Parent__c}" rendered="{!viewmode}" target="_blank"> {!con.opportunities__r[0].Applicant_s_Parent__r.Name} </apex:outputLink>                                               
+
+                            <apex:inputField value="{!con.opportunities__r[0].Applicant_s_Parent__c}" rendered="{!editmode}" id="Account"/>
+                        </td> 
+                        
+                        <td>
+                            <apex:outputText value="Email Opt Out" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.HasOptedOutOfEmail}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.HasOptedOutOfEmail}" rendered="{!editmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputText value="Telesales Caller" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.Telesales_Caller__c}" rendered="{!viewmode}"/>
+                            <apex:inputField value="{!con.Telesales_Caller__c}" rendered="{!editmode}"/>
+                        </td>
+                    </tr>
+                  <!--  <tr>
+                        <td>
+                            <apex:outputText value="EF Affiliation" style="font-size: 91%;padding-right:5px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;font-color:#4A4A56;" rendered="{!viewmode}"/>
+                        </td>
+                        <td>
+                            <apex:outputField value="{!con.EF_Affiliation__c}" rendered="{!viewmode}"/>
+                        </td>
+                    </tr> -->
+                </table>
+            </apex:pageBlock>
+        </apex:form>
+    </apex:outputPanel>
+    
+    
+     <!--<apex:form id="myForm">  
+        <apex:PageBlock id="PageBlock">     
+            <apex:pageBlockSection columns="1" title="Custom Lookup">
+        <apex:inputField id="Account" value="{!Opportunity.Contact__c}"  />
+            </apex:pageBlockSection>
+        </apex:PageBlock>
+    </apex:form> -->
+</apex:page>

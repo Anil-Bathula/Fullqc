@@ -1,0 +1,216 @@
+<apex:page showHeader="false" controller="ApplicantPersonalStatement" >
+<table class="innertable" border="0" cellpadding="0" cellspacing="0">
+<tr>      
+<td colspan="2">
+<apex:form >
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+<tr><td colspan="2" class="menu"><c:ApplicantHeader /> </td></tr>
+<tr><td colspan="2" style="padding-top:70px;"><table width="100%" class="innerpadding"  border="0" cellpadding="0" cellspacing="0"><tr><td>
+<tr><td colspan="2" class="formheader4">Personal Statement</td></tr>
+
+<tr>
+<td colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x">&nbsp;</td>
+</tr><apex:outputPanel rendered="{!tab4}" >
+<tr style="text-align:left"><td colspan="2" >
+<apex:pageMessages escape="false" showDetail="false"  />
+</td></tr>
+<tr><td valign="top">
+<table width="100%">
+<apex:outputText >
+
+<tr>
+  <td style="padding-left:10px;" class="formlable">
+
+
+<apex:outputPanel rendered="{!EMBA}">
+The personal statement is a key part of your application and will help the Admissions Committee better understand you and your motivations for pursuing a degree at Hult. The Admissions Committee is most interested in your personal and academic or professional experiences and how these have influenced you, your attitude, and your abilities. 
+<br/><br/>
+Your personal statement should: 
+<br/> • be an honest reflection of who you are and what you have experienced; 
+<br/>• provide measurable examples of your accomplishments; 
+<br/> • differentiate you from other applicants; 
+<br/> • total between 400 to 600 words. 
+<br/><br/>
+Some questions you may choose to answer in your statement include: 
+<br/>• Why do you want to pursue a degree at Hult? 
+ <br/>• What are your short-term and long-term professional goals? 
+ <br/>• What skill sets will you need to achieve your goals? How do you think Hult will help you develop these skills? 
+<br/>• What past experiences have prepared you for your studies? 
+<br/> • How have you thrived in a diverse professional or academic environment? 
+ <br/>• The Executive MBA is an intense program. How do you plan to balance your work, personal, and study time? 
+<br/><br/>
+Please note: Your personal statement must be an original piece of work written in your own words. Any personal statement containing plagiarized information will not be accepted and could be grounds for rejection. 
+<br/>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!MBA}">
+The personal statement is a key part of your application and will help the Admissions Committee better understand you and your motivations for pursuing a degree at Hult. The Admissions Committee is most interested in your personal and academic or professional experiences and how these have influenced you, your attitude, and your abilities. 
+<br/><br/>
+Your personal statement should: 
+<br/> • be an honest reflection of who you are and what you have experienced; 
+<br/>• provide measurable examples of your accomplishments; 
+<br/> • differentiate you from other applicants; 
+<br/> • total between 400 to 600 words. 
+<br/><br/>
+Some questions you may choose to answer in your statement include: 
+<br/>• Why do you want to pursue a degree at Hult? 
+ <br/>• What are your short-term and long-term professional goals? 
+ <br/>• What skill sets will you need to achieve your goals? How do you think Hult will help you develop these skills? 
+<br/>• What past experiences have prepared you for your studies? 
+<br/> • How have you thrived in a diverse professional or academic environment? 
+<br/><br/>
+Please note: Your personal statement must be an original piece of work written in your own words. Any personal statement containing plagiarized information will not be accepted and could be grounds for rejection. 
+<br/>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!Master}">
+The personal statement is a key part of your application and will help the Admissions Committee better understand you and your motivations for pursuing a degree at Hult. The Admissions Committee is most interested in your personal and academic or professional experiences and how these have influenced you, your attitude, and your abilities. 
+<br/><br/>
+Your personal statement should: 
+<br/> • be an honest reflection of who you are and what you have experienced; 
+<br/>• provide measurable examples of your accomplishments; 
+<br/> • differentiate you from other applicants; 
+<br/> • total between 400 to 600 words. 
+<br/><br/>
+Some questions you may choose to answer in your statement include: 
+<br/>• Why do you want to pursue a degree at Hult? 
+ <br/>• What are your short-term and long-term professional goals? 
+ <br/>• What skill sets will you need to achieve your goals? How do you think Hult will help you develop these skills? 
+<br/>• What past experiences have prepared you for your studies? 
+<br/> • How have you thrived in a diverse professional or academic environment? 
+<br/><br/>
+Please note: Your personal statement must be an original piece of work written in your own words. Any personal statement containing plagiarized information will not be accepted and could be grounds for rejection. 
+<br/>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!BIBA}">
+The personal statement is a key part of your application and will help the Admissions Committee better understand you and your motivations for pursuing a degree at Hult. The Admissions Committee is most interested in your personal and academic or professional experiences and how these have influenced you, your attitude, and your abilities. 
+<br/><br/>
+Your personal statement should: 
+<br/> • be an honest reflection of who you are and what you have experienced; 
+<br/>• provide measurable examples of your accomplishments; 
+<br/> • differentiate you from other applicants; 
+<br/> • total between 400 to 600 words. 
+<br/><br/>
+Some questions you may choose to answer in your statement include: 
+<br/>• Why do you want to pursue a degree at Hult? 
+ <br/>• What are your short-term and long-term professional goals? 
+ <br/>• What skill sets will you need to achieve your goals? How do you think Hult will help you develop these skills? 
+<br/>• What past experiences have prepared you for your studies? 
+<br/> • How have you thrived in a diverse professional or academic environment? 
+<br/><br/>
+Please note: Your personal statement must be an original piece of work written in your own words. Any personal statement containing plagiarized information will not be accepted and could be grounds for rejection. 
+<br/>
+</apex:outputPanel><br/>
+<apex:outputPanel rendered="{!NOT(Essay_Tab_Complete_c)}">
+<apex:commandLink value="Click here" title="skip this statement" id="eassyskip" action="{!skipstep}" />  if you want to complete your personal statement later.<br/>
+</apex:outputPanel>   </td>
+</tr>
+<!--
+<apex:outputText rendered="{!if((proname=='Bachelor of International Business Administration-UK-London'),'false','true')}">
+<tr>
+  <td style="padding-left:10px;" class="formlable">Please describe your short-term (within five years) and long-term professional goals. 
+  How will your current professional experience contribute to these plans? 
+  What skill set will you need to achieve these goals? How will Hult International Business School help you attain these goals?</td>
+</tr>
+</apex:outputText>
+<apex:outputText rendered="{!if((proname=='Bachelor of International Business Administration-UK-London'),'true','false')}">
+<tr>
+  <td style="padding-left:10px;" class="formlable">
+Please answer both of the following questions in your personal statement:<br />
+(1) Please describe yourself and the world you come from. What are your aspirations? What makes you a unique candidate for Hult? How will studying at Hult assist you in achieving your career goals? Please limit your answer to 600 words.<br />
+(2) Indicate a person in the business world that has had an influence on you. Please write no more than 250 words. <br />
+  </td>
+</tr>
+</apex:outputText>
+
+<tr height="5px"></tr>
+<tr>
+  <td style="padding-left:10px;" class="formlable">Once you have written your essay, please cut and paste it into the space below.</td>
+</tr>
+-->
+</apex:outputText>
+<!--
+<apex:outputText rendered="{!if((isEMBA==true),'true','false')}">
+<tr>
+  <td style="padding-left:10px;" class="formlable">
+  All candidates are required to complete a personal statement as part of the application process. This essay is an important factor in the Admission Committee's decision. As a guideline, we suggest a personal statement of two to three pages in length.
+Please describe your short-term (within five years) and long-term professional goals. How will your current professional experience contribute to these plans? What skill set will you need to achieve these goals? How will Hult International Business School help you attain these goals? 
+Please prepare you essay on a word or pdf and click on the « upload essay » button to browse your computer and upload your essay into the Hult portal ». Once you are done, please press Save and Continue.
+</td>
+</tr>
+</apex:outputText>
+-->
+<tr><td valign="center">
+<table>
+<tr>
+    <td align="right">
+    
+    </td>
+    <td align="left">
+    <apex:inputTextarea styleClass="form-TextArea1" style="width:760px;height:320px;" cols="20" value="{!Req.Personal_Statement__c}"/>
+    </td>
+</tr>
+</table>
+</td>
+<td background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x">&nbsp;</td>
+</tr>
+<tr><td>
+</td></tr>
+<tr><td></td></tr>
+<tr><td style="padding-left:30px;" class="formlable"><apex:inputCheckbox value="{!Essay_Tab_Complete_c}" />
+Please check the box to affirm that you have read and understand the Essay/Personal Statement Requirement.
+
+</td></tr>
+
+
+
+</table>
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+<td background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x">&nbsp;</td>
+</tr>
+
+<tr><td style="padding-left:20px;padding-right:20px;vertical-align:text-bottom">
+<table width="100%">
+
+<tr><td align="center" colspan="2">
+
+
+ <span class="button primary">
+ <apex:commandLink value="Save and Continue" title="Save and Continue" id="eassysaveandcontinue" action="{!eassysaveandcontinue}" />
+
+ </span>
+ <!-- span class="divider">|</span>
+        <apex:commandLink value="Click here to attach documents"  rendered="{!NOT(finalsubmit)}" styleClass="secondary" action="/ApplicantDocuments" / -->
+<apex:outputPanel rendered="{!NOT(finalsubmit)}">
+ <span class="divider">|</span>
+ </apex:outputPanel>
+        <apex:commandLink value="Save and Logout"  rendered="{!NOT(finalsubmit)}" styleClass="secondary" action="{!eassysaveandcontinueandlogout}" />
+
+ 
+</td></tr>
+<tr>
+<td style="padding-right:20px">
+<span style="float:right;;vertical-align:bottom"><apex:outputLink value="#"><apex:image url="{!URLFOR($Resource.Images, 'new-images/topimage.jpg')}"  />&nbsp;<b>back to top</b></apex:outputLink> </span></td>
+</tr></table>
+</td></tr></apex:outputPanel>
+</td></tr></table></td></tr>
+<apex:outputPanel rendered="{!!tab4}">
+<tr><td class="uncompetetab_msg" align="center" valign="top">
+You must complete Program &amp; Location tab before Personal Statement tab 
+</td></tr>
+</apex:outputPanel>
+
+</table>
+<script>
+document.getElementById('personalstatement').style.backgroundImage="url('{!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')}')";
+document.getElementById('personalstatement').style.backgroundPosition="center";
+document.getElementById('personalstatement1').className="headertabonload";
+
+</script>
+</apex:form>
+</td>
+</tr>
+
+</table>
+<site:googleAnalyticsTracking ></site:googleAnalyticsTracking>
+</apex:page>

@@ -1,0 +1,6 @@
+<apex:page standardController="Requirement__c" extensions="Requirement_blockdelete" action="{!del}">
+<apex:form > <apex:pageMessages ></apex:pageMessages>
+ <br/><br/>
+<apex:commandLink value="Back" action="{!back}"/>
+</apex:form> 
+</apex:page>

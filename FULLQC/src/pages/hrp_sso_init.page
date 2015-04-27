@@ -1,0 +1,7 @@
+<apex:page showHeader="false" sidebar="false">
+ <script>
+     var PingSpURL = "https://app.onelogin.com/trust/saml2/http-post/sso/394893";
+     //var siteLoginPage = "&TargetResource={!$Site.CurrentSiteUrl}siteLogin?startUrl={!$Site.OriginalUrl}";
+     window.location = PingSpURL;
+ </script>
+</apex:page>

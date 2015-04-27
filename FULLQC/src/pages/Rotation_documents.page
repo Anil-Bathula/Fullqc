@@ -1,0 +1,48 @@
+<apex:page standardController="Rotation__c" extensions="Rotation_documents_ctrlr">
+  <apex:form id="frm1" >
+  
+  <apex:pageblock >
+  <apex:pagemessages />
+      <apex:pageBlockButtons location="top">
+          <!--<apex:commandButton Value="New" action="{!newbtn}" rendered="{!viewmode}"/>-->
+          <apex:commandButton Value="Save" action="{!savebtn}" rendered="{!NOT(viewmode)}"/>
+          <apex:commandButton Value="Cancel" action="{!cancelbtn}" rendered="{!NOT(viewmode)}"/>
+      </apex:pageBlockButtons>
+      
+      <apex:pageBlockSection columns="1" rendered="{!viewmode}" > 
+        <apex:pageBlockSectionItem >
+          Select : <apex:selectList value="{!filtervalue}" size="1">
+                <apex:selectOptions value="{!filtervals}"/>
+                <apex:actionSupport action="{!getrotdocs}" event="onchange" reRender="frm1"/>
+           </apex:selectList>
+        </apex:pageBlockSectionItem>
+        
+          <apex:pageBlockTable value="{!rotdocs}" var="d">
+              
+              <apex:column headerValue="Actions">
+                    <a href="/{!d.Id}/e?inline=1&retURL=/{!$CurrentPage.parameters.Id}" target="_blank">Edit</a>
+              </apex:column>
+              
+              <apex:column headerValue="Name">
+                  <a href="/{!d.Id}"  target="_blank">{!d.NAme} </a>
+              </apex:column>
+              
+              <apex:column value="{!d.For__c}" headerValue="For"/> 
+              
+              <apex:column headerValue="Active" >                  
+                  <apex:inputfield value="{!d.For_Rotation1_available_to_portal__c}" rendered="{!AND(d.Created_from_Visatrack_Portal__c,d.Rotation1__c==CASESAFEID($CurrentPage.parameters.Id))}"/>
+                  <apex:inputfield value="{!d.For_Rotation2_available_to_portal__c}" rendered="{!AND(d.Created_from_Visatrack_Portal__c,d.Rotation2__c==CASESAFEID($CurrentPage.parameters.Id))}"/>
+                  
+              </apex:column>                
+          </apex:pageBlockTable>   
+      </apex:pageBlockSection>
+      
+      <apex:pageBlockSection columns="2" rendered="{!NOT(viewmode)}">
+          <apex:pageBlockSectionItem >
+              Name : <apex:selectList value="{!opt_doc}" size="1">
+                    <apex:selectOptions value="{!opt_docsvals}"/>
+               </apex:selectList>           
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+  </apex:pageblock></apex:form>
+</apex:page>

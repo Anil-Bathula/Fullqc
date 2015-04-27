@@ -1,0 +1,1199 @@
+<apex:page controller="rotationvisaportal" showHeader="false" action="{!init}" cache="false" id="page">
+  <style>
+  
+        .custTextArea{
+            background-repeat:repeat-x;
+            background-color:#f2f2f2;
+            border:2px solid #DDDDDD;
+            width: 250px;
+            height:20px;    
+            font-size:14px;     
+            color:#5e5e5e;
+            padding:3px;
+            margin-right:4px;
+            margin-bottom:8px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .custTextArea1{
+            background-repeat:repeat-x;
+            background-color:#f2f2f2;
+            border:2px solid #DDDDDD;
+            width: 250px;
+            height:80px;    
+            font-size:14px;     
+            color:#5e5e5e;
+            padding:3px;
+            margin-right:4px;
+            margin-bottom:8px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .multiselectList{
+            background-color:#f2f2f2;
+            border:2px solid #DDDDDD;
+            font-size:14px;
+            color:#5e5e5e;
+            font-family: Arial, Helvetica, sans-serif;
+            margin-right:4px;
+            margin-bottom:8px;
+        }
+        .cusformheader2{
+            font-size: 21px;
+            color: black;
+            font-weight: bold;
+            font-style: normal;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .customlink {
+            color: #000000;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight:bold;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #ffffff;
+        }
+        .headertabonload{
+            color: #ffffff;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight:bold;
+            background-repeat:no-repeat;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #‎C0C0C0;           
+        }
+        .headertabonload:hover {
+            color: #C0C0C0;
+            font-family: Arial,Helvetica,sans-serif;
+            font-weight:bold;
+            background-repeat:no-repeat;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 1px 1px 1px #‎C0C0C0;
+        }
+        .headerpart
+        {
+            vertical-align: middle;
+            background-image:url({!URLFOR($Resource.Images, 'new-images/tabimage.jpg')});
+            color:red;
+            background-size:250px 40px;
+            background-repeat:no-repeat;
+            padding-bottom:23px;
+            
+        }
+        .headerpart1
+        {
+            vertical-align: middle;
+            background-image:url({!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')});
+            background-size:250px 45px;
+            background-repeat:no-repeat;
+            padding-top:10px;
+            padding-bottom:35px;
+            
+        }
+        .rotheader{
+            font-size:27px;
+            color:#0E364F;
+            font-weight:bold;
+            font-style:normal;
+            font-family: Arial, Helvetica, sans-serif; 
+        }
+        .darkClass
+        {
+            background-repeat:repeat-x;
+            background-color:#f2f2f2;
+            border:2px solid #DDDDDD;
+            width: 250px;   
+            font-size:14px;     
+            color:#A4A4A4;
+            padding:3px;
+            margin-right:4px;
+            margin-bottom:8px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .customselectList{
+            background-repeat:repeat-x;
+            background-color:#f2f2f2;
+            border:2px solid #DDDDDD;
+            width: 260px;   
+            font-size:14px;     
+            color:#5e5e5e;
+            padding:3px;
+            margin-right:4px;
+            margin-bottom:8px;
+            font-family: Arial, Helvetica, sans-serif;
+            height:30px;
+        }
+        .customselectList1{
+            background-repeat:repeat-x;
+            background-color:#FFFFFF;
+            width: 200px;   
+            font-size:14px;     
+            color:#161616;
+            font-family: Arial, Helvetica, sans-serif;
+            height:25px;
+        }
+        span.button.primary a{
+            padding: 3PX;
+        }
+        .custPopup{
+            background-color:#f2f2f2;
+            border-width: 2px;
+            border:2px solid #DDDDDD;
+            z-index: 9999;
+            font-size:12px;
+            font-family: Arial, Helvetica, sans-serif;
+            left: 50%;
+            padding:13px;
+            position: absolute;
+            width: 300px;
+            height: 50px;
+            margin-left: -200px;
+            top:40%;
+        }
+        .custPopup1{
+            background-color:#f2f2f2;
+            border-width: 2px;
+            border:2px solid #DDDDDD;
+            z-index: 9999;
+            font-size:12px;
+            font-family: Arial, Helvetica, sans-serif;
+            left: 50%;
+            padding:13px;
+            position: absolute;
+            width: 380px;
+            height: 70px;
+            margin-left: -200px;
+            top:40%;
+        }
+        .popupBackground{
+            background-color:grey;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        .cuserror_star{
+            font-size:14px;
+            color:#FF0000
+        }
+        .innerpadding {
+            padding-left: 0px;
+        }
+        .btn {
+          -webkit-border-radius: 2;
+          -moz-border-radius: 2;
+          border-radius: 2px;
+          font-family: Sans-Serif;
+          font-weight:bold;
+          color: #ffffff;
+          font-size: 12px;
+          background: #e8e8e8;
+          padding: 10px 20px 10px 20px;
+          text-decoration: none;
+        }
+        
+        .btn:hover {
+          font-weight:bold;  
+          color: #ffffff;  
+          background: #dbdbdb;
+          text-decoration: none;
+        }
+        
+        .css_button { 
+           padding: 10px 20px 10px 20px;
+           background-color: #157DFB;
+           border-radius: 2px;    
+           color: #FFFFFF;
+           font-size: 12px;
+           font-family: Sans-Serif;
+           text-decoration: none;
+           font-weight: bold;     
+           //cursor: pointer;
+        }
+        .css_button:hover {       
+           background-color: #549ffb;  
+           color: #FFFFFF;    
+           text-decoration: none;
+        }
+        .css_button:active {
+          /* top: 1px;
+           position: relative;*/
+        }
+        
+        .css_button_grey { 
+           padding: 10px 20px 10px 20px;
+           background-color: #E8E8E8;
+           border-radius: 2px;    
+           color: #000000;
+           font-size: 12px;
+           font-family: Sans-Serif;
+           text-decoration: none;
+           font-weight: bold;     
+           //cursor: pointer;
+        }
+        .css_button_grey:hover {       
+           background-color: #DBDBDB;  
+           color: #000000;    
+           text-decoration: none;
+        }
+    
+    </style>
+    <script> 
+        function showHide(str){
+           // alert(str);
+            if(str=='page:disp:handicap:0'){
+                //var pickval=document.getElementById(str).value;
+                //if(pickval=='true'){
+                document.getElementById('hcap').style.display='table-row';
+                document.getElementById('hcap1').style.display='table-row';
+                
+            }
+            else if(str=='page:disp:handicap:1'){
+                document.getElementById('hcap').style.display='none';
+                document.getElementById('hcap1').style.display='none';
+            }
+            else if(str=='page:disp:dietary:0'){
+                    document.getElementById('diet').style.display='table-row';
+                    document.getElementById('diet1').style.display='table-row';
+            }
+            else if(str=='page:disp:dietary:1'){
+                document.getElementById('diet').style.display='none';
+                document.getElementById('diet1').style.display='none';
+            }
+            else if(str=='page:disp:allergies:0'){
+                    document.getElementById('alerg').style.display='table-row';
+                    document.getElementById('alerg1').style.display='table-row';
+            }
+            else if(str=='page:disp:allergies:1'){
+                document.getElementById('alerg').style.display='none';
+                document.getElementById('alerg1').style.display='none';
+            }
+            
+        }
+        
+    </script>    
+    
+    <apex:stylesheet value="{!$Resource.style}" />
+    <apex:form id="disp">
+    
+    
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="innertable">  
+    <tr><td colspan="2" align="right">&nbsp;
+        <span style="{!IF(showlink,'font-weight:bold','font-weight:bold;padding-right:53px;')}">
+            {!disp_con.Name}&nbsp;-&nbsp;
+            {!disp_con.Program_preParsed__c}&nbsp;-&nbsp;
+            {!disp_con.Campus_parsed_from_Program__c}&nbsp;-&nbsp;
+            {!disp_con.Student_ID__c}&nbsp;&nbsp;
+            <a href="{!$Site.Prefix}/secur/logout.jsp?retURL=/apex/student_login">Log Out</a>
+        </span>
+    </td>
+    </tr>
+        <tr >
+            <td colspan="2">  
+                <apex:image value="{!$Resource.rotation_logo}" width="174" height="28" rendered="{!showlink}" style="padding-left:70px;padding-bottom:30px;"/>       
+                <apex:image value="{!$Resource.rotation_header}" width="960" height="179" rendered="{!showlink}"/>
+            </td>
+        </tr>
+    </table>
+    <table class="innertable" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+        <td>
+            <apex:outputPanel rendered="{!show_msg}">
+                 <table class="innertable" border="0" cellpadding="0" cellspacing="0">
+                     <tr>
+                        <td height="50px"></td>
+                     </tr>
+                     <tr>
+                        <td valign="top">
+                        <table width="100%" cellspacing="0">
+                            <tr>
+                                <td >
+                                <apex:panelGrid columns="1">
+                                    <apex:panelGroup styleClass="rotheader">
+                                       Rotation 2015 - Student Information
+                                    </apex:panelGroup>
+                                    <table>
+                                        <tr height="15px;">
+                                        </tr>
+                                    </table>
+                                    <apex:outputText styleClass="content"  style="padding-right: 10px;padding-bottom:10px;">
+                                        All rotating students must submit complete and accurate information when answering <br/>
+                                        questions in this form.<br/><br/>
+                                        Information collected will be used for rotation visa applications and to process reservations <br/>
+                                        for Hult accommodation. Please note that this may incur fees which will be added to your<br/>
+                                        tuition statement. Be sure to read all housing booking policy information prior to making <br/>
+                                        a reservation. Additional information about accommodation options can be found on myHult <br/>
+                                        or by contacting the housing team at your rotation campus.<br/><br/>
+                                        Incomplete or incorrect information will delay visa processing, which could prevent you <br/>
+                                        from being able to participate in global rotation. If you have questions regarding visa <br/>
+                                        applications, please contact the visa coordinator at your rotation campus.<br/><br/>
+                                    </apex:outputText>
+                                </apex:panelGrid>
+                                </td>
+                                <td valign="top" style="padding-right: 57px;">
+                                    <table border="0" cellspacing="0" cellpadding="0" class="leftborder">
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                            <span class="button primary"> 
+                                                <apex:commandLink value="My Details" action="{!detailPage}" rendered="{!mydeaillink}" reRender="disp" style="font-size:16px;">
+                                                    <apex:param value="{!disp_con.Id}" name="Rec"/>
+                                                </apex:commandLink>
+                                                <apex:image url="{!URLFOR($Resource.rotation_unlocked)}" rendered="{!NOT(home_bool)}" width="20px" height="20px"/>
+                                              <!--   <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!home_bool}" width="20px" height="20px"/> -->
+                                            </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <apex:repeat value="{!rot}" var="r">
+                                                  <span class="button primary"> 
+                                                    <apex:commandLink value="{!r.Type__c}-{!r.Rotation_Campus__c}" action="{!detail_rotPage}" reRender="disp" style="font-size:16px;">
+                                                        <apex:param value="{!r.id}" name="Rec"/>
+                                                    </apex:commandLink>
+                                                    <apex:image url="{!URLFOR($Resource.rotation_locked)}" rendered="{!NOT(home_bool)}" width="20px" height="20px"/>
+                                                  <!--<apex:image url="{!URLFOR($Resource.rotation_unlocked)}" rendered="{!home_bool}" width="20px" height="20px"/> -->
+                                                  </span>
+                                               <br/> </apex:repeat>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="50px"></td>
+                    </tr>
+                 </table>
+            </apex:outputPanel>
+            <!-- My Details Tab -->
+            
+            <apex:outputPanel rendered="{!show_mydetail}" id="per">  
+                <table width="100%" class="innerpadding" border="0" cellpadding="0" cellspacing="0" align="center">
+                    <tr>
+                        <td valign="top"><!-- Code for text box --> <apex:includeScript value="{!$Resource.RegistrationJavascript}" />
+                            <table width="100%" border="0" ><apex:pagemessages />
+                                <tr>
+                                    <td align="Left" class="formheader3" style="padding-bottom:15px;margin-bottom:8px;">My Details</td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" width="250px;">Student ID<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="You can't edit this field">
+                                        <apex:inputText disabled="true" value="{!disp_con.Student_ID__c}" styleClass="darkClass" />
+                                        </A>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" width="250px;" style="padding-top:3px;">First Name</td></tr>
+                                    <tr>
+                                    <td class="formlable"><A HREF="" TITLE="You can't edit this field">
+                                        <apex:inputText disabled="true" value="{!disp_con.FirstName}" styleClass="darkClass" />
+                                        </A>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Last Name<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="You can't edit this field">
+                                        <apex:inputText disabled="true" styleClass="darkClass" value="{!disp_con.LastName}" />
+                                        </A>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Mobile Phone Number<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="Please include the COUNTRY CODE.
+                                        If you do not have a mobile phone, enter the number where you can best be reached during this academic year."> 
+                                        <apex:inputfield value="{!disp_con.MobilePhone}" styleClass="form-text-box"/>
+                                        </A><apex:outputText value="Required" style="color:red" rendered="{!phone_bool}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Date of Birth (DD/MM/YYYY)<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="DD/MM/YYYY">
+                                     <!--   <input type="text" value="{!birthdate}" Class="darkClass" title="You can't edit this field" disabled="true"/> -->
+                                         <apex:inputText styleClass="{!IF(NOT(IsBlank(disp_con.birthdate)),'darkClass','form-text-box')}" value="{!birthdate}" disabled="{!NOT(IsBlank(disp_con.birthdate))}"/>
+                                        
+                                        </A><apex:outputText value="Required" style="color:red" rendered="{!bir_date}"/>
+                                    </td><br/>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" width="250px;">Gender</td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="You can't edit this field">
+                                        <apex:inputText disabled="true" value="{!disp_con.Gender__c}" styleClass="darkClass" />
+                                        </A>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Country of Citizenship<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable">
+                                        <A HREF="" TITLE="You can't edit this field"> 
+                                            <apex:selectList value="{!disp_con.Country_Of_Origin__c}" size="1" styleClass="customselectList"
+                                                disabled="{!NOT(IsBlank(disp_con.Country_Of_Origin__c))}">
+                                                <apex:SelectOptions value="{!clist}"/>
+                                            </apex:selectList>
+                                        </A><apex:outputText value="Required" style="color:red" rendered="{!cociti_bool}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Do you have a second, valid passport from a country other than the one listed above? If yes, please enter your second nationality below and upload a copy of the passport you plan to use for rotation under the 'Documents' tab.<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="If you have a second passport, please let us know.">
+                                        <apex:selectRadio value="{!disp_con.Have_second_Passport__c}" layout="pageDirection">
+                                            <apex:SelectOptions value="{!sec_pass}"/>
+                                        </apex:selectRadio>
+                                        </A><apex:outputText value="Required" style="color:red" rendered="{!secpass_bool}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Nationality 2</td></tr><tr>
+                                    <td class="formlable">
+                                        <apex:selectList value="{!disp_con.Country_Of_Citizenship__c}" size="1" styleClass="customselectList">
+                                            <apex:SelectOptions value="{!clist}"/>
+                                        </apex:selectList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Hult recommends that all students have adequate travel insurance during rotation. If you are already enrolled in an Aetna or Erika insurance policy through Hult, travel insurance is included for rotation (please read the terms and conditions of your policy to understand the extent of coverage). For those that do not have existing travel insurance, Hult offers a travel insurance plan for the rotation period through Erika insurance. If you would like to sign up for the Erika insurance plan, please select from the dropdown below. For information about this plan, please visit myHult.<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable">
+                                        <apex:selectRadio value="{!insurval}" layout="pageDirection">
+                                            <apex:SelectOptions value="{!insur_vals}"/>
+                                        </apex:selectRadio>
+                                        <apex:outputText value="Required" style="color:red" rendered="{!insur_bool}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Do you have an existing disability adjustment that has been approved by your home campus?<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="Please Select Yes if Applicable (wheelchair access needed, etc.)"> 
+                                      
+                                        <apex:selectRadio value="{!disp_con.Need_handicap_access_while_rotation__c}" layout="pageDirection"
+                                            onchange="showHide(this.id);" id="handicap">                                            
+                                            <apex:SelectOptions value="{!sec_pass}"/>
+                                        </apex:selectRadio>
+                                        </A><apex:outputText value="Required" style="color:red" rendered="{!hand_bool}"/>
+                                    </td>
+                                </tr>
+                                <tr id="hcap" style="{!IF(disp_con.Need_handicap_access_while_rotation__c,'','display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Please provide details...</td></tr>
+                                    <tr id="hcap1" style="{!IF(disp_con.Need_handicap_access_while_rotation__c,'','display:none;')}">
+                                    <td class="formlable"> <apex:inputfield value="{!disp_con.Details_of_your_Handicap__c}" 
+                                        styleClass="form-TextArea1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formlable" align="left" style="padding-top:3px;">Do you have specific medical needs or allergies that you would like staff at your rotation campus to be aware of?<span
+                                                    class="error_star">*</span></td></tr><tr>
+                                    <td class="formlable"><A HREF="" TITLE="Please Select Yes if Applicable (Diabetic, allergic to penecillin, etc.)"> 
+                                        <apex:selectRadio value="{!disp_con.Specific_medical_needs_or_Alergies__c}" layout="pageDirection"
+                                            onchange="showHide(this.id);" id="allergies">                                            
+                                            <apex:SelectOptions value="{!sec_pass}"/>
+                                        </apex:selectRadio>
+                                        </A><apex:outputText value="Required" style="color:red" rendered="{!aleg_bool}"/>
+                                    </td>
+                                </tr>
+                                <tr id="alerg" style="{!IF(disp_con.Specific_medical_needs_or_Alergies__c,'','display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Please provide details...</td></tr>
+                                    <tr id="alerg1" style="{!IF(disp_con.Specific_medical_needs_or_Alergies__c,'','display:none;')}">
+                                    <td class="formlable"> <apex:inputfield value="{!disp_con.Details_of_your_condition_alergies__c}"
+                                       styleClass="form-TextArea1"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <span>
+                    <apex:commandLink value="SAVE" action="{!save_rotcontact}" reRender="disp" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" styleClass="css_button" status="actStatusId">
+                    </apex:commandLink>
+                    <apex:actionStatus id="actStatusId" >
+                        <apex:facet name="start" >
+                            <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus>
+                </span>
+                <span>
+                    <apex:commandLink value="CANCEL" action="{!cancelmethod}" reRender="disp" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" styleClass="css_button_grey">
+                    </apex:commandLink><br/><br/> 
+                </span>                              
+                
+            </apex:outputPanel>
+            
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+                <div align="center" >
+                Please complete the My Details section first.<br/><br/>
+                <apex:commandButton value="Ok" action="{!closePopup}" rerender="disp" style="padding-left:5px;padding-right:5px;color:#000000;"/></div>
+            </apex:outputPanel>
+            
+            <!--My Detail page popup -->
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!mydetail_pop}"/>
+            <apex:outputPanel styleClass="custPopup1" layout="block" rendered="{!mydetail_pop}">
+                <div align="center" >
+                Thanks for completing the My Details section, you can now proceed to click on the Mod link(s).<br/><br/>
+                <apex:commandButton value="Ok" action="{!closePopup}" rerender="disp" style="padding-left:5px;padding-right:5px;color:#000000;"/></div>
+            </apex:outputPanel>            
+            <!--Documents Page popup-->
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!IF(doc_pop=='true',true,false)}"/>
+            <apex:outputPanel styleClass="custPopup1" layout="block" rendered="{!IF(doc_pop=='true',true,false)}">
+                <div align="center" >
+                Thank you for uploading your required documents, they have been successfully submitted.<br/><br/>
+                <apex:commandButton value="Ok" action="{!closePopup}" rerender="disp" style="padding-left:5px;padding-right:5px;color:#000000;"/></div>
+            </apex:outputPanel>
+            
+            <apex:outputPanel rendered="{!showpage}" id="headerr">
+                <tr>
+                    <td height="50px"></td>
+                </tr> 
+                <table height="10" width="68%" border="0" cellpadding="0" cellspacing="0" style="margin-top:-3px;" align="center">
+                  
+                  <tr >
+                    <td align="center" valign="middle" width="88" id="home" class="headerpart" >
+                        <table>
+                            <tr>
+                                <td  valign="top" align="top">
+                                    <apex:commandLink styleClass="customlink" action="{!tabmethod}" reRender="disp"><span id="home1">HOME</span>
+                                        <apex:param value="home" name="tab1"/>
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                                      
+                    <td align="center" valign="middle" width="88" id="rotation" class="{!IF(rotation,'headerpart1','headerpart')}">
+                        <table>
+                            <tr>
+                                <td align="top" valign="middle">
+                                    <apex:commandLink styleClass="{!IF(rotation,'headertabonload','customlink')}" action="{!tabmethod}" reRender="disp"><span id="rotation1">ROTATION INFORMATION</span>
+                                        <apex:param value="Rotationinfo" name="tab2"/>
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    
+                     <a>
+                    <td align="center" valign="middle" width="88" id="dependent" Class="{!IF(dependent,'headerpart1','headerpart')}" >
+                                             
+                        <table>
+                            <tr>
+                                <td  valign="top" align="top">
+                                    <apex:commandLink styleClass="{!IF(dependent,'headertabonload','customlink')}" action="{!tabmethod}" reRender="disp"><span id="dependent1">DEPENDENTS</span>
+                                        <apex:param value="dependents" name="tab3"/>
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                       
+                    </td>
+                    </a>
+                    
+                    <td align="center" valign="middle" width="88" id="accomm" class="{!IF(accomm,'headerpart1','headerpart')}">
+                        <table>
+                            <tr>
+                                <td align="top" valign="middle">
+                                    <apex:commandLink styleClass="{!IF(accomm,'headertabonload','customlink')}" action="{!tabmethod}" reRender="disp"><span id="accomm1">ACCOMMODATION</span>
+                                        <apex:param value="accommdat" name="tab4"/>
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    
+                    <td align="center" valign="middle" width="88" id="docs" class="{!IF(docs,'headerpart1','headerpart')}">
+                        <table>
+                            <tr>
+                                <td align="top" valign="middle">
+                                    <apex:commandLink styleClass="{!IF(docs,'headertabonload','customlink')}" action="{!tabmethod}" reRender="disp"><span id="docs1">DOCUMENTS</span>
+                                        <apex:param value="Document" name="tab5"/>
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>    
+                  </tr>            
+                </table>
+                <!-- Banner -->
+                <apex:outputPanel rendered="{!NOT(personal)}" id="banr">
+                <table width="68%" align="center" style="background-color:#E8E8E8;" cellpadding="0" cellspacing="0">
+                    <tr style="background-color:#E8E8E8;">
+                        <td align="left" class="cusformheader2" style="padding-left:10px;" >{!disp_rot.Type__c}</td>
+                        <td align="right" class="cusformheader2" style="padding-right:10px;">{!visatrack}{!disp_rot.Rotation_Campus__c}<br/>{!amountdue}</td>
+                    </tr>
+                </table>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <div class="triangle-ribbon blue">
+            </div>
+            <!-- Rotation Section -->
+            <apex:outputPanel rendered="{!rotation}" id="rot">
+            
+                <table width="68%" class="innerpadding" border="0" cellpadding="0" cellspacing="0" align="center">
+                    <tr>
+                        <td valign="top" >  <!--  style="padding-left: 33%;"-->
+                            <table width="100%" border="0" ><apex:pagemessages />
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td align="Left" class="formheader3" style="padding-bottom:15px;margin-bottom:8px;">The following information is required for processing your visa application. Please enter your current local address at your home campus.</td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Students rotating to Dubai for one Module who are NOT on the 46-countries list must apply for a Visit Visa. There are two categories of Visit Visa: 30-day entry and 3-month entry. If your total length of stay will be more than 30 days, you must apply for the 3-month Visit Visa. If you apply for the 30-day visit visa, you will not be able to extend your stay in the UAE and must depart the country within the 30-day limit. If you are unsure whether you fall under the 46 countries list or which visa is appropriate for you, please visit <a href="http://my.hult.edu/en/campuses/dubai/student-visa-information/obtaining-your-visa-for-rotation/" target="_blank" style="color:#0000FF">myHult</a> or email rotation.visas.dubai@email.hult.edu. If this visa category does not apply to you, you may skip this question.<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">                
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Visit_Visa__c}" styleClass="form-selectList"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Street Address<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Address_Line1__c}" styleClass="custTextArea"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Address Line 2</td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"> <apex:inputfield value="{!disp_rot.Address_Line2__c}" styleClass="custTextArea"/></td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">City<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.City__c}" styleClass="form-text-box"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">State/Province/Region<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"> <apex:inputfield value="{!disp_rot.State__c}" styleClass="form-text-box"/></td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Postal/Zip Code<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Postal_Code__c}" styleClass="form-text-box"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Country<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable">
+                                        <apex:selectList value="{!disp_rot.Country__c}" size="1" styleClass="form-selectList">
+                                            <apex:SelectOptions value="{!clist}"/>
+                                        </apex:selectList>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Marital Status<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Marital_Status__c}" StyleClass="form-selectList"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Previous Nationalities (if any)</td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai' || disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Previous_Nationalities__c}" styleClass="form-text-box"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Father's Name<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">                
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Father_Name__c}" styleClass="form-text-box"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Mother's Name<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">                
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Mother_Name__c}" styleClass="form-text-box"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;">Religion<span
+                                                    class="error_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','','Display:none;')}">                
+                                    <td class="formlable"><apex:inputfield value="{!disp_rot.Religion__c}" styleClass="form-text-box"/>
+                                    </td>
+                                </tr>
+                                
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-bottom:8px;">Have you ever been refused a visa for any country, including the U.K.? If so, list each 
+                                        and provide an explanation of why.
+                                        <span class="cuserror_star">*</span>
+                                        </td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable">
+                                    <apex:inputfield value="{!disp_rot.Previous_Visa_Refusal_Notes__c}" styleClass="custTextArea1"/>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;padding-bottom:3px;">Have you studied previously in the United Kingdom?<span
+                                                    class="cuserror_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td>
+                                        <apex:selectRadio value="{!disp_rot.Previously_Studied_in_UK__c}" layout="pageDirection">
+                                            <apex:selectOptions value="{!rediovals}"/>
+                                        </apex:selectRadio>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;padding-bottom:3px;">Have you had treatment on the National Health Service (NHS) whilst in the U.K.?<span
+                                                    class="cuserror_star">*</span></td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable">
+                                        <apex:selectRadio value="{!disp_rot.had_treatment_on_the_NHS_Whilst_in_Uk__c}" layout="pageDirection">
+                                            <apex:SelectOptions value="{!rot_values}"/>
+                                        </apex:selectRadio>
+                                    </td>
+                                </tr>
+                                <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable" align="left" style="padding-top:3px;padding-bottom:3px;">If you have received NHS medical treatment, 
+                                        did you have to pay for the treatment?</td></tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='London','','Display:none;')}">
+                                    <td class="formlable">
+                                        <apex:selectRadio value="{!disp_rot.If_NHS_treatment_recieved_have_you_paid__c}" layout="pageDirection">
+                                            <apex:SelectOptions value="{!rot_values}"/>
+                                        </apex:selectRadio>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <apex:pageMessage severity="info" strength="1" summary="No further Information is needed on this section." rendered="{!AND(disp_rot.Rotation_Campus__c!='London',disp_rot.Rotation_Campus__c!='Dubai')}"/>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                
+                <span style="padding-left:16.4%;">
+                    <apex:commandLink value="SAVE" action="{!save_rot}" reRender="rot,disp" styleClass="css_button"
+                        rendered="{!OR(disp_rot.Rotation_Campus__c=='London',disp_rot.Rotation_Campus__c=='Dubai')}" oncomplete="window.scrollTo(0,0);" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" status="actStatusId1">
+                    </apex:commandLink>
+                    <apex:actionStatus id="actStatusId1" >
+                        <apex:facet name="start" >
+                          <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus>
+                </span><br/><br/> 
+            </apex:outputPanel> 
+            
+            <!-- Dependent Section -->
+            <apex:outputPanel rendered="{!dependent}" id="frm1"> 
+               <table width="68%" class="innerpadding" border="0" cellpadding="0" cellspacing="0" align="center">
+                    <tr>
+                        <td valign="top"> 
+                        
+                        
+                     <!-- dependentview section-->   
+                  <!--   <b  Class="formheader4" style="font-size:14px;"> {!dep_viewtext} </b><br/> -->
+                  <apex:outputPanel rendered="{!disp_view}">
+                      <apex:pagemessages />
+                     <!-- <center> -->
+                     <table style="padding-bottom:10px;">
+                         <tr>
+                           <td align="Left" class="formheader3" style="padding-bottom:15px;margin-bottom:8px;">If you plan to bring any dependents (spouse or children) with you on rotation, please enter their details below.</td>
+                         </tr>
+                      </table>
+                      <table style="padding-bottom:10px;">
+                          <tr>
+                              <td>                     
+                              <span> 
+                                  <apex:commandLink action="{!New_dep}" value="ADD EXISTING DEPENDENT" reRender="frm1" rendered="{!ismoredepsexist}" styleClass="css_button"
+                                  style="font-size: 110%;padding: 3px 10px;overflow: visible;"/>
+                              </span>
+                              </td>
+                      
+                              <td>
+                              <span> 
+                                  <apex:commandLink action="{!add_newdep}" value="ADD NEW DEPENDENT" reRender="frm1" styleClass="css_button"
+                                  style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;"/> 
+                              </span>                      
+                              </td>
+                          </tr>
+                      </table><!-- </center> -->
+                     
+                      <table width="100%" style="padding-bottom:40px;"> <tr><th bgcolor="#E8E8E8" style="color:black"></th><th bgcolor="#E8E8E8" style="color:black">Name</th><th bgcolor="#E8E8E8" style="color:black">Relationship</th><th bgcolor="#E8E8E8" style="color:black">Gender</th><th bgcolor="#E8E8E8" style="color:black">Date of Birth</th>
+                      <!--<th bgcolor="#E8E8E8" style="color:black">Holds a 2nd passport?</th>-->
+                      <th bgcolor="#E8E8E8" style="color:black">Country of Citizenship</th>
+                      </tr>
+
+                      <apex:repeat value="{!deps}" var="d">
+                          <tr><td>
+                              <apex:commandLink value="Remove" action="{!delete_dep}" rerender="frm1">
+                                  <apex:param value="{!d.Id}" assignTo="{!deps_id}" name="depsid"/>
+                              </apex:commandLink>
+                          </td><td>{!d.First_Name__c} {!d.Last_Name__c}
+                              <!-- <a href="/{!d.Id}"  target="_blank">{!d.First_Name__c} {!d.Last_Name__c}</a> -->
+
+                          </td><td><apex:outputField value="{!d.Relationship__c}" />
+                          </td><td><apex:outputField value="{!d.Gender__c}" />
+                          </td><td><!-- <apex:outputField value="{!d.Date_of_Birth__c}" /> -->
+                                <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                    <apex:param value="{!d.Date_of_Birth__c}" />
+                                </apex:outputText>
+                          </td><!--<td>
+                              <apex:outputField value="{!d.Have_second_Passport__c}"/>
+                          </td>-->
+                          <td>
+                              <apex:outputField value="{!d.Country_of_Citizenship__c}"/>
+                          </td>
+                          </tr>
+                      </apex:repeat>
+                      
+                      </table>   
+                      <div>
+                      <apex:pageMessage severity="info" strength="1" summary="If you are not bringing any dependents with you on rotation, please go to the Documents page." rendered="{!IF(AND(NOT(ISBLANK(deps)),deps.size>0),false,true)}"></apex:pageMessage>
+                      </div>
+              </apex:outputPanel>
+              
+              <!-- Existing dependent selection section-->
+              <apex:outputPanel rendered="{!disp_selexist_dep}">
+                      <apex:pagemessages />
+                      <table width="100%"> <tr><th bgcolor="#E8E8E8" style="color:black">Select</th><th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.First_Name__c.Label}</th>
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Last_Name__c.Label}</th><th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Relationship__c.Label}</th>
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Gender__c.Label}</th>
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Date_of_Birth__c.Label}</th>
+                      <!--<th bgcolor="#E8E8E8" style="color:black">Holds a 2nd passport?</th>-->
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Country_of_Citizenship__c.Label}</th></tr>
+
+                      <apex:repeat value="{!create_deps}" var="newd">
+                          <tr><td>
+                              <apex:inputCheckbox value="{!newd.isselected}" />
+                          </td><td>
+                              <apex:outputfield value="{!newd.depend.First_Name__c}"/>
+                          </td><td>
+                              <apex:outputfield value="{!newd.depend.Last_Name__c}"/>
+                          </td><td>
+                              <apex:outputfield value="{!newd.depend.Relationship__c}"/>
+                          </td><td>
+                              <apex:outputfield value="{!newd.depend.Gender__c}"/>
+                          </td><td>
+                              <!-- <apex:outputfield value="{!newd.depend.Date_of_Birth__c}"/>-->
+                              <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                    <apex:param value="{!newd.depend.Date_of_Birth__c}" />
+                                </apex:outputText>
+                          </td>
+                          <td>
+                              <apex:outputField value="{!newd.depend.Country_of_Citizenship__c}"/>
+                          </td>
+                          </tr>
+                      </apex:repeat> 
+                      <tr><td> </td>
+                      <td></td><td></td><td></td><td></td></tr>
+                      </table>
+                      
+                      <span> 
+                          <apex:commandLink action="{!save_deps}" value="SAVE" reRender="frm1" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" styleClass="css_button" status="actStatusId2">
+                          </apex:commandLink>
+                          <apex:actionStatus id="actStatusId2" >
+                             <apex:facet name="start" >
+                               <img src="/img/loading.gif" />                    
+                             </apex:facet>
+                          </apex:actionStatus>
+                       </span>
+                       <span>
+                          <apex:commandLink action="{!cancl}" value="CANCEL" reRender="frm1" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" styleClass="css_button_grey">
+                          </apex:commandLink>
+                      </span>
+              </apex:outputPanel>
+              
+              <!-- Create New Dependent -->
+              <apex:outputPanel rendered="{!disp_new}" >
+                        <apex:pagemessages />
+                         
+                      <table width="100%"> <tr><th bgcolor="#E8E8E8" style="color:black">Select</th><th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.First_Name__c.Label}</th>
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Last_Name__c.Label}</th><th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Relationship__c.Label}</th>
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Gender__c.Label}</th>
+                      <th bgcolor="#E8E8E8" style="color:black">Date of Birth (DD/MM/YYYY)</th>
+                      <!--<th bgcolor="#E8E8E8" style="color:black">Holds a 2nd passport?</th>-->
+                      <th bgcolor="#E8E8E8" style="color:black">{!$ObjectType.Dependent__c.fields.Country_of_Citizenship__c.Label}</th>
+                      </tr>
+
+                      <apex:repeat value="{!create_deps}" var="newd">
+                          <tr><td>
+                              <apex:inputCheckbox value="{!newd.isselected}" disabled="true" />
+                          </td><td>
+                              <apex:inputfield value="{!newd.depend.First_Name__c}" required="false" />
+                          </td><td>
+                              <apex:inputfield value="{!newd.depend.Last_Name__c}"  required="false"/>
+                          </td><td>
+                              <apex:inputfield value="{!newd.depend.Relationship__c}"  />
+                          </td><td>
+                              <apex:inputfield value="{!newd.depend.Gender__c}" />
+                          </td><td>
+                             <!-- <apex:inputfield value="{!newd.depend.Date_of_Birth__c}" /> -->
+                             <apex:inputText value="{!newd.dep_dob}"/>
+                             
+                          </td>
+                          <td class="formlable">
+                                <apex:selectList value="{!newd.depend.Country_of_Citizenship__c}" size="1" styleClass="customselectList1">
+                                    <apex:SelectOptions value="{!clist}"/>
+                                </apex:selectList>
+                          </td>
+                          </tr>                         
+                          
+                      </apex:repeat> 
+                      <tr><td><apex:commandlink action="{!add_blankdep}" value=" + " reRender="frm1" style="font-size:25px;text-decoration:none;font-weight:bold;"/>       </td>
+                      <td></td><td></td><td></td><td></td></tr>
+                      </table>    
+                      <span>
+                          <apex:commandLink action="{!save_deps}" value="SAVE" reRender="frm1" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" styleClass="css_button" status="actStatusId3">
+                          </apex:commandLink>
+                          <apex:actionStatus id="actStatusId3" >
+                             <apex:facet name="start" >
+                               <img src="/img/loading.gif" />                    
+                             </apex:facet>
+                          </apex:actionStatus>
+                      </span>
+                      <span>
+                          <apex:commandLink action="{!cancl}" value="CANCEL" reRender="frm1" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" styleClass="css_button_grey">     
+                          </apex:commandLink>
+                      </span> 
+                  </apex:outputPanel>
+                  
+              </td></tr></table>
+              
+            </apex:outputPanel>
+            
+            <!-- Accommodation Section -->
+             <apex:outputPanel rendered="{!accomm}" id="accm">
+            
+                <table width="68%" class="innerpadding" border="0" cellpadding="0" cellspacing="0" align="center">
+                    <tr>
+                        <td valign="top" >
+                            <table width="100%" border="0" ><apex:pagemessages />
+                                <apex:outputPanel rendered="{!OR(disp_rot.Rotation_Campus__c=='London',disp_rot.Rotation_Campus__c=='Dubai',disp_rot.Rotation_Campus__c=='New York',disp_rot.Rotation_Campus__c=='San Francisco',disp_rot.Rotation_Campus__c=='Shanghai')}">
+                                    <table width="100%">
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='San Francisco','Display:Block;','Display:none;')}">
+                                        <td>
+                                        <h1 style="font-family: Arial, Helvetica, sans-serif;font-size: 16px;">San Francisco Rotation Accommodation</h1><br/><br/><br/>
+                                        This page is for students who wish to stay in the Hult accommodation in San Francisco; if you plan to find your own housing, 
+                                        you may skip this page. EMBA students wishing to make a nightly or weekly reservation must contact the housing team directly at the email address listed below.<br/><br/>
+    
+                                        Hult Lodge is a newly renovated hotel, offering modern and stylish student living. Rooms are completely furnished and 
+                                        feature a sleek, modern design. Facilities include an onsite gym, laundry, full kitchen and dining area, student lounge, 
+                                        and outdoor patios and rooftop decks. The accommodation is located just across the Bay in the trendy Lake Merritt 
+                                        neighborhood of Oakland. Your commute to campus is 40 to 50 minutes via public transportation. <br/><br/>
+                                        
+                                        For more information about Hult Lodge, including information about room types, please visit the
+                                        <a href="http://my.hult.edu/en/campuses/san-francisco/accommodation-resources/rotation-accommodation/" target="_blank" style="color:#0000FF">San Francisco accommodation page</a> 
+                                         on myHult, or email <a href="mailto:hult.lodge@hult.edu" style="color:#0000FF">hult.lodge@hult.edu</a>.<br/><br/>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='London','Display:Block;','Display:none;')}">
+                                        <td>
+                                        <h1 style="font-family: Arial, Helvetica, sans-serif;font-size: 16px;">London Rotation Accommodation</h1><br/><br/><br/>
+                                        This page is for students who wish to stay in the Hult accommodation in London; if you plan to find your own housing, 
+                                        you may skip this page. EMBA students wishing to make a nightly or weekly reservation must contact the housing team directly at the email address listed below.<br/><br/>
+                                        
+                                        Hult Tower &amp; Studios has a broad range of accommodation available to book during the summer. It is located at the 
+                                        undergraduate campus, approximately a 20-30 minute commute by tube to Hult House. Hult Tower &amp; Studios offers a convenient 
+                                        base for you during rotation, allowing you to further your Hult network by living alongside a mix of post- and undergraduate 
+                                        students.<br/><br/>
+                                        
+                                        For more information about Hult &amp; Tower Studios, including information about room types, please visit the
+                                        <a href="http://my.hult.edu/en/campuses/london/accommodation-resources/rotation-accommodation/hult-accommodation/" target="_blank" style="color:#0000FF">London accommodation page</a> 
+                                        on myHult, or email <a href="mailto:hult.housing.london@hult.edu" style="color:#0000FF">hult.housing.london@hult.edu</a>.<br/><br/>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Shanghai','Display:Block;','Display:none;')}">
+                                        <td>
+                                        <h1 style="font-family: Arial, Helvetica, sans-serif;font-size: 16px;">Shanghai Rotation Accommodation</h1><br/><br/><br/>
+                                        This page is for students who wish to stay in the Hult accommodation in Shanghai; if you plan to find your own housing, 
+                                        you may skip this page. EMBA students wishing to make a nightly or weekly reservation must contact the housing team directly at the email address listed below.<br/><br/>
+    
+                                        Tianhong Residence enjoys a central location, offering easy access to the Shanghai Railway Station, the city's airport, 
+                                        and the Hult campus (40 minutes). Located in a bustling student area, the residence features an entire floor exclusively 
+                                        available to Hult students with plenty of communal areas and cooking facilities – the perfect place to hang out with 
+                                        fellow Hult Shanghai students. Amenities include a café, convenience store, 24-hour front desk service, study and 
+                                        recreational areas, and an outdoor terrace.<br/><br/>
+                                        
+                                        For more information about the Tianhong Residence, including information about room types, please visit the
+                                        <a href="http://my.hult.edu/en/campuses/shanghai/accommodation/rotation-accommodation-pg/" target="_blank" style="color:#0000FF">Shanghai accommodation page</a> 
+                                        on myHult, or email <a href="mailto:housing.shanghai@email.hult.edu" style="color:#0000FF">housing.shanghai@email.hult.edu</a>.<br/><br/>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='New York','Display:Block;','Display:none;')}">
+                                        <td>
+                                        <h1 style="font-family: Arial, Helvetica, sans-serif;font-size: 16px;">New York Rotation Accommodation</h1><br/><br/><br/>
+                                        This page is for students who wish to stay in the Hult accommodation in New York; if you plan to find your own housing, 
+                                        you may skip this page. EMBA students wishing to make a nightly or weekly reservation must contact the housing team directly at the email address listed below.<br/><br/>
+    
+                                        Hult will have exclusive use of the Cooper Union Student Residence, which is located less than a two-minute walk away from the 
+                                        campus and offers apartment-style housing. Units range in size to accommodate from two to five people, with the majority of the 
+                                        apartments being two-bedroom units. Each unit shares a bathroom, common living area, and kitchenette. The building amenities 
+                                        include plenty of community areas, a 24-hour security/front desk, laundry room, and study space.<br/><br/>
+                                        
+                                        For more information about the Cooper Union Student Residence, including information about room types, please visit the
+                                        <a href="http://my.hult.edu/en/campuses/new-york-city/accommodation/hult-accommodation/" target="_blank" style="color:#0000FF">New York accommodation page</a> 
+                                        on myHult, or email <a href="mailto:student.services.newyork@email.hult.edu" style="color:#0000FF">student.services.newyork@email.hult.edu</a>.<br/><br/>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <table>
+                                        <tr><td>
+                                            <b><u>Room Selection</u></b> <br/><br/>
+                                        </td></tr>
+                                        <tr style="{!if(disp_rot.Rotation_Campus__c=='Shanghai','Display:Block;','Display:none;')}">
+                                            <td>
+                                            <b style="color:red">IMPORTANT NOTE:</b> Undergraduate students may only register for a Deluxe Single Room.<br/><br/>
+                                            </td>
+                                        </tr>
+                                        <tr style="{!if(disp_rot.Rotation_Campus__c!='London','Display:Block;','Display:none;')}"><td>                                        
+                                            Please select your room preference below. Double/Twin rooms are priced per student:<span
+                                                    class="cuserror_star">*</span>
+                                        </td></tr>
+                                        <tr style="{!if(disp_rot.Rotation_Campus__c=='London','Display:Block;','Display:none;')}"><td>                                        
+                                            Please select your room preference below. Double/Twin rooms are priced per student. The following room types are available by enquiry only; please contact the London Housing Team directly to reserve a room: Single Room (Module D only), Bunk Studio, Bunk Studio Vista :<span
+                                                    class="cuserror_star">*</span>
+                                        </td></tr>
+                                        </table>
+                                    </tr>
+                                    <tr style="{!if(disp_rot.Rotation_Campus__c=='Dubai','Display:Block;','Display:none;')}">
+                                        <td>
+                                        <h1 style="font-family: Arial, Helvetica, sans-serif;font-size: 16px;">Dubai Rotation Accommodation</h1><br/><br/><br/>
+                                        <b style="color:red">IMPORTANT NOTE:</b> This page is for Undergraduate students only, who wish to stay in the Hult accommodation in Dubai. 
+                                        Postgraduate students are responsible for finding their own accommodation, and should skip this page.<br/><br/>
+                                        </td>
+                                    </tr>
+                                    <tr style="{!if(disp_rot.Type__c=='Mod D' || disp_rot.Type__c=='Mod D & E','Display:Block;','Display:none;')}">
+                                        <td>
+                                            <apex:selectList value="{!disp_rot.Rot_Housing_Module_D__c}" size="1" styleClass="form-selectList">
+                                                <apex:selectOptions value="{!rothosmodd}"/>
+                                            </apex:selectList>
+                                        </td>
+                                    </tr>
+                                    <tr style="{!if(disp_rot.Type__c=='Mod E','Display:Block;','Display:none;')}">
+                                        <td class="formlable">
+                                            <apex:selectList value="{!disp_rot.Rot_Housing_Module_E__c}" size="1" styleClass="form-selectList">
+                                                <apex:SelectOptions value="{!rothosmode}"/>
+                                            </apex:selectList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>If, for any reason, your first choice of room type is not available, please select a backup option. Hult staff will contact 
+                                        you in the event that your first choice is sold out:
+                                    </td>
+                                    </tr>
+                                    <tr style="{!if(disp_rot.Type__c=='Mod D' || disp_rot.Type__c=='Mod D & E','Display:Block;','Display:none;')}">
+                                        <td>
+                                            <apex:selectList value="{!disp_rot.Backup_Rot_Housing_Module_D__c}" size="1" styleClass="form-selectList">
+                                                <apex:selectOptions value="{!rothosmodd}"/>
+                                            </apex:selectList>
+                                        </td>
+                                    </tr>
+                                    <tr style="{!if(disp_rot.Type__c=='Mod E','Display:Block;','Display:none;')}">
+                                        <td class="formlable">
+                                            <apex:selectList value="{!disp_rot.Backup_Rot_Housing_Module_E__c}" size="1" styleClass="form-selectList">
+                                                <apex:SelectOptions value="{!rothosmode}"/>
+                                            </apex:selectList>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td>
+                                            <b><u>Roommate Selection</u></b> <br/><br/>
+                                            
+                                            If you selected a Double/Twin room, please enter your roommate preference. Please note that Hult can only place roommates if both 
+                                            students choose each other; otherwise you will be assigned a random roommate. If you wish to be assigned a roommate, 
+                                            please leave this field blank.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <apex:inputText styleclass="form-text-box" value="{!disp_rot.Roommate_Selection__c}"/><br/><br/>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td>
+                                            <style>
+                                            ol {
+                                                padding-top: 5px;
+                                                padding-bottom: 15px;
+                                            }
+                                            
+                                            ol li {
+                                                padding-left: 10px;
+                                                padding-bottom: 5px;
+                                            }
+                                            </style>
+                                            <b><u>Hult Accommodation Booking Terms</u></b><br/><br/>
+                                            <ol>
+                                               <li>Room Allocations: Hult accommodation is provided on a first-come, first-served basis. Although Hult will endeavor to place you in your first choice of room type, all rooms are subject to availability. Hult staff will contact you if your first room type choice is not available. Your actual room number and location will not be confirmed until your move-in day. Specific rooming requests beyond room type are not guaranteed, and the inability to fulfill specific rooming requests shall not provide grounds for early termination of the housing contract, nor shall Hult be liable in any way for compensation or other forms of remuneration.</li>
+                                               <li>Booking Deadlines: All room bookings are considered final as of the following dates. After these dates, no changes or cancellations will be allowed: 
+                                                   <ol type="a">
+                                                       <li>Undergraduate students: March 13, 2015</li>
+                                                       <li>Postgraduate students: April 1, 2015 for Module D and Module D&amp;E bookings; May 1, 2015 for Module E bookings</li>
+                                                   </ol>
+                                               </li>
+                                               <li>Accommodation Fees and Payment: After the Booking Deadline(s), your tuition statement will be updated with the appropriate fee for your room type and length of stay, and the fee for your reservation will become due in full. No refunds will be issued for changes or cancellations after the Booking Deadline(s). Please note that additional fees may be incurred for reservations that fall outside of the standard move-in/move-out dates as set by the housing management team for that campus. Fees will be issued in the student’s local (home campus) currency. Fees are due on the dates listed below; failure to pay for your accommodation puts you at risk for losing your reservation and may leave you liable for the full cost of your reservation:
+                                                   <ol type="a">
+                                                       <li>Undergraduate students: April 3, 2015</li>
+                                                       <li>Postgraduate students: April 22, 2015 for Module D and Module D&amp;E bookings; May 22, 2015 for Module E bookings</li>
+                                                   </ol>
+                                               </li>
+                                               <li>Student Housing Contracts: All contracts will be sent to students via email immediately after the Booking Deadline(s). Student housing contracts must be signed and returned to the appropriate campus housing management team no later than the start of the license period. Students are forbidden from moving into a Hult residence prior to completing and submitting the housing contract. You will still be liable for the full cost of your reservation should you fail to complete and submit the housing contract in a timely manner. All students are subject to the terms of their student housing contract(s), which may vary by location. </li>
+                                                <br/><br/>Confirm <span class="cuserror_star">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <apex:inputCheckbox value="{!disp_rot.Booking_Policy__c}"/><br/><br/>
+                                            </ol>
+                                        </td>
+                                    </tr>
+                                        
+                                    </table>
+                                </apex:outputPanel> 
+                                <apex:outputPanel rendered="{!And(disp_rot.Rotation_Campus__c!='London',disp_rot.Rotation_Campus__c!='Dubai',disp_rot.Rotation_Campus__c!='New York',disp_rot.Rotation_Campus__c!='San Francisco',disp_rot.Rotation_Campus__c!='Shanghai')}">
+                                <table width="100%" style="font-size:1.0em">
+                                <tr>
+                                    <td>
+                                    <apex:pageMessage severity="info" strength="1" summary="No further Information is needed on this section." rendered="{!AND(disp_rot.Rotation_Campus__c!='London',disp_rot.Rotation_Campus__c!='Dubai',disp_rot.Rotation_Campus__c!='New York',disp_rot.Rotation_Campus__c!='San Francisco',disp_rot.Rotation_Campus__c!='Shanghai')}"/>
+                                    </td>
+                                </tr>
+                                </table>
+                                </apex:outputPanel>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <span style="padding-left:16.4%;padding-bottom:5%;">
+                    <apex:commandLink value="SAVE" action="{!save_accm}" reRender="accm,disp,banr,headerr" styleClass="css_button" 
+                        rendered="{!OR(disp_rot.Rotation_Campus__c=='London',disp_rot.Rotation_Campus__c=='Dubai',disp_rot.Rotation_Campus__c=='New York',disp_rot.Rotation_Campus__c=='San Francisco',disp_rot.Rotation_Campus__c=='Shanghai')}"
+                        oncomplete="window.scrollTo(0,0);" style="margin-right: 5px;font-size: 110%;padding: 3px 10px;overflow: visible;" status="actStatusId4">
+                    </apex:commandLink>
+                    <apex:actionStatus id="actStatusId4" >
+                        <apex:facet name="start" >
+                          <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus>
+                </span><br/><br/><br/> 
+            </apex:outputPanel> 
+        </td>
+        </tr>
+    </table>
+</apex:form>
+    
+</apex:page>

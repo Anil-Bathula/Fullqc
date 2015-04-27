@@ -1,0 +1,459 @@
+<apex:page showHeader="false"  cache="true"
+    controller="ApplicantPersonalInformationController">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" />
+    <apex:form > 
+    <table class="innertable" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+        <td>
+                <apex:outputPanel id="panel1" >
+                <table width="100%" border="0" cellpadding="0" cellspacing="0"
+                    align="center"> 
+                    <tr>
+                        <td class="menu"><c:ApplicantHeader /></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:70px;">
+                        <table width="100%" class="innerpadding" border="0"
+                            cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td>
+
+                                <tr>
+                                    <td colspan="2" class="formheader4">Personal Information</td>
+                                </tr>
+
+                                <tr>
+                                    <td
+                                        background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}"
+                                        style="background-repeat: repeat-x;">&nbsp;</td>
+                                </tr>
+                                
+                                <tr style="text-align: left">
+                                    <td colspan="2"><apex:pageMessages escape="false"
+                                        showDetail="false" /></td>
+                                </tr>
+                                <tr style="text-align: left">
+                                    <td colspan="2" class="formlable">
+                                    This section enables us to better understand your background, as well as the visa requirements to study at your chosen campus. Once you are done, please click on Save and Continue. 
+                                     <br/><br/>
+                                    </td>
+                                </tr>
+                                <tr style="text-align: left">
+                                    <td>   
+                                    </td>
+                                      <td  align="left" class="formheader3">Current
+                                            Address</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top"><!-- Code for text box --> <apex:includeScript value="{!$Resource.RegistrationJavascript}" />
+                                    <table width="100%" border="0">
+                                   
+                                        <tr>
+                                            <td align="right" class="formlable" style="width: 202px;">Title</td>
+                                            <td class="formlable">
+                                            <apex:inputfield id="title" value="{!con.Salutation}" styleClass="form-selectList"></apex:inputfield>
+                                            <script>document.getElementById('{!$Component.title}').disabled = {!finalsubmit}; </script>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">First Name<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.firstname}" styleClass="form-text-box" />
+                                            <apex:inputText disabled="{!finalsubmit}"
+                                                rendered="{!finalsubmit}" value="{!con.firstname}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">Last Name<span
+                                                class="error_star">*</span></td>
+                                            <td><!--apex:inputField rendered="{!NOT(finalsubmit)}" value="{!con.lastname}" styleClass="form-text-box" /-->
+                                            <apex:inputText maxlength="60" disabled="{!finalsubmit}"
+                                                value="{!con.lastname}" styleClass="form-text-box" />
+                                            </td>
+                                        </tr>
+                                        <!--<tr>
+                                            <td class="formlable" align="right">Suffix</td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.Suffix__c}"
+                                                styleClass="form-selectList" /> <apex:selectList disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                styleClass="form-selectList">
+                                                <apex:selectOption itemValue="{!con.Suffix__c}"
+                                                    itemLabel="{!con.Suffix__c}"></apex:selectOption>
+                                            </apex:selectList></td>
+                                        </tr>-->
+                                        <tr>
+                                        
+                                            <td class="formlable" align="right">Gender<span
+                                                class="error_star">*</span></td>
+                                            <!--
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.Gender__c}"
+                                                styleClass="form-selectList" /> <apex:selectList disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                styleClass="form-selectList">
+                                                <apex:selectOption itemValue="{!con.Gender__c}"
+                                                    itemLabel="{!con.Gender__c}"></apex:selectOption>
+                                            </apex:selectList></td>
+                                            -->
+                                            <td class="formlable">
+                                            <apex:selectRadio value="{!con.Gender__c}" onclick="is_secondary_program_visible(this.value);" id="is_secondary_program_visible" disabled="{!finalsubmit}">
+                                                    <apex:selectOptions value="{!yesno}"/>
+                                                </apex:selectRadio>
+                                               
+                                            </td>
+                                        </tr>
+                                       <tr height="30px">
+                                            <td class="formlable" align="right">Email</td>
+                                            <td><apex:inputText styleClass="form-text-box" value="{!con.Email}" disabled="true"/></td>
+                                        </tr> 
+                                           <apex:actionRegion >
+                                       <tr>
+                                            <td class="formlable" align="right">Country where you currently live<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:selectList disabled="{!finalsubmit}"
+                                                value="{!con.Country_Of_Residence__c}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!clist}" />
+                                                <apex:actionSupport action="{!countryChange}" event="onchange" reRender="mypanel,mypanel2,mypanel3,State1"/>
+                                            </apex:selectList></td>
+                                        </tr>
+                                        </apex:actionRegion>
+                                        <tr>
+                                            <td class="formlable" align="right">Nationality<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:selectList disabled="{!finalsubmit}"
+                                                value="{!con.Country_Of_Origin__c}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!clist}" />
+                                            </apex:selectList></td>
+                                        </tr>
+                                         
+                                        
+                                        
+                                        
+                                        <tr>
+                                            <td class="formlable" align="right">Nationality two, if
+                                            applicable</td>
+                                            <td><apex:selectList disabled="{!finalsubmit}"
+                                                value="{!con.Country_Of_Citizenship__c}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!clist}" />                                                
+                                            </apex:selectList></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">Birthdate
+                                            (dd/mm/yyyy)<span class="error_star">*</span></td>
+                                            <td><apex:inputText disabled="{!finalsubmit}" styleClass="form-text-box"
+                                                style="width:30px" maxlength="2" value="{!birthday}" />
+                                            -&nbsp; <apex:inputText disabled="{!finalsubmit}"
+                                                styleClass="form-text-box" style="width:30px" maxlength="2"
+                                                value="{!birthmonth}" /> -&nbsp; <apex:inputText disabled="{!finalsubmit}" styleClass="form-text-box"
+                                                style="width:50px" maxlength="4" value="{!birthyear}" /></td>
+                                        </tr>
+                                        <!--<tr>
+                                            <td colspan="2"
+                                                background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}"
+                                                style="background-repeat: repeat-x">&nbsp;</td>
+                                        </tr>-->
+                                        <tr>
+                                            <td class="formlable" align="right" valign="top">Primary Number<span
+                                                class="error_star">*</span></td>
+                                            <td style="padding-bottom:0px;">
+                                            <apex:selectList id="mypanel" styleClass="form-selectList1"
+                                                disabled="{!finalsubmit}" 
+                                                value="{!con.Home_Phone_Country_Code__c}"
+                                                multiselect="false" size="1" style="font-size:12px;">
+                                                <apex:selectOptions value="{!countryCode}" />
+                                            </apex:selectList>&nbsp;<br />
+                                            <span class="formlable" style="font-size:11px;padding-top:7px;"><i>Country
+                                            Code</i></span><br /><br />
+                                            &nbsp; <apex:inputText maxlength="17"
+                                                disabled="{!finalsubmit}"
+                                                value="{!con.Phone}"
+                                                style="width:205px" styleClass="form-text-box1" /><br /> 
+                                             <span class="formlable" style="font-size: 11px;padding-bottom:7px;"><i>Main
+                                            Number</i></span></td>
+                                        </tr>
+                                  
+                                        <tr>
+                                            <td style="padding-top:7px;" class="formlable" align="right" valign="top">Secondary Number</td>
+                                            <td style="padding-top:7px;"><apex:selectList id="mypanel2" styleClass="form-selectList1"
+                                                disabled="{!finalsubmit}"
+                                                value="{!con.Mobile_Phone_Country_Code__c}"
+                                                multiselect="false" size="1" style="font-size:12px;">
+                                                <apex:selectOptions value="{!countryCode}" />                                                
+                                            </apex:selectList>&nbsp;<br />
+                                            <span class="formlable" style="font-size: 11px;padding-top:7px;"><i>Country
+                                            Code</i></span><br /><br />
+                                            <apex:inputText maxlength="17"
+                                                disabled="{!finalsubmit}"
+                                                value="{!con.MobilePhone}"
+                                                style="width:205px" styleClass="form-text-box1" /><br /> 
+                                             <span class="formlable"
+                                                style="font-size: 11px;vertical-align: text-top;"><i>Main Number</i></span></td>
+                                        </tr>
+                                
+                                       
+                                        <apex:outputText rendered="{!chkAttach}">
+                                        
+                                        <tr><td class="formlable"  align="right">Attach CV/Resume 
+                                          </td>
+                                          <td  align="left">
+                                          <apex:outputLink value="/servlet/servlet.FileDownload?file={!Attach.Id}" target="blank" rendered="{!chk}">
+                                            <span style="font-weight:bold;">{!Attach.Name}</span>
+                                          </apex:outputLink>
+                                       
+                                          <apex:inputFile disabled="{!finalsubmit}" id="browseFile" value="{!Attach.body}" contentType="Text" size="35" styleclass="formlable" filename="{!Attach.name}"/>
+                                       
+                                          </td>
+                                          </tr> 
+                                          <script language="javascript" type="text/javascript">
+                                               document.getElementById("{!$Component.browseFile}").value = '{!testStr}';
+                                            </script> 
+                                          </apex:outputText>
+                                       </table>
+                                    <!-- end code  -->
+                                    </td>
+                                    
+                                    <td valign="top">
+                                    <table>
+                                        <!--<tr>
+                                            <td colspan="2"
+                                                background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}"
+                                                style="background-repeat: repeat-x">&nbsp;</td>
+                                        </tr>-->
+                                         <apex:actionRegion >            
+                                        <tr>
+                                            <td class="formlable" align="right">Street<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.Otherstreet}"
+                                                styleClass="form-text-box" /> <apex:inputTextarea disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                value="{!con.Otherstreet}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">City<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.Othercity}"
+                                                styleClass="form-text-box" /> <apex:inputText disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                value="{!con.Othercity}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td class="formlable" align="right">Zip/Postal Code<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.Otherpostalcode}"
+                                                styleClass="form-text-box" /> <apex:inputText disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                value="{!con.Otherpostalcode}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">Country<span
+                                                class="error_star">*</span></td>
+                                            <td>
+                                            
+                                            <apex:selectList id="mypanel3" disabled="{!finalsubmit}" 
+                                                value="{!con.Other_Country__c}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!clist}" />
+                                                <apex:actionSupport event="onchange" action="{!StateChange}"   reRender="State1"/>
+                                            </apex:selectList>
+                                            
+                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">State/Province<span
+                                                class="error_star">*</span></td>
+                                            <td>
+                                            <apex:outputPanel id="State1">
+                                            
+                                            
+                                            <apex:selectList disabled="{!finalsubmit}" rendered="{!statesList.size>1}" 
+                                                value="{!con.OtherState}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!stateslist}" />
+                                            </apex:selectList>
+                                            
+                                            <apex:inputText disabled="{!finalsubmit}" rendered="{!NOT(statesList.size>1)}" 
+                                                value="{!con.OtherState}"
+                                                styleClass="form-text-box" />
+                                            
+                                            
+                                            </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                        </apex:actionRegion>
+                            
+                                        <tr>
+                                            <td height="10">&nbsp;</td>
+                                        </tr> 
+                                  
+                                        <tr>
+                                                            <td align="right">
+                                                            <apex:inputCheckbox onclick="showHide(null);" styleClass="form-text-box" style="width:30px"  value="{!mailingPurpose}" disabled="{!finalsubmit}" immediate="true">
+                                                             
+                                                            </apex:inputCheckbox>
+                                                            </td>
+                                                            <td align="left" class="formlable">
+                                                            I would like to use a different  Address for Mailing purposes.
+                                                            </td>
+                                                        </tr>                                        
+                                      
+                                       <tr>
+                                            <td colspan="2">
+                                      <div id="mail"  style="display:none">
+                                        
+                                      <apex:actionRegion >
+                                      <table>
+                                      <tr height="30px">
+                                            <td colspan="2" align="left" class="formheader" style="font-size:15px;">
+                                            Mailing Address</td>
+
+                                        </tr>
+                                 
+                                        <tr>
+                                            <td class="formlable" align="right">Street<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.mailingstreet}"
+                                                styleClass="form-text-box" /> <apex:inputTextarea disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                value="{!con.mailingstreet}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">City<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.mailingcity}"
+                                                styleClass="form-text-box" /> <apex:inputText disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                value="{!con.mailingcity}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td class="formlable" align="right">Zip/Postal Code<span
+                                                class="error_star">*</span></td>
+                                            <td><apex:inputField rendered="{!NOT(finalsubmit)}"
+                                                value="{!con.mailingpostalcode}"
+                                                styleClass="form-text-box" /> <apex:inputText disabled="{!finalsubmit}" rendered="{!finalsubmit}"
+                                                value="{!con.mailingpostalcode}"
+                                                styleClass="form-text-box" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formlable" align="right">Country<span
+                                                class="error_star">*</span></td>
+                                            <td>
+                                            
+                                            <apex:selectList disabled="{!finalsubmit}" 
+                                                value="{!con.Mailing_Country__c}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!clist}" />
+                                                <apex:actionSupport event="onchange" action="{!StateChange}"  reRender="StateList1"/>
+                                            </apex:selectList>
+                                            
+                                            
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td class="formlable" align="right">State/Province<span
+                                                class="error_star">*</span></td>
+                                            <td>
+                                            <apex:outputPanel id="StateList1">
+                                      
+                                               <apex:selectList disabled="{!finalsubmit}" rendered="{!statesList2.size>1}" 
+                                                value="{!con.mailingstate}"
+                                                styleClass="form-selectList" size="1">
+                                                <apex:selectOptions value="{!statesList2}" />
+                                                </apex:selectList>
+                                            
+                                                <apex:inputText disabled="{!finalsubmit}" rendered="{!NOT(statesList2.size>1)}" 
+                                                value="{!con.mailingstate}"
+                                                styleClass="form-text-box" />
+                                            
+                                            </apex:outputPanel>
+                                            </td>
+                                        </tr>
+                                         </table>
+                                           </apex:actionRegion>
+                                          
+                                        </div>
+                                        </td></tr>
+                                    </table>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="2" height="20"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" 
+                                        background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}"
+                                        style="background-repeat: repeat-x">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding-left: 20px; padding-right: 20px; vertical-align: text-bottom">
+                                    <table width="100%">
+                                        <tr>
+                                            <td align="center"><apex:outputText rendered="{!!finalsubmit}">
+                                                
+
+                                                <span class="button primary"> <apex:commandLink rendered="{!!finalsubmit}" value="Save and Continue"
+                                                    title="Save and Continue" id="step2" action="{!SaveAndContinue}" />
+
+                                                </span>
+                                                <span class="divider">|</span>
+                                                <apex:commandLink value="Save and Logout"
+                                                    rendered="{!NOT(finalsubmit)}" styleClass="secondary"
+                                                    action="{!SaveAndLogout}" />
+                                            </apex:outputText></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="float: right; vertical-align: bottom"><apex:outputLink value="#">
+                                                <apex:image url="{!URLFOR($Resource.Images, 'new-images/topimage.jpg')}" />&nbsp;<b>back
+                                                to top</b>
+                                            </apex:outputLink> </span></td>
+                                        </tr>
+                                    </table>
+                                    </td>
+                                </tr>
+                                </td>
+                            </tr>
+                        </table>
+                        </td>
+                    </tr>
+                
+                </table>
+            </apex:outputPanel>
+           </td>
+        </tr>
+    </table>
+     </apex:form>
+<script> 
+document.getElementById('Personal').style.backgroundImage="url('{!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')}')";
+document.getElementById('Personal').style.backgroundPosition="center";
+document.getElementById('Personal1').className="headertabonload";
+
+ function showHide(str){
+        if(str=='false'){
+            document.getElementById('mail').style.display='none';
+        }else if(str=='true'){
+            document.getElementById('mail').style.display='inline';
+        }else{
+            if(document.getElementById('mail').style.display=='inline'){
+                document.getElementById('mail').style.display='none';
+            }
+            else{
+                document.getElementById('mail').style.display='inline';
+            }
+        }
+ }
+ showHide("{!mailingPurpose}");
+</script>
+    <site:googleAnalyticsTracking ></site:googleAnalyticsTracking>
+</apex:page>

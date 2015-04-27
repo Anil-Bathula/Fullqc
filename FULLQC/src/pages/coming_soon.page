@@ -1,0 +1,69 @@
+<apex:page showHeader="false" sidebar="false">
+  <apex:form forceSSL="true" >
+
+<head>
+    <title>Hult Rotation Point</title>
+</head>
+
+    <div id="wrapper">
+    <div id="page">
+
+<header>
+            
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/style.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/base.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/grid.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/light.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/blue.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/calendar.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/jobboard.css"
+    rel="stylesheet" type="text/css" />
+            
+            <h1 id="logo">
+                <a href="#">
+                <img alt="logo" src="https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/img/HultLogo.png" title="logo" />
+                </a>
+            </h1>
+            <br class="cl" />
+        </header>
+        
+        <h2 class="ribbon blue full" style="text-align:left;">Hult Rotation Point</h2>
+        <div class="triangle-ribbon blue">
+        </div>
+        
+        <div style="padding-bottom:18%;">
+            <h1>Please stand-by</h1>
+        </div>
+        <div style="padding-left:50px;"> 
+             
+            <p>Hult Rotation Point will be live on March 5th, at the following times:</p><br/>
+            <p><b>London: 3:00 PM</b></p> 
+            <p><b>Shanghai: 11:00 PM</b></p> 
+            <p><b>Dubai: 7:00 PM</b></p> 
+            <p><b>Boston: 10:00 AM</b></p> 
+            <p><b>San Francisco: 7:00 AM</b></p>  
+            <br /> 
+            <p>We appreciate your patience.</p> 
+        </div> 
+        
+    </div>
+</div> 
+
+    
+
+ 
+</apex:form> 
+</apex:page>

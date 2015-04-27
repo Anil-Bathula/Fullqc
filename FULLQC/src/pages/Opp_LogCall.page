@@ -1,0 +1,104 @@
+<!--
+   Developer : Anil.B
+        This VF used as an inline VF page of Opportunity detail page, 
+        displays list 3 buttons with  Name:-Connected,
+        Called,no voicemail,Left voicemail and displays Activity history
+        Which the subject contains same as button names.   
+   Changes:Anil.B 2/5/2013 Added page Block table to display last 5 activity histories 
+      
+ -->
+
+<apex:page standardController="Opportunity" extensions="Opp_logCall" standardStylesheets="False"  >
+<apex:form id="main" >
+<apex:pageMessages ></apex:pageMessages>  
+
+    <style type="text/css">
+        .newLink { color: #4483C2; font-weight: bold;}
+        .sample { color: #0000ff; font-weight:bold;}
+        .newLinks { color:#548E37 ; font-weight: bold;}
+        .hidelink {display:none}        
+    </style>
+
+<div style="overflow:auto; height: 150px;width:480px;">
+<apex:pageblock >
+ 
+    <b style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:13.1px;font-weight:700;">Log A Call </b>
+    <b>
+      <apex:commandButton value="Left voicemail" action="{!custSave1}" id="nc1" reRender="main,ref" rendered="{!hidebutton}" style="Color:#0000FF;" > 
+      <apex:param value="Left voicemail" name="Rec" assignTo="{!selid}"/> 
+        <apex:outputPanel id="refresh" rendered="true">
+            <apex:outputPanel id="refresh1" rendered="{!refreshPage}">
+                <script>
+                window.top.location='/{!opp.id}';
+                </script>
+            </apex:outputPanel>
+        </apex:outputPanel>
+       
+      </apex:commandButton>
+          <apex:commandButton value="Connected" action="{!custNew}" id="nc2" reRender="main,ref" rendered="{!hidebutton}" style="Color:#0000FF;">   
+          <apex:param value="Connected" name="Rec" assignTo="{!selid}"/>
+      </apex:commandButton>
+      <apex:commandButton value="Called,no voicemail"  action="{!custSave1}" id="nc3" reRender="main,ref" rendered="{!hidebutton}" style="Color:#0000FF;" > 
+          <apex:param value="Called,no voicemail" name="Rec" assignTo="{!selid}"/>      
+           <apex:outputPanel id="refresh11" rendered="true">
+                <apex:outputPanel id="refresh12" rendered="{!refreshPage}">
+                    <script>
+                    window.top.location='/{!opp.id}';
+                    </script>
+                </apex:outputPanel>
+            </apex:outputPanel>
+      </apex:commandButton>
+      
+      <apex:commandButton value="Face-to-Face" action="{!custNew}" id="nc4" reRender="main,ref" rendered="{!hidebutton}" style="Color:#0000FF;">   
+          <apex:param value="Face-to-Face" name="Rec" assignTo="{!selid}"/>
+      </apex:commandButton>  
+      
+      </b>       
+            
+        <apex:pageBlock rendered="{!Property}" id="ref">      
+           <apex:pageBlockSection columns="1"  > 
+           
+                    <apex:panelGrid columns="3">  
+                                    
+                        <apex:commandLink action="{!custCancel}" title="cancel" value="Return Back" reRender="main,reff" style="Color:#4483C2;"/>       
+                        <apex:inputField value="{!tsk.Description}" style="width:320px;height:40px"  />
+                        <apex:commandbutton action="{!custSave}" title="Save" value="Save" reRender="main,reff" >
+                            <apex:outputPanel id="refresh11" rendered="True">
+                                <apex:outputPanel id="refresh12" rendered="{!refreshPage}">
+                                    <script>
+                                    window.top.location='/{!opp.id}';
+                                    </script>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                       </apex:commandButton>  
+                                        
+                    </apex:panelGrid>  
+                                
+            </apex:pageBlockSection>              
+         </apex:pageBlock> 
+         
+         <apex:pageBlockTable value="{!lsttsk}" var="t">
+               <apex:column value="{!t.Subject}">
+                    <apex:facet name="header">Subject</apex:facet>
+               </apex:column>
+               
+               <apex:column value="{!t.CreatedBy.Name}">
+                   <apex:facet name="header">Name</apex:facet>
+               </apex:column>
+               
+               <apex:column value="{!t.CreatedDate}">  
+                   <apex:facet name="header">Created Date</apex:facet>
+               </apex:column> 
+                    
+               <apex:column style="overflow:hidden;" > 
+                    <apex:facet name="header">Comments</apex:facet>
+                         {!If(LEN(t.Description)<38,t.Description,LEFT(t.Description,38)+'..')}                 
+               </apex:column>
+         </apex:pageBlockTable>        
+    
+   
+    
+</apex:pageblock>   
+</div>
+</apex:form>
+</apex:page>

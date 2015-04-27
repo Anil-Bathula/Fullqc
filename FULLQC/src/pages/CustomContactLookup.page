@@ -1,0 +1,67 @@
+<apex:page controller="CustomContactLookupController"
+  title="Search" 
+  showHeader="false" 
+  sideBar="false" 
+  tabStyle="Contact" 
+  id="pg">
+  
+  <apex:form >
+  <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+        <apex:tabPanel switchType="client" selectedTab="name1" id="tabbedPanel">
+        
+          <!-- SEARCH TAB -->
+          <apex:tab label="Search" name="tab1" id="tabOne">
+            <apex:actionRegion >  
+                  <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+                    <apex:outputLabel value="Search" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+                    <apex:inputText id="txtSearch" value="{!searchString}" />
+                      <span style="padding-left:5px"><apex:commandButton id="btnGo" value="Go!" action="{!runSearch}" rerender="searchResults" status="actStatusId1"></apex:commandButton></span>
+                      <apex:actionStatus id="actStatusId1" >
+                    <apex:facet name="start" >
+                        <font color="red">Processing..</font> <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                  </apex:actionStatus>
+                  </apex:outputPanel>
+                <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+                    <apex:pageBlock id="searchResults"> 
+                      <apex:pageBlockTable value="{!results}" var="a" id="tblResults">
+                        <apex:column >
+                          <apex:facet name="header">
+                            <apex:outputPanel >Name</apex:outputPanel>
+                          </apex:facet>
+                           <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!a.Id}','{!a.Name}', false)" rendered="{!NOT(ISNULL(a.Id))}">{!a.Name}</apex:outputLink>     
+                        </apex:column>
+                      </apex:pageBlockTable>
+                    </apex:pageBlock>
+                </apex:outputPanel>
+            </apex:actionRegion>
+          </apex:tab>
+          
+          <!-- NEW ACCOUNT TAB -->
+          <apex:tab label="New Parent" name="tab2" id="tabTwo">
+          <apex:pageBlock id="newAccount" title="New Parent" >          
+              <apex:pageBlockButtons >
+                  <apex:commandButton action="{!saveContact}" value="Save" oncomplete="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!con.Id}','{!con.FirstName} {!con.LastName}', false)" status="actStatusId"/>
+                  <apex:actionStatus id="actStatusId" >
+                    <apex:facet name="start" >
+                        <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                  </apex:actionStatus>
+              </apex:pageBlockButtons>
+              <apex:pageMessages />
+              
+              <apex:pageBlockSection columns="2">
+                <apex:inputField value="{!con.FirstName}"/>
+                <apex:inputField value="{!con.LastName}"/>
+                <apex:inputField value="{!con.Email}"/>
+                <apex:inputField value="{!con.MobilePhone}"/>
+                <apex:pageBlockSectionItem >
+                   Contact Record Type <apex:outputText value="Parent"/>
+                </apex:pageBlockSectionItem>
+              </apex:pageBlockSection> 
+          </apex:pageBlock>
+          </apex:tab>
+        </apex:tabPanel>
+  </apex:outputPanel>
+  </apex:form>
+</apex:page>

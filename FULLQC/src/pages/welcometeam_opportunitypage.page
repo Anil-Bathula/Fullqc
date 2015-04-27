@@ -1,0 +1,137 @@
+<!--    
+    Page      : welcometeam_opportunitypage
+    std. ctrlr: Opportunity
+    Extension : welcometeam_opppage_ctrlr
+    Developer : Harsha Simha S
+    Date      : 22/7/2013
+    Comment   : SFSUP-602 This VF page is added in the page opportunity layout for Welcome team profiles. 
+                Where this profile users can see the opportunity only on comfirmed stage and campus=their location.
+                This users can edit few sections and they can acces few inline vf pages. 
+    Modified By: Anil.B 15/11/2013---JIRA No::::SFSUP-672.
+    Modified By: Anil.B 6/06/2014-----Jira No:::SFSUP-733.
+    Modified By: Prem 5/06/2014---JIRA No::SFSUP-732.
+    Modified By: Anil.B 18/06/2014 JIRA No:SFSUP:737.
+-->
+<apex:page standardController="Opportunity" extensions="welcometeam_opppage_ctrlr"> 
+    <apex:pageBlock mode="detail" rendered="{!IF(AND(OR(Opportunity.stageName=='Confirmed',Opportunity.stageName=='Conditionally Confirmed',Opportunity.stageName=='Admissions Endorsed Confirmed',Opportunity.stageName=='Soft Rejected Confirmed',Opportunity.stageName=='Cancellation',Opportunity.stageName=='Deferral'),user_loc==Opportunity.Primary_Campus__c),true,false)}" > <!--rendered="{!if(stageName=="confirmed",true,false)}" -->
+      <apex:pageBlockSection columns="2">
+        <!--  <apex:outputField value="{!Opportunity.Name}"/>
+          <apex:outputField value="{!Opportunity.StageName}"/>
+          
+          <apex:outputField value="{!Opportunity.AccountId}"/>
+          <apex:outputField value="{!Opportunity.CloseDate}"/>
+          
+          <apex:outputField value="{!Opportunity.Probability}"/>
+          -->
+          <apex:outputText value="{!Opportunity.contact__r.Name}"  id="cont" />
+          <apex:outputField value="{!Opportunity.Applicant_Email__c}"/>
+          
+          <apex:outputField value="{!Opportunity.Phone__c}"/>
+           <Apex:outputField value="{!Opportunity.Start_Year__c}" />
+          
+          <apex:outputField value="{!Opportunity.Primary_Phone_Country_Code__c}"/>
+          <apex:outputField value="{!Opportunity.Gender__c}"/>
+          
+          <apex:outputField value="{!Opportunity.Primary_Phone_Main_Number__c}" />
+          <apex:outputField value="{!Opportunity.Age__c}"/>
+          
+          <apex:outputField value="{!Opportunity.Mobile__c}"/>
+          <apex:outputField value="{!Opportunity.Country_Of_Residence__c}"/>
+          
+          <apex:outputField value="{!Opportunity.Mailing_Address__c}"/>
+          <apex:outputField value="{!Opportunity.Country_Of_Origin__c}"/>
+          
+          <apex:outputField value="{!Opportunity.City__c}"/>
+          <apex:outputField value="{!Opportunity.Country_Of_Citizenship__c}"/>
+          
+          <apex:outputField value="{!Opportunity.Mailing_Country_from_contact__c}"/>
+          <apex:outputField value="{!Opportunity.Region__c}"/>
+          
+          <apex:outputField value="{!Opportunity.Mailing_Postal_Code_from_Contact__c}"/>
+          <apex:outputField value="{!Opportunity.Program__r.Name}"/>
+          
+          <apex:outputField value="{!Opportunity.Date_of_Arrival__c}"/>
+          <apex:outputField value="{!Opportunity.Primary_Campus__c}"/>
+          
+          <apex:outputField value="{!Opportunity.MyHult_Last_login_Date__c}"/>
+          <apex:outputField value="{!Opportunity.Secondary_Campus__c}"/>          
+          
+<!--      <apex:outputField value="{!Opportunity.Late_Comer_Stage__c}"/> -->
+          <apex:outputField value="{!Opportunity.Start_Term__c}"/>
+          
+<!--      <apex:outputField value="{!Opportunity.Counter_Waived_Off_App_Fee__c}"/>-->
+          <apex:outputField value="{!Opportunity.Program_Start_Date__c}"/>
+          
+          
+          
+      </apex:pageBlockSection>   
+      <apex:form id="noneditsec" >   
+      <apex:pageBlockSection collapsible="true" title="Student Services & Welcome Team" rendered="{!NOT(show_edit)}">
+              
+              <apex:pageBlockSectionItem > 
+                   <apex:inputHidden value="{!opportunity.id}"/>
+              </apex:pageBlockSectionItem>
+              <apex:commandButton action="{!edit}" value="Edit"/><!--  rerender="noneditsec,editsec"/>  -->
+             
+          <apex:outputField value="{!Opportunity.WT_Email_Sent__c}"/>
+          <apex:outputField value="{!Opportunity.WT_Email_Date__c}"/>
+          
+          <apex:outputField value="{!Opportunity.SSC_Pre_Arrival_Call_Completed__c}"/>
+          <apex:outputField value="{!Opportunity.WT_Pre_Arrival_Call_Date__c}"/>
+
+          <apex:outputField value="{!Opportunity.WT_Comments__c}"/>
+         <!-- <apex:outputField value="{!Opportunity.Accommodation_LON_BIBA_and_SHA_Only__c}"/>-->
+          
+          <apex:outputField value="{!Opportunity.Applicant_Request_to_Stop_Communication__c}"/>          
+         <!-- <apex:outputField value="{!Opportunity.Accommodation_Supplier__c}" /> -->
+          
+          <apex:outputField value="{!Opportunity.Accommodation_support_in_progress__c}"/>
+          <apex:outputField value="{!Opportunity.Student_is_looking_for_a_roommate__c}"/>
+          <apex:outputField value="{!Opportunity.Accommodation_secured__c}"/>          
+          <apex:outputField value="{!Opportunity.Accommodation_Supplier__c}" />
+          <apex:outputField value="{!Opportunity.ID_Photo_Uploaded__c}"/>
+          
+      </apex:pageBlockSection>
+      </apex:form>            
+      <apex:form id="editsec">
+      <apex:pageBlockSection collapsible="true" title="Student Services & Welcome Team" rendered="{!show_edit}">
+             
+          <apex:pageBlockSectionItem >
+          <apex:commandlink action="{!save}" value="Save" StyleClass="btn" target="_top" style="text-decoration:none;padding: 4px 4px;border-width: 1px;border-style: solid;"/>  
+          <apex:commandlink action="{!Cancel}" value="Cancel" StyleClass="btn" target="_top" style="text-decoration:none;padding: 4px 4px;border-width: 1px;border-style: solid;"/>    
+<!--          <apex:commandButton action="{!cancel_sec}" value="Cancel"/><!--reRender="noneditsec,editsec"/>  -->
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem ><apex:inputHidden value="{!opportunity.name}"/></apex:pageBlockSectionItem> 
+          <apex:inputField value="{!Opportunity.WT_Email_Sent__c}" label="{!$ObjectType.Opportunity.fields.WT_Email_Sent__c.Label}"/>
+          <apex:inputField value="{!Opportunity.WT_Email_Date__c}" label="{!$ObjectType.Opportunity.fields.WT_Email_Date__c.Label}"/>
+          
+          <apex:inputField value="{!Opportunity.SSC_Pre_Arrival_Call_Completed__c}" label="{!$ObjectType.Opportunity.fields.SSC_Pre_Arrival_Call_Completed__c.Label}"/>
+          <apex:inputField value="{!Opportunity.WT_Pre_Arrival_Call_Date__c}" label="{!$ObjectType.Opportunity.fields.WT_Pre_Arrival_Call_Date__c.Label}"/>
+          
+          <apex:inputField value="{!Opportunity.WT_Comments__c}" label="{!$ObjectType.Opportunity.fields.WT_Comments__c.Label}"/>
+         <!-- <apex:inputField value="{!Opportunity.Accommodation_LON_BIBA_and_SHA_Only__c}" label="{!$ObjectType.Opportunity.fields.Accommodation_LON_BIBA_and_SHA_Only__c.Label}"/>-->
+                    
+          <apex:inputField value="{!Opportunity.Applicant_Request_to_Stop_Communication__c}" label="{!$ObjectType.Opportunity.fields.Applicant_Request_to_Stop_Communication__c.Label}"/>          
+         <!-- <apex:inputField value="{!Opportunity.Accommodation_Supplier__c}" Label="{!$ObjectType.Opportunity.fields.Accommodation_Supplier__c.Label}"/> -->
+          
+          <apex:inputField value="{!Opportunity.Accommodation_support_in_progress__c}" Label="{!$ObjectType.Opportunity.fields.Accommodation_support_in_progress__c.Label}"/>
+          <apex:inputField value="{!Opportunity.Student_is_looking_for_a_roommate__c}" Label="{!$ObjectType.Opportunity.fields.Student_is_looking_for_a_roommate__c.Label}"/>
+          <apex:inputField value="{!Opportunity.Accommodation_secured__c}" Label="{!$ObjectType.Opportunity.fields.Accommodation_secured__c.Label}"/>
+          <apex:inputField value="{!Opportunity.Accommodation_Supplier__c}" Label="{!$ObjectType.Opportunity.fields.Accommodation_Supplier__c.Label}"/>   
+          <apex:inputField value="{!Opportunity.ID_Photo_Uploaded__c}" Label="{!$ObjectType.Opportunity.fields.ID_Photo_Uploaded__c.Label}"/>   
+      </apex:pageBlockSection>
+      </apex:form>
+     
+   <!---Anil.B 18/6/2014 JIRA NO:737 Commented the below two vf page opp_logcall and opportunitycomments-->
+     
+   <!--   <apex:pageBlockSection columns="1" >
+         <apex:include pageName="Opp_LogCall" id="vf1" />
+         <apex:include pageName="OpportunityComments" id="vf2"/>
+      </apex:pageBlockSection>--->
+    </apex:pageBlock>
+    
+    <Apex:pageBlock rendered="{!IF(AND(OR(Opportunity.stageName=='Confirmed',Opportunity.stageName=='Conditionally Confirmed',Opportunity.stageName=='Admissions Endorsed Confirmed',Opportunity.stageName=='Soft Rejected Confirmed',Opportunity.stageName=='Cancellation',Opportunity.stageName=='Deferral'),user_loc==Opportunity.Primary_Campus__c),false,true)}" >
+        <apex:pageMessage summary="You dont have access to this record!" severity="Warning" strength="3"/>
+    </Apex:pageBlock>
+    
+</apex:page>

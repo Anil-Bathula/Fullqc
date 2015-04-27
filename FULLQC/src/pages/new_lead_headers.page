@@ -1,0 +1,92 @@
+<apex:page standardController="Lead" action="{!init}" extensions="new_lead_headers_ctrlr" >
+<!--
+    Developer : Harsha Simha
+        This VF used as a header on the Lead detail page. which displays different values of Lead like program,Recruiter,Caller..
+        and displays images based on some field values
+ -->
+   <table width="100%" > <!-- style="border:3px solid gray;" -->
+
+<!-- Row 0 -->
+<tr >
+<style>
+.hdr
+{
+    color:  #FFFFFF;//#4A4A56;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:10.9167px;
+    font-weight:normal ;//700;
+    padding-bottom:3px;
+    padding-left:2px;
+    padding-right:10px;
+    padding-top:0px;
+    text-align:right;
+    
+    width:74.9333px;
+}
+</style>
+<!-- Column 0.1 -->
+<td style="background-color:#D8D8D8;background-repeat:repeat" width="60%">
+<div style="overflow:auto; height:45px; width:100%;">
+<apex:form id="form0_1" >
+    <table width="100%;"><tr><td style="padding-top:7px;font-family:Calibri;" align="left">
+              <apex:outputLabel style="color:#414141;" value="Recruiter"></apex:outputLabel>  
+              <apex:outputLabel value="{!currlead_rec.Owner.Name}" style="color:#727272;font-weight:bold;font-family:Calibri;font-size:20px;"/>
+                <apex:outputLabel value="   " style="color:#FFFFFF;font-weight:normal;font-family:Calibri;font-size:20px;" rendered="{!(If(OR(currlead_rec.Telesales_Caller__c==null,currlead_rec.OwnerId==null),false,true))}" />
+                <apex:outputLabel value="Caller" style="color:#414141;"  rendered="{!(If(currlead_rec.Telesales_Caller__c==null,false,true))}"></apex:outputLabel> 
+ &nbsp;<apex:outputLabel value="{!currlead_rec.Telesales_Caller__r.Name}" style="color:#727272;font-family:Calibri;font-weight:bold;font-size:20px;"/>
+              </td> 
+              <td style="vertical-align:top;" align="right"> 
+                  <Apex:image value="{!URLFOR($Resource.logo_images, 'images/interview_booked.png')}"  height="35" width="35" rendered="{!(If(currlead_rec.Interview_Status__c=='Booked',true,false))}"/>
+              </td>
+
+</tr>
+
+</table>
+
+</apex:form>                
+</div>
+</td>
+
+
+<!-- Column 0.2 --><!--836C70-->
+<td style="background-color:#D8D8D8;background-repeat:repeat" width="40%">
+<div style="overflow:auto; height:45px; width:100%;">
+<apex:form id="form0_2" >
+    <table  width="100%"><tr><td style="padding-top:7px;">
+            <apex:outputLabel value="{!UPPER(currlead_rec.Program_Parsed__c)}" style="color:#727272;font-weight:bold ;font-size:20px;font-family:Calibri;"/>
+            <apex:outputLabel value="-" style="color:#727272;font-weight:bold ;font-size:20px;font-family:Calibri;"/>
+           <!-- <apex:outputLabel value="{!currlead_rec.Start_Term__c}" style="color:#727272;font-weight:bold ;font-size:20px;font-family:Calibri;"/>-->
+           <apex:outputLabel style="color:#727272;font-weight:bold ;font-size:20px;font-family:Calibri;">
+           {!IF(currlead_rec.Start_Term__c==null,'',if(LEN(currlead_rec.Start_Term__c)>4,LEFT(currlead_rec.Start_Term__c,3)+' '+RIGHT(currlead_rec.Start_Term__c,4),currlead_rec.Start_Term__c))}
+           </apex:outputLabel> 
+</td>
+<td style="vertical-align:middle;"  align="center">&nbsp;&nbsp;&nbsp;&nbsp;
+<!--            <apex:outputLabel value="{!currlead_rec.Lead_Stage__c}" style="font-family:Calibri;color:{!If(currlead_rec.Lead_Stage__c=='Interested','yellow',(If(currlead_rec.Lead_Stage__c=='Strongly Interested','orange','#FFFFFF')))};font-weight:bold ;font-size:16px;"/>-->
+
+            
+</td>
+<td style="padding-top:7px;vertical-align:middle;" align="right">&nbsp;&nbsp;&nbsp;&nbsp;
+
+<apex:image value="{!URLFOR($Resource.logo_images, 'images/lead_interest.png')}" height="25" width="25" rendered="{!If(OR(currlead_rec.Lead_Stage__c=='Interested',currlead_rec.Lead_Stage__c=='Strongly Interested'),true,false)}"/>
+<apex:image value="{!URLFOR($Resource.logo_images, 'images/lead_interest.png')}" height="25" width="25" rendered="{!If(currlead_rec.Lead_Stage__c=='Strongly Interested',true,false)}"/>
+<apex:image value="{!URLFOR($Resource.logo_images, 'images/missed_call.png')}" height="25" width="25" rendered="{!If(OR(currlead_rec.Lead_Stage__c=='Unreachable Call 1',currlead_rec.Lead_Stage__c=='Unreachable Call 2',currlead_rec.Lead_Stage__c=='Unreachable Call 3',currlead_rec.Lead_Stage__c=='Unreached',currlead_rec.Lead_Stage__c=='Dial Error'),true,false)}"/>            
+<apex:image value="{!URLFOR($Resource.logo_images, 'images/NoIntrest.png')}" height="25" width="25" rendered="{!If(currlead_rec.Lead_Stage__c=='Not Interested',true,false)}"/>
+<apex:image value="{!URLFOR($Resource.logo_images, 'images/email_icon.png')}" height="25" width="25" rendered="{!If(currlead_rec.Lead_Stage__c=='Emailed',true,false)}"/>
+<apex:image value="{!URLFOR($Resource.logo_images, 'images/no_money.png')}" height="25" width="25" rendered="{!If(currlead_rec.Lead_Stage__c=='Lack of Funds',true,false)}"/>    
+<!-- <img width="35" height="35" src="{!flagurl}"></img> -->
+
+         <!--   <apex:outputLabel value="{!currlead_rec.Country_Of_Residence__r.Flags__c}" escape="false" style="width:20px;height:20px;"/>-->
+</td>
+
+</tr>
+
+</table>
+
+   
+</apex:form>                
+</div>
+</td>
+</tr>
+
+</table>
+</apex:page>

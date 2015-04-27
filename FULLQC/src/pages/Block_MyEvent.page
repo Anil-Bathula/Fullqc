@@ -1,0 +1,21 @@
+<apex:page controller="Block_MyEventctrlr" tabStyle="Event">
+<apex:form > 
+    <Apex:pageBlock title="New Event" >
+
+    <apex:pageBlockButtons >
+            <apex:commandButton Value="Save" action="{!save_event}"/>
+            <apex:commandbutton Value="Cancel" action="{!Cancel}"/>
+    </apex:pageBlockButtons>
+    
+             
+       <apex:pageMessages id="msgs" />
+        <apex:pageBlockSection collapsible="false">
+            <apex:inputField value="{!evt.Subject}"/><br/>
+            <apex:inputField value="{!evt.StartDateTime}"/>
+            <apex:inputField value="{!evt.EndDateTime}"/>
+            <apex:inputField value="{!evt.Description}"/>
+        </apex:pageBlockSection>
+
+    </Apex:pageBlock>    
+      </apex:form>      
+</apex:page>

@@ -1,0 +1,1547 @@
+<!--Modified : Prem (13/2/2015) Changed address for London Page2 -->
+<apex:page controller="Fin_Statement_bba_ctrlr" showHeader="false"  renderAs="pdf">
+    <apex:stylesheet value="{!$Resource.style}" />
+    <div>
+        <apex:outputPanel rendered="{!Unlock_Student_Financial_Information_c}" >
+            <apex:pageMessages ></apex:pageMessages>
+            <table width="100%" border="0" >
+                <tr>
+                <td align="center" colspan="2">             
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top" align="left"><apex:image width="300" id="USD" value="{!URLFOR($Resource.Hult_Logo)}"/></td>
+                        <td class="formlableheader" width="18%">
+                        <td valign="top" align="left" class="headerImage">
+                        <apex:outputPanel rendered="{!if((PrimaryCampus!='London'),true,false)}"> 
+                            <b>Hult International Business School AG</b> 
+                            <br/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!if((PrimaryCampus!='London'),true,false)}">  
+                                              
+                            <!--   2301-08, Shell Tower, Times Square<br />
+                            Causeway Bay, Hong Kong<br />
+                            Tel: + 852 2111 2399<br />
+                            Fax: + 852 3015 7899<br /> -->
+                            Haldenstrasse4<br />
+                            CH-6006 Luzern<br />
+                            Switzerland<br />
+                            www.hult.edu<br />
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!if((PrimaryCampus=='London') ,true,false)}">
+                            <!--  46-47 Russell Square<br />
+                            Bloomsbury, London WC1B 4 JP, <br />United Kingdom<br />
+                            Tel: + 44 20 7636 5667<br />
+                            Fax: +44 20 7691 9344<br />-->
+                        </apex:outputPanel>
+                        </td></td>
+                    </tr>
+                </table>
+                
+                </td>
+                </tr>
+                <tr class="desFont">
+                    <td colspan="2">&nbsp;
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td align="center" colspan="2" class="formlableheader">
+                        <apex:outputText rendered="{!if(type!='draft',true,false)}">
+                            <font size="+1">Finance Summary</font>
+                        </apex:outputText>
+                    </td>  
+                </tr>
+                <tr>
+                    <td align="center" colspan="2" class="formlableheader">
+                        <apex:outputText style="color:red" rendered="{!if(type=='draft',true,false)}">
+                            <span style="color:red;font-size:9px;"> This is a STATEMENT of charges currently on your account and is not your Invoice. Your Invoice will be issued in May and will detail exactly what is due</span> 
+                        </apex:outputText>
+                    </td>
+                </tr>
+                
+                <tr class="desFont">
+                    <td class="formlableheader" width="30%">Full Name </td>
+                    <td width="70%" class="formlable"><apex:outputField value="{!Con.firstname}"/>&nbsp;<apex:outputField value="{!Con.lastname}"/></td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Hult ID </td>
+                    <td class="formlable"><apex:outputText value="{!App_ID_c}" /></td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader" valign="top">Address </td>
+                    <td class="formlable">
+                        <apex:outputText rendered="{!if(Con.MailingStreet!=null,true,false)}" value="{!Con.MailingStreet}," /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailingcity!=null,true,false)}" value="{!Con.Mailingcity}," /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailingstate!=null,true,false)}" value="{!Con.Mailingstate}" /> <br />
+                        <apex:outputText rendered="{!if(Con.mailingpostalcode!=null,true,false)}" value="{!Con.mailingpostalcode}" /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailing_Country__r.name!=null,true,false)}" value="{!Con.Mailing_Country__r.name}" /> <br />
+                    </td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Date Issued</td>
+                    <td class="formlable">
+                        <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                            <apex:param value="{!DatePrinted}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <apex:outputtext rendered="{!if((Payment_Amount_1st_c != 0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">1st Tuition and Fee Payment</td>
+                        <td class="formlable">{!CurrencyIsoCode}&nbsp;    
+                            <apex:outputText value="{0, number, .00}">
+                            <apex:param value="{!Payment_Amount_1st_c}"/>
+                            </apex:outputText>
+                            &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_1st_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                                <apex:param value="{!Payment_Due_Date_1st_c}" /> 
+                            </apex:outputText></td>
+                    </tr>
+                </apex:outputtext>
+              
+                <apex:outputText rendered="{!if((Payment_Amount_2nd_c != 0),true,false)}">
+                    <tr class="desFont">
+                    <td class="formlableheader">2nd Tuition and Fee Payment</td>
+                    <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                        <apex:outputText value="{0, number, .00}">
+                        <apex:param value="{!Payment_Amount_2nd_c}"/>
+                        </apex:outputText>
+                        &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_2nd_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                            <apex:param value="{!Payment_Due_Date_2nd_c}" /> 
+                        </apex:outputText></td>
+                    </tr>
+                </apex:outputText>
+                
+                <!-- Code for Eight Payments---->
+                <apex:outputText rendered="{!if((Payment_Amount_3rd_c != 0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">3rd Tuition and Fee Payment</td>
+                        <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!Payment_Amount_3rd_c}"/>
+                            </apex:outputText>
+                            &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_3rd_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                                <apex:param value="{!Payment_Due_Date_3rd_c}" /> 
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+  
+
+                <apex:outputText rendered="{!if((Payment_Amount_4th_c!=null && Payment_Amount_4th_c!=0),true,false)}">
+                  <tr class="desFont">
+                       <td class="formlableheader">4th Tuition and Fee Payment</td>
+                       <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!Payment_Amount_4th_c}"/>
+                            </apex:outputText>                
+                            &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_4th_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                                <apex:param value="{!Payment_Due_Date_4th_c}" /> 
+                            </apex:outputText>
+                            
+                       </td>
+                  </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Payment_Amount_5th_c!=null && Payment_Amount_5th_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">5th Tuition and Fee Payment</td>
+                        <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                        <apex:outputText value="{0, number, .00}">
+                            <apex:param value="{!Payment_Amount_5th_c}"/>
+                        </apex:outputText>
+                        &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_5th_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                            <apex:param value="{!Payment_Due_Date_5th_c}" /> 
+                        </apex:outputText></td>
+                    </tr>
+                </apex:outputText>
+  
+                <apex:outputText rendered="{!if((Payment_Amount_6th_c!=null && Payment_Amount_6th_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">6th Tuition and Fee Payment:</td>
+                        <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!Payment_Amount_6th_c}"/>
+                            </apex:outputText>
+                            &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_6th_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                                <apex:param value="{!Payment_Due_Date_6th_c}" /> 
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+              
+                <apex:outputText rendered="{!if((Payment_Amount_7th_c!=null && Payment_Amount_7th_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">7th Tuition and Fee Payment</td>
+                        <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!Payment_Amount_7th_c}"/>
+                            </apex:outputText>
+                            &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_7th_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                                <apex:param value="{!Payment_Due_Date_7th_c}" /> 
+                            </apex:outputText>
+                        </td>
+                    </tr>
+              
+                </apex:outputText>
+              
+                <apex:outputText rendered="{!if((Payment_Amount_8th_c!=null && Payment_Amount_8th_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">8th Tuition and Fee Payment</td>
+                        <td class="formlable">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!Payment_Amount_8th_c}"/>
+                            </apex:outputText>
+                            &nbsp;&nbsp;<apex:outputText rendered="{!if(not isnull(Payment_Due_Date_8th_c),true,false)}" value="(Due: {0,date,dd'/'MM'/'yyyy})">
+                                <apex:param value="{!Payment_Due_Date_8th_c}" /> 
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+              
+                <tr>
+                    <td>
+                    </td>
+                    <td style="font-size:8px ">
+                        The above amounts indicating payments due reflect the original payment plan and may differ from the
+                        current balance due on your live Hult statement below.The above amounts do not update once payment
+                        has been made but the current balance on your statement below does. You need to ensure that you have
+                        paid the amount that is due by the dates above. Please contact our finance dept if you have any questions.
+                          
+                    </td>  
+                </tr>
+                <tr class="desFont">
+                    <td class="formlable">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr class="desFont" >
+                    <td class="formlableheader" colspan="2" >Program Fee</td>
+                </tr>
+                <tr class="desFont">
+                    <td height="19" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;">&nbsp;</td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Program</td>
+                    <td class="formlableheader" align="right">{!Program_c}</td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_Program_Fee_c !=Null && BBA_Program_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Program Fee Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Program Fee Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Program Fee Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Program Fee Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Program_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Pre_University_Fee_c !=Null && BBA_Pre_University_Fee_c!=0 && year1_bool),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Pre-University Fee</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Pre_University_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Accommodation_Fee_c !=Null && BBA_Accommodation_Fee_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Accommodation Fee - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Accommodation Fee - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Accommodation Fee - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Accommodation Fee - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Accommodation_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Accommodation_Deposit_c !=Null && BBA_Accommodation_Deposit_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Accommodation Deposit - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Accommodation Deposit - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Accommodation Deposit - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Accommodation Deposit - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Accommodation_Deposit_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Insurance_c !=Null && BBA_Insurance_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Insurance - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Insurance - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Insurance - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Insurance - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Insurance_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Installment_Plan_c !=Null && BBA_Installment_Plan_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Installment Plan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Installment Plan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Installment Plan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Installment Plan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Installment_Plan_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Extra_Credits_Charged_c !=Null && BBA_Extra_Credits_Charged_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Extra Credits Charged - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Extra Credits Charged - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Extra Credits Charged - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Extra Credits Charged - Year 4</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year5_bool}">Extra Credits Charged - Year 5</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Extra_Credits_Charged_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <!----Rotation fee--------------------------->
+                <apex:outputText rendered="{!if((Rotation_1_Fee_c!=NULL && Rotation_1_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable"> Rot.Fee<span style="font-size:8px">({!Rot_Housing_Module_D_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_1_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_2_Fee_c!=NULL && Rotation_2_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                    <td class="formlable"> Rot.Fee<span style="font-size:8px">({! Rot_Visa_Module_D_c})</span> </td>
+                    <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                        <apex:outputText value="{0,number,.00}">
+                            <apex:param value="{!Rotation_2_Fee_c}"/>
+                        </apex:outputText>
+                    </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_3_Fee_c!=NULL && Rotation_3_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Rot.Fee<span style="font-size:8px">({!Rot_Insurance_Module_D_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_3_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_4_Fee_c!=NULL && Rotation_4_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable"> Rot.Fee<span style="font-size:8px">({!Rot_Housing_Module_E_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_4_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_5_Fee_c!=NULL && Rotation_5_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Rot.Fee<span style="font-size:8px">({!Rot_Visa_Module_E_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_5_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_6_Fee_c!=NULL && Rotation_6_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Rot.Fee<span style="font-size:8px">({!Rot_Insurance_Module_E_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_6_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_Finance_c!=NULL && Rotation_Finance_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">  Rotation – Finance<span style="font-size:8px">(Rotation Adjustment)</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_Finance_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Total_Rotation_Fees_c!=Null && BBA_Total_Rotation_Fees_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Total Rotation Fees - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Total Rotation Fees - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Total Rotation Fees - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Total Rotation Fees - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Total_Rotation_Fees_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr class="desFont">
+                   <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_tot_program_fee_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Total Program Fees</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_tot_program_fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_tot_scholarship_c!=Null && BBA_tot_scholarship_c!=0),true,false)}">
+                    <tr>
+                        <td colspan="2" height="5px">
+                        </td>
+                    </tr>
+                    <tr class="desFont">
+                        <td class="formlable">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </apex:outputText>
+                
+                <tr class="desFont" >
+                    <td class="formlableheader" colspan="2" >
+                        <apex:outputLabel rendered="{!if((BBA_tot_scholarship_c!=Null && BBA_tot_scholarship_c!=0),true,false)}">Scholarship and Financial Aid</apex:outputLabel>
+                    </td>
+                </tr>
+                <tr class="desFont">
+                    <td height="19" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="{!if(BBA_tot_scholarship_c!=Null && BBA_tot_scholarship_c!=0,"background-repeat:repeat-x;","visibility: hidden;")}">&nbsp;</td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_Scholarship_Financial_Aid_c!=Null && BBA_Scholarship_Financial_Aid_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Scholarship and Financial Aid - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Scholarship and Financial Aid - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Scholarship and Financial Aid - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Scholarship and Financial Aid - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Scholarship_Financial_Aid_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Dean_Financial_Aid_c!=Null && BBA_Dean_Financial_Aid_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Dean Financial Aid - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Dean Financial Aid - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Dean Financial Aid - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Dean Financial Aid - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Dean_Financial_Aid_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_GoEd_Loan_c!=Null && BBA_GoEd_Loan_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">GoEd Loan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">GoEd Loan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">GoEd Loan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">GoEd Loan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">
+                            <apex:outputText style="font-size:8px;font-weight:normal" value="({!Go_Ed_Loan_Note_c})" rendered="{!if(Go_Ed_Loan_Note_c!=Null,true,false)}"/>
+                            {!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_GoEd_Loan_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Adjustment_Amount_BBA_c!=Null && BBA_Adjustment_Amount_BBA_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Adjustment Amount - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Adjustment Amount - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Adjustment Amount - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Adjustment Amount - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">
+                            {!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Adjustment_Amount_BBA_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Direct_Loan_c!=Null && BBA_US_Federal_Direct_Loan_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Direct Loan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Direct Loan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Direct Loan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Direct Loan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Direct_Loan_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Private_Financing_c!=Null && BBA_Private_Financing_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Private Financing - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Private Financing - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Private Financing - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Private Financing - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Private_Financing_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Parent_Plus_c!=Null && BBA_US_Federal_Parent_Plus_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Parent Plus - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Parent Plus - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Parent Plus - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Parent Plus - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Parent_Plus_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Pell_c!=Null && BBA_US_Federal_Pell_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Pell - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Pell - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Pell - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Pell - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Pell_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr class="desFont">
+                   <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="{!if(BBA_tot_scholarship_c!=Null && BBA_tot_scholarship_c!=0,"background-repeat:repeat-x;","visibility: hidden;")}"></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_tot_scholarship_c!=null && BBA_tot_scholarship_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Total Scholarship and Financial Aid</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_tot_scholarship_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr>
+                    <td colspan="2" height="5px">
+                    </td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_total_Balance_Due_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Total Balance Due</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_total_Balance_Due_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <tr class="desFont">
+                    <td class="formlable">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader" colspan="2">Payments</td>
+                </tr>
+                <tr>
+                    <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                <tr class="desFont">
+                    <td colspan="2">
+                         <apex:dataTable width="100%" border="0" cellpadding="1px;" headerClass="desFont" value="{!fTransactionList}" var="e" >
+                            <apex:column width="35%">
+                                <apex:facet name="header">Date</apex:facet>                
+                                <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                                    <apex:param value="{!e.d}" /> 
+                                </apex:outputText>
+                            </apex:column>
+                            <apex:column width="30%">
+                                <apex:facet name="header">Description</apex:facet>
+                                <apex:outputText value="{!e.tType}"/>
+                            </apex:column>
+                            <apex:column width="35%" style="text-align:right" >
+                                <apex:facet name="header"><span style="float:right">Currency &amp; Amount Applied</span></apex:facet>
+                                <!-- apex:outputText value="{!e.ccode} {!e.aRec}"/ -->
+                                <apex:outputText value="{!e.ccode}{0, number, .00}">
+                                    <apex:param value="{!e.aRec}"/>
+                                </apex:outputText>
+                            </apex:column>
+                        </apex:datatable>                                        
+                    </td>
+                </tr>
+                <tr>
+                    <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                
+                <apex:outputText rendered="{!if((BBA_current_Balance_Due_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Current Balance Due</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_current_Balance_Due_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+            </table>
+        </apex:outputPanel>  
+            
+        <apex:outputText rendered="{!if(CurrencyIsoCode=='GBP',true,false)}">
+            <tr class="desFont">
+                <td class="formlable">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </apex:outputText> 
+        
+        <apex:outputPanel rendered="{!if((PrimaryCampus!='London'),true,false)}">
+            <tr class="formlable">
+                <td class="formlableheader" colspan="2">Remark: The Tuition Fee amount includes a portion collected on behalf of Hult International Business School AG.Switzerland for services such as Application Processing, Career &amp; Alumni services and others, as specified in the Terms &amp; Conditions by Hult International Business School AG.</td>
+            </tr>
+            <tr>    
+                <td align="center" colspan="2" class="formlableheader" >
+                </td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!NOT Unlock_Student_Financial_Information_c}" style="page-break-after:always">
+            <table width="100%">
+                <tr>
+                    <td class="formlableheader" align="center">
+                        Not available yet
+                    </td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+    </div>
+    <!----------------------------------------------Page 2 for London------------------------------->
+    
+    <apex:outputPanel rendered="{!((islondon)&&(Unlock_Student_Financial_Information_c))}">
+        <div style="page-break-before:always">
+            <table width="100%" border="0" >
+                <tr>
+                <td align="center" colspan="2">             
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top" align="left"><apex:image width="300" id="USD1" value="{!URLFOR($Resource.Hult_Logo)}"/></td>
+                       <td class="formlableheader" width="18%">
+                        <td valign="top" align="left" class="headerImage">
+
+                        <b>Hult International Business School Ltd</b><br />                           
+                            <apex:outputPanel >
+                                37-38 John street<br/>
+                                London, WC1N 2AT<br/>United Kingdom<br/>
+                            </apex:outputPanel>
+                        </td>
+                     </td>
+                    </tr>
+                </table>
+                
+                </td>
+                </tr>
+                <tr class="desFont">
+                    <td colspan="2">&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td align="Center" colspan="2" class="formlableheader">
+                        <font size="+1">Invoice No. {!con.Student_ID__c} - UK</font>
+                    </td>
+                </tr>
+                
+                <tr class="desFont">
+                    <td class="formlableheader" width="30%">Full Name </td>
+                    <td width="70%" class="formlable"><apex:outputField value="{!Con.firstname}"/>&nbsp;<apex:outputField value="{!Con.lastname}"/></td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Hult ID </td>
+                    <td class="formlable"><apex:outputText value="{!App_ID_c}" /></td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader" valign="top">Address </td>
+                    <td class="formlable">
+                        <apex:outputText rendered="{!if(Con.MailingStreet!=null,true,false)}" value="{!Con.MailingStreet}," /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailingcity!=null,true,false)}" value="{!Con.Mailingcity}," /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailingstate!=null,true,false)}" value="{!Con.Mailingstate}" /> <br />
+                        <apex:outputText rendered="{!if(Con.mailingpostalcode!=null,true,false)}" value="{!Con.mailingpostalcode}" /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailing_Country__r.name!=null,true,false)}" value="{!Con.Mailing_Country__r.name}" /> <br />
+                    </td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Date Issued</td>
+                    <td class="formlable">
+                        <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                            <apex:param value="{!DatePrinted}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr>
+                
+                <tr class="desFont">
+                    <td class="formlable">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr class="desFont" >
+                    <td class="formlableheader" colspan="2" >Program Fee</td>
+                </tr>
+                <tr class="desFont">
+                    <td height="19" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;">&nbsp;</td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Program</td>
+                    <td class="formlableheader" align="right">{!Program_c}</td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_Program_Fee2_c!=Null && BBA_Program_Fee2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Program Fee Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Program Fee Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Program Fee Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Program Fee Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Program_Fee2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Pre_University_Fee2_c !=Null && BBA_Pre_University_Fee2_c!=0 && year1_bool),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Pre-University Fee</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Pre_University_Fee2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Accommodation_Fee2_c !=Null && BBA_Accommodation_Fee2_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Accommodation Fee - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Accommodation Fee - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Accommodation Fee - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Accommodation Fee - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Accommodation_Fee2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Accommodation_Deposit2_c !=Null && BBA_Accommodation_Deposit2_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Accommodation Deposit</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Accommodation_Deposit2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Insurance2_c !=Null && BBA_Insurance2_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Insurance - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Insurance - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Insurance - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Insurance - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Insurance2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Installment_Plan2_c !=Null && BBA_Installment_Plan2_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Installment Plan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Installment Plan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Installment Plan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Installment Plan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Installment_Plan2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Extra_Credits_Charged2_c !=Null && BBA_Extra_Credits_Charged2_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Extra Credits Charged - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Extra Credits Charged - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Extra Credits Charged - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Extra Credits Charged - Year 4</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year5_bool}">Extra Credits Charged - Year 5</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Extra_Credits_Charged2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Total_Rotation_Fees2_c!=Null && BBA_Total_Rotation_Fees2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Total Rotation Fees - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Total Rotation Fees - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Total Rotation Fees - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Total Rotation Fees - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Total_Rotation_Fees2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr class="desFont">
+                   <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_tot_program_fee2_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Total Program Fees</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_tot_program_fee2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_tot_scholarship2_c!=Null && BBA_tot_scholarship2_c!=0),true,false)}">
+                    <tr>
+                        <td colspan="2" height="5px">
+                        </td>
+                    </tr>
+                    <tr class="desFont">
+                        <td class="formlable">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </apex:outputText>
+                <tr class="desFont" >
+                    <td class="formlableheader" colspan="2" >
+                        <apex:outputLabel rendered="{!if((BBA_tot_scholarship2_c!=Null && BBA_tot_scholarship2_c!=0),true,false)}">Scholarship and Financial Aid</apex:outputLabel>
+                    </td>
+                </tr>
+                <tr class="desFont">
+                    <td height="19" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="{!if(BBA_tot_scholarship2_c!=Null && BBA_tot_scholarship2_c!=0,"background-repeat:repeat-x;","visibility: hidden;")}">&nbsp;</td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_Scholarship_Financial_Aid2_c!=Null && BBA_Scholarship_Financial_Aid2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Scholarship and Financial Aid - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Scholarship and Financial Aid - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Scholarship and Financial Aid - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Scholarship and Financial Aid - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Scholarship_Financial_Aid2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Dean_Financial_Aid2_c!=Null && BBA_Dean_Financial_Aid2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Dean Financial Aid - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Dean Financial Aid - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Dean Financial Aid - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Dean Financial Aid - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Dean_Financial_Aid2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_GoEd_Loan2_c!=Null && BBA_GoEd_Loan2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable"><apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_GoEd_Loan2_c}"/>
+                            </apex:outputText>
+                            <apex:outputLabel rendered="{!year1_bool}">GoEd Loan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">GoEd Loan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">GoEd Loan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">GoEd Loan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_GoEd_Loan2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Adjustment_Amount2_BBA_c!=Null && BBA_Adjustment_Amount2_BBA_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Adjustment Amount - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Adjustment Amount - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Adjustment Amount - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Adjustment Amount - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Adjustment_Amount2_BBA_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Direct_Loan2_c!=Null && BBA_US_Federal_Direct_Loan2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Direct Loan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Direct Loan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Direct Loan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Direct Loan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Direct_Loan2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Private_Financing2_c!=Null && BBA_Private_Financing2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Private Financing - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Private Financing - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Private Financing - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Private Financing - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Private_Financing2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Parent_Plus2_c!=Null && BBA_US_Federal_Parent_Plus2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Parent Plus - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Parent Plus - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Parent Plus - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Parent Plus - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Parent_Plus2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Pell2_c!=Null && BBA_US_Federal_Pell2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Pell - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Pell - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Pell - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Pell - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Pell2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr class="desFont">
+                   <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="{!if(BBA_tot_scholarship2_c!=Null && BBA_tot_scholarship2_c!=0,"background-repeat:repeat-x;","visibility: hidden;")}"></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_tot_scholarship2_c!=null && BBA_tot_scholarship2_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Total Scholarship and Financial Aid</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_tot_scholarship2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr>
+                    <td class="formlable" height="5px"></td>
+                    <td></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_total_Balance_Due2_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Total Balance Due</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_total_Balance_Due2_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+            </table>
+            <br/><br/>
+            <td class="formlable" height="8px">
+                Full payment due at the latest 30 days before the start of Program
+                <br/><br/>
+                Company Number: 3005603   <br/>
+                Registered Charity Number: 1092321
+            </td>
+            
+        </div>
+        <apex:outputText rendered="{!if(CurrencyIsoCode=='GBP',true,false)}">
+            <tr class="desFont">
+                <td class="formlable">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr class="formlable">
+                <td class="formlableheader" colspan="2">This page serves the purpose of detailing the portion of total fees due to Hult International School Ltd, UK. All payments however should be made only to Hult International Business School AG, Switzerland, either via PayToStudy or to the bank accounts detailed in the brochure. Hult International Business School AG, Switzerland, will transfer the portion of the fees that are due to Hult International Business School Ltd, UK, to them. As a student you only have to make payments to one company, to Hult International Business School AG, Switzerland.</td>
+            </tr>
+        </apex:outputText> 
+    </apex:outputPanel>
+    
+     <!----------------------------------------------Page 3 for London------------------------------->
+    <apex:outputPanel rendered="{!((islondon)&&(Unlock_Student_Financial_Information_c))}">
+        <div style="page-break-before:always">
+            <table width="100%" border="0" >
+                <tr>
+                <td align="center" colspan="2">             
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top" align="left"><apex:image width="300" id="USD2" value="{!URLFOR($Resource.Hult_Logo)}"/></td>
+                       <td class="formlableheader" width="18%">
+                        <td valign="top" align="left" class="headerImage">
+
+                        <b>Hult International Business School Ltd</b><br />                           
+                            <apex:outputPanel >
+                                Haldenstrasse4<br />
+                                CH-6006 Luzern <br />Switzerland<br />
+                            </apex:outputPanel>
+                        </td>
+                     </td>
+                    </tr>
+                </table>
+                
+                </td>
+                </tr>
+                <tr class="desFont">
+                    <td colspan="2">&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td align="Center" colspan="2" class="formlableheader">
+                        <font size="+1">Invoice No. {!con.Student_ID__c} - UK</font>
+                    </td>
+                </tr>
+                
+                <tr class="desFont">
+                    <td class="formlableheader" width="30%">Full Name </td>
+                    <td width="70%" class="formlable"><apex:outputField value="{!Con.firstname}"/>&nbsp;<apex:outputField value="{!Con.lastname}"/></td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Hult ID </td>
+                    <td class="formlable"><apex:outputText value="{!App_ID_c}" /></td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader" valign="top">Address </td>
+                    <td class="formlable">
+                        <apex:outputText rendered="{!if(Con.MailingStreet!=null,true,false)}" value="{!Con.MailingStreet}," /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailingcity!=null,true,false)}" value="{!Con.Mailingcity}," /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailingstate!=null,true,false)}" value="{!Con.Mailingstate}" /> <br />
+                        <apex:outputText rendered="{!if(Con.mailingpostalcode!=null,true,false)}" value="{!Con.mailingpostalcode}" /> <br />
+                        <apex:outputText rendered="{!if(Con.Mailing_Country__r.name!=null,true,false)}" value="{!Con.Mailing_Country__r.name}" /> <br />
+                    </td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Date Issued</td>
+                    <td class="formlable">
+                        <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                            <apex:param value="{!DatePrinted}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr>
+                
+                <tr class="desFont">
+                    <td class="formlable">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr class="desFont" >
+                    <td class="formlableheader" colspan="2" >Program Fee</td>
+                </tr>
+                <tr class="desFont">
+                    <td height="19" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;">&nbsp;</td>
+                </tr>
+                <tr class="desFont">
+                    <td class="formlableheader">Program</td>
+                    <td class="formlableheader" align="right">{!Program_c}</td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_Program_Fee3_c !=Null && BBA_Program_Fee3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Program Fee Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Program Fee Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Program Fee Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Program Fee Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Program_Fee3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Pre_University_Fee3_c !=Null && BBA_Pre_University_Fee3_c!=0 && year1_bool),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Pre-University Fee</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Pre_University_Fee3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Accommodation_Fee3_c !=Null && BBA_Accommodation_Fee3_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Accommodation Fee - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Accommodation Fee - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Accommodation Fee - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Accommodation Fee - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Accommodation_Fee3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Accommodation_Deposit3_c !=Null && BBA_Accommodation_Deposit3_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Accommodation Deposit</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Accommodation_Deposit3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Insurance3_c !=Null && BBA_Insurance3_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Insurance - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Insurance - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Insurance - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Insurance - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Insurance3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Installment_Plan3_c !=Null && BBA_Installment_Plan3_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Installment Plan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Installment Plan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Installment Plan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Installment Plan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Installment_Plan3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Extra_Credits_Charged3_c !=Null && BBA_Extra_Credits_Charged3_c !=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Extra Credits Charged - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Extra Credits Charged - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Extra Credits Charged - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Extra Credits Charged - Year 4</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year5_bool}">Extra Credits Charged - Year 5</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Extra_Credits_Charged3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <!----Rotation fee--------------------------->
+                <apex:outputText rendered="{!if((Rotation_1_Fee_c!=NULL && Rotation_1_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable"> Rot.Fee<span style="font-size:8px">({!Rot_Housing_Module_D_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_1_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_2_Fee_c!=NULL && Rotation_2_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                    <td class="formlable"> Rot.Fee<span style="font-size:8px">({! Rot_Visa_Module_D_c})</span> </td>
+                    <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                        <apex:outputText value="{0,number,.00}">
+                            <apex:param value="{!Rotation_2_Fee_c}"/>
+                        </apex:outputText>
+                    </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_3_Fee_c!=NULL && Rotation_3_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Rot.Fee<span style="font-size:8px">({!Rot_Insurance_Module_D_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_3_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_4_Fee_c!=NULL && Rotation_4_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable"> Rot.Fee<span style="font-size:8px">({!Rot_Housing_Module_E_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_4_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_5_Fee_c!=NULL && Rotation_5_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Rot.Fee<span style="font-size:8px">({!Rot_Visa_Module_E_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_5_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_6_Fee_c!=NULL && Rotation_6_Fee_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Rot.Fee<span style="font-size:8px">({!Rot_Insurance_Module_E_c})</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_6_Fee_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!if((Rotation_Finance_c!=NULL && Rotation_Finance_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">  Rotation – Finance<span style="font-size:8px">(Rotation Adjustment)</span> </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0,number,.00}">
+                                <apex:param value="{!Rotation_Finance_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Total_Rotation_Fees3_c!=Null && BBA_Total_Rotation_Fees3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Total Rotation Fees - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Total Rotation Fees - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Total Rotation Fees - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Total Rotation Fees - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Total_Rotation_Fees3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <tr class="desFont">
+                   <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;"></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_tot_program_fee3_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Total Program Fees</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_tot_program_fee3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_tot_scholarship3_c!=Null && BBA_tot_scholarship3_c!=0),true,false)}">
+                    <tr>
+                        <td colspan="2" height="5px">
+                        </td>
+                    </tr>
+                    <tr class="desFont">
+                        <td class="formlable">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </apex:outputText>
+                
+                
+                <tr class="desFont" >
+                    <td class="formlableheader" colspan="2" >
+                        <apex:outputLabel rendered="{!if((BBA_tot_scholarship3_c!=Null && BBA_tot_scholarship3_c!=0),true,false)}">Scholarship and Financial Aid</apex:outputLabel>
+                    </td>
+                </tr>
+                <tr class="desFont">
+                    <td height="19" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="{!if(BBA_tot_scholarship3_c!=Null && BBA_tot_scholarship3_c!=0,"background-repeat:repeat-x;","visibility: hidden;")}">&nbsp;</td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_Scholarship_Financial_Aid3_c!=Null && BBA_Scholarship_Financial_Aid3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Scholarship and Financial Aid - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Scholarship and Financial Aid - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Scholarship and Financial Aid - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Scholarship and Financial Aid - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Scholarship_Financial_Aid3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Dean_Financial_Aid3_c!=Null && BBA_Dean_Financial_Aid3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Dean Financial Aid - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Dean Financial Aid - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Dean Financial Aid - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Dean Financial Aid - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Dean_Financial_Aid3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_GoEd_Loan3_c!=Null && BBA_GoEd_Loan3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">GoEd Loan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">GoEd Loan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">GoEd Loan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">GoEd Loan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_GoEd_Loan3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Adjustment_Amount3_BBA_c!=Null && BBA_Adjustment_Amount3_BBA_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Adjustment Amount - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Adjustment Amount - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Adjustment Amount - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Adjustment Amount - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Adjustment_Amount3_BBA_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Direct_Loan3_c!=Null && BBA_US_Federal_Direct_Loan3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Direct Loan - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Direct Loan - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Direct Loan - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Direct Loan - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Direct_Loan3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_Private_Financing3_c!=Null && BBA_Private_Financing3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">Private Financing - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">Private Financing - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">Private Financing - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">Private Financing - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_Private_Financing3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Parent_Plus3_c!=Null && BBA_US_Federal_Parent_Plus3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Parent Plus - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Parent Plus - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Parent Plus - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Parent Plus - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Parent_Plus3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <apex:outputText rendered="{!if((BBA_US_Federal_Pell3_c!=Null && BBA_US_Federal_Pell3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">
+                            <apex:outputLabel rendered="{!year1_bool}">US Federal - Pell - Year 1</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year2_bool}">US Federal - Pell - Year 2</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year3_bool}">US Federal - Pell - Year 3</apex:outputLabel>
+                            <apex:outputLabel rendered="{!year4_bool}">US Federal - Pell - Year 4</apex:outputLabel>
+                        </td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_US_Federal_Pell3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr class="desFont">
+                   <td height="2" colspan="2" background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="{!if(BBA_tot_scholarship3_c!=Null && BBA_tot_scholarship3_c!=0,"background-repeat:repeat-x;","visibility: hidden;")}"></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_tot_scholarship3_c!=null && BBA_tot_scholarship3_c!=0),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlableheader">Total Scholarship and Financial Aid</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_tot_scholarship3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr>
+                    <td class="formlable" height="5px"></td>
+                    <td></td>
+                </tr>
+                <apex:outputText rendered="{!if((BBA_total_Balance_Due3_c!=null),true,false)}">
+                    <tr class="desFont">
+                        <td class="formlable">Total Balance Due</td>
+                        <td class="formlableheader" align="right">{!CurrencyIsoCode}&nbsp;
+                            <apex:outputText value="{0, number, .00}">
+                                <apex:param value="{!BBA_total_Balance_Due3_c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:outputText>
+            </table>
+            <br/><br/>
+            <td class="formlable" height="8px">
+                Full payment due at the latest 30 days before the start of Program
+                <br/><br/>
+                Company Number: CHE-179.465.730  <br/>
+                VAT Registered Number: CHE-179.465.730 MWST
+            </td>
+            
+        </div>
+            
+            <apex:outputText rendered="{!if(CurrencyIsoCode=='GBP',true,false)}">
+                <tr class="desFont">
+                    <td class="formlable">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr class="formlable">
+                    <td class="formlableheader" colspan="2">This page serves the purpose of detailing the portion of total fees due to Hult International School AG, Switzerland. All payments should be made only to Hult International Business School AG, Switzerland, either via PayToStudy or to the bank accounts detailed in the brochure. Hult International Business School AG, Switzerland, will transfer the portion of the fees that are due to Hult International Business School Ltd, UK, to them. As a student you only have to make payments to one company, to Hult International Business School AG, Switzerland.</td>
+                </tr>
+            </apex:outputText> 
+    </apex:outputPanel>
+    <tr>    
+        <td align="center" colspan="2" class="formlableheader" >
+            <apex:outputText rendered="{!if(type=='draft',true,false)}" style="color:red" >
+                <span style="color:red;font-size:9px;"> This is a STATEMENT of charges currently on your account and is not your Invoice. Your Invoice will be issued in May and will detail exactly what is due</span> 
+            </apex:outputText>
+        </td>
+    </tr>
+    
+</apex:page>

@@ -1,0 +1,112 @@
+<apex:page controller="student_login_ctrlr" showHeader="false" sidebar="false" cache="false" >
+<apex:form forceSSL="true" >
+
+<head>
+    <title>Hult Rotation Point</title>   
+</head>
+
+<!--<apex:image value="{!$Resource.Hult_Logo}" width="260px;" height="80px;"/>-->
+<div id="wrapper">
+    <div id="page">
+
+<header>
+            
+            <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/style.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/base.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/grid.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/light.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/themes/blue.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/calendar.css"
+    rel="stylesheet" type="text/css" />
+    <link class="user" href=
+    "https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/css/jobboard.css"
+    rel="stylesheet" type="text/css" />
+            
+            <h1 id="logo">
+                <a href="#">
+                
+                <img alt="logo" src="https://hult-international-business-school.secure.force.com/hultcareerpoint/resource/1380627341000/html_template_hult/img/HultLogo.png" title="logo" />
+                    
+                                  </a>
+            </h1>
+            
+            <br class="cl" />
+        </header>
+        
+        <h2 class="ribbon blue full" style="text-align:left;">Hult Rotation Point</h2>
+        <div class="triangle-ribbon blue">
+        </div>
+
+
+
+<apex:panelGrid id="login" rendered="{!islogin}" columns="2">
+<table style="margin:5% auto 15% 0;">
+<thead align="center"> <span style="font-size:20px; font-weight:bold;">Login</span></thead>
+<tr><td style="vertical-align:middle;"><!--onblur="red_sso()" -->
+<label > Username &nbsp;&nbsp; </label> <apex:inputText value="{!email1}" style="width:280px;height:18px;"/><br/></td>
+</tr>
+
+    <tr><td style="vertical-align:middle;">
+    <label > Password &nbsp;&nbsp;</label> <apex:inputSecret value="{!password1}" style="width:280px;height:18px;"/><br/>
+    </td></tr>
+<br/>
+    <tr><td align="center">
+        <apex:commandButton value="Login" action="{!login}"  style="margin-bottom:20px;"/><br/><br/>
+        <apex:commandLink value="Forgot Your Password?" action="{!redirect2forgetpwd}" style="margin-top:20px;color:33CCFF;"/>
+    </td></tr>
+    
+   </table>
+
+</apex:panelGrid>
+
+   
+    
+   
+    <apex:panelGrid rendered="{!password}" columns="4" >
+        <table style="margin:5% auto 15% 0;"><tr><td  style="font-size:20px;width: 54px; height: 19px; top: 0px; left: -1px;"></td></tr>
+         <thead align="center"> <span style="font-size:20px; font-weight:bold;">Did you forget your password? Please enter your email below.</span></thead>
+        
+        <tr><td style="vertical-align:middle;">
+        Email <apex:inputText value="{!email1}" style="width:280px;height:14px;margin-left:7px;" required="True" />
+        <apex:commandButton id="submit" value="{!$Label.site.submit}" action="{!forgotPassword}"/>
+        </td></tr>
+    
+    </table>
+    </apex:panelGrid> 
+    
+    <apex:panelGrid rendered="{!emails}" >
+    <table style="margin:5% auto 15% 0;">
+    <br/><br/><br/>
+        <thead align="center"> <span style="padding-left:50px;font-size:20px;font-weight:bold;padding-top:20%;">An email has been sent to you with your temporary password.</span></thead>
+            <tr><td align="center">
+              <apex:commandLink value="Go to Login Page" action="{!Sent_email}" style="padding-left:50px;margin-top:20px;color:33CCFF;"/>  
+            </td></tr>
+    </table>
+    </apex:panelGrid> 
+    
+    <apex:pageMessage severity="info" strength="1"  summary="Please ensure you log in using any of the following browsers: Firefox, Safari or Chrome. *Internet Explorer IS NOT supported."/>
+    <apex:pagemessages />
+    
+    </div>
+</div> 
+
+ 
+ 
+</apex:form> 
+
+
+
+
+
+</apex:page>

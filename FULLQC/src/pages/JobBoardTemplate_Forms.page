@@ -1,0 +1,153 @@
+<apex:page standardStyleSheets="false" showHeader="false" sidebar="false" cache="false">
+<html lang="en" class="no-js">
+<head>
+<title>Hult Career Point</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script language="javascript" type="text/javascript">
+var dateObject=new Date();
+</script>
+<script>    
+    jQuery(document).ready(function(){
+      var url=document.location.href;                    
+      if(url=='http://hult-international-business-school.secure.force.com/hultcareerpoint/ts2__SiteLogin'){jQuery('.sidebar-nav').hide();};
+      if(url=='https://hult-international-business-school.secure.force.com/hultcareerpoint/ts2__SiteLogin'){jQuery('.sidebar-nav').hide();};
+      
+      if(url=='https://hult-international-business-school.secure.force.com/hultcareerpoint/apex/ts2__JobSearch'){jQuery('.home-intro').show();};
+      if(url=='https://hult-international-business-school.secure.force.com/hultcareerpoint'){jQuery('.home-intro').show();};
+      if(url=='https://hult-international-business-school.secure.force.com/hultcareerpoint/'){jQuery('.home-intro').show();};
+      if(url=='https://hult-international-business-school.force.com/hultcareerpoint/apex/ts2__JobSearch'){jQuery('.home-intro').show();};
+      
+      jQuery('#js-menu-logout').parent().hide();
+      jQuery('#js-menu-logout').parent().parent().parent().prev().show();
+      
+      jQuery('#atsSearchTitle').css("visibility", "hidden");
+      jQuery('#atsNoJobsMessage').css("visibility", "hidden");
+      jQuery('.home-intro-sub').css("visibility", "hidden");
+      
+    });
+</script>
+
+<!-- Place favicon.ico and apple-touch-icon.png -->
+<link rel="shortcut icon" href="{!URLFOR($Resource.html_template_hult, 'img/favicon.ico')}" />
+
+<!-- CSS - Setup -->
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/style.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/base.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/grid.css')}" />
+
+<!-- CSS - CURRENT Background Theme -->
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/light.css')}" />
+<!-- All Background Themes -->
+<!--
+The Change Background Theme, replace the Current Theme with one fo the Themes below.
+
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/light.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/dark.css')}" />
+-->
+
+<!-- CSS - CURRENT Color Scheme -->
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/blue.css')}" />
+
+<!-- All Color Schemes -->
+<!--
+The Change Color Theme, replace the Current Theme with one fo the Themes below.
+
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/black.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/green.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/red.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/purple.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/black.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/themes/grey.css')}" />
+-->
+
+<!-- CSS - Job Board -->
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/calendar.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.html_template_hult, 'css/jobboard.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.html_template_hult, 'js/modernizr-1.5.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.html_template_hult, 'js/jquery-1.4.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.html_template_hult, 'js/cufon.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.html_template_hult, 'js/Aller.font.js')}" />
+
+<script type="text/javascript">
+$.noConflict();
+jQuery(document).ready(function(jQuery) {
+//Cufon Setup
+   Cufon.replace('#atsSearchTitle, #atsSearchResultsTitle, .atsFormTdTitle, .topPanelContainer .title, .atsDisplayTdTitle');
+});
+</script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- Page Container -->
+    <div id="page">
+        <!-- Start Header -->
+        <header>
+            <!-- Logo -->
+            <h1 id="logo">
+                <a href="/hultcareerpoint/apex/ts2__JobSearch">
+                    <!-- Change img src -->
+                    <img src="{!URLFOR($Resource.html_template_hult, 'img/HultLogo.png')}" alt="logo" title="logo"/>
+                </a>
+            </h1>
+            <!-- nav -->
+            <br class="cl" />
+        </header>
+        <!-- Page Title -->
+        <h2 class="ribbon blue full">Hult Career Point</h2>
+        <div class="triangle-ribbon blue"></div>
+        <br class="cl" />
+        <!-- Page Content -->
+        <div id="page-content" class="two-col container_12">
+            <ts2:LoggedInLegend ></ts2:LoggedInLegend>
+            <div class="home-intro" style="display: none;">
+                <img src="{!URLFOR($Resource.html_template_hult, 'img/KBpersonalnote2.png')}" atl="" width="610" />
+                <div class="home-intro-sub">
+                    <div>
+                        <font size = "3">Your activation to the Job Board commences in Module A.</font>
+                        <br /><font size = "3">Use the links on the right to</font>
+                    </div>
+                    <ul>
+                        <li><font size = "3">Maintain an updated CV</font></li>
+                        <li><font size = "3">Update your profile</font></li>
+                        <li><font size = "3">Book an appointment with your Career Services Advisor</font></li> 
+                    </ul>
+                </div>
+            </div>
+            <div class="grid_12">
+                <apex:insert name="body"/>
+            </div>
+            <br class="cl" />
+        </div>
+       
+        <!-- Page Sidebar -->
+        <!-- <aside>
+            <div class="sidebar-nav">
+                <ul class="careers-link">
+                    <li class="first current"><a href="/hultcareerpoint/apex/ts2__JobSearch">Hult Career Point</a></li>
+                </ul>
+                <ul class="b-custom-links" style="display: none;">-->
+                    <!-- <li><a href="/hultcareerpoint/ts2__JobSearch">Return To Job Search</a></li> -->
+                    <!-- <li><a href="http://my.hult.edu/en/mycareer/">myCareer</a></li>
+                    <li><a href="/hultcareerpoint/ts2__Resume?uc=update">Update CV</a></li>
+                    <li><a href="/hultcareerpoint/ts2__JobApplications">Your Applications</a></li>
+                    <li><a href="https://fulljs-hult-international-business-school.cs10.force.com/hultcareerpoint/jsforms__formpreview?formId=a5RU00000001HAU&ContactId={!$User.ContactId}&ContactId={!$User.ContactId}">Update Profile</a></li>
+                    <li><a href="https://fulljs-hult-international-business-school.cs10.force.com/hultcareerpoint/jsforms__formpreview?formId=a5RU00000001IJXMA2&ContactId={!$User.ContactId}&ContactId={!$User.ContactId}">Update Desired Job Info</a></li> 
+                    <li><a href="https://timetrade.com/app/hult/workflows/hult001/schedule/{!$User.Timetrade_URL__c}">Meet a Career Services Advisor</a></li>
+                    <li><a href="https://www.wetfeet.com/university/hultmba" target="_blank">Wetfeet</a></li>
+                    <li><a href="http://www.mba-exchange.com/candidates/mba_jobs.php? " target="_blank">MBA Exchange</a></li>
+                    <li><a href="https://online.goinglobal.com/default.aspx?accid=2014101771014102vvvvvviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiwIIIIIIIIIIIIIIIIIIIIIIHSB" target="_blank">Going Global</a></li>
+                    <li><a href="/hultcareerpoint/secur/logout.jsp">Log Out</a></li>
+                </ul>
+                <ts2:Menu ></ts2:Menu>
+            </div>
+        </aside> -->
+        <br class="cl" />
+    </div>   
+</div>
+</body>
+</html>
+</apex:page>

@@ -1,0 +1,3 @@
+<apex:page controller="redirect_newportal" action="{!redirect}">
+
+</apex:page>

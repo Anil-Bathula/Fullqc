@@ -1,0 +1,69 @@
+<!--
+    Developer        : Harsha Simha
+    Date             : 20/1/2014
+    Comments         : This page will display list of Dependents under one Rotation. 
+                       Ability to Edit or Remove Existing Dependents from the Rotation.
+                       Ability to Create New Rotation, Select the existing Dependents for that student(not under this rotation).
+-->
+
+<apex:page standardController="Rotation__c" extensions="Rotation_dependents_ctrlr">
+  <apex:form id="frm1" >
+  
+  <apex:pageblock rendered="{!disp_view}">
+      <apex:pagemessages />
+      <apex:pageBlockButtons location="Top" >
+              <apex:commandButton action="{!New_dep}" value=" Add " reRender="frm1"/>
+      </apex:pageBlockButtons>
+      
+      <apex:pageBlockSection columns="1" > 
+          <apex:pageBlockTable value="{!deps}" var="d">
+              <apex:column headerValue="Actions">
+                  <a href="/{!d.Id}/e?inline=1&retURL=/{!$CurrentPage.parameters.Id}" target="_top">Edit</a> | 
+                  <apex:commandLink value="Remove" action="{!delete_dep}" rerender="frm1">
+                      <apex:param value="{!d.Id}" assignTo="{!deps_id}" name="depsid"/>
+                  </apex:commandLink>
+              </apex:column>
+              <apex:column headerValue="Name">
+                  <a href="/{!d.Id}"  target="_top">{!d.First_Name__c} {!d.Last_Name__c}</a>
+              </apex:column>
+              <apex:column value="{!d.Relationship__c}"/>
+              <apex:column value="{!d.Gender__c}"/>
+              <apex:column value="{!d.Date_of_Birth__c}"/>
+          </apex:pageBlockTable>   
+      </apex:pageBlockSection>
+  </apex:pageblock>
+  
+  <apex:pageBlock rendered="{!disp_new}">
+            <apex:pagemessages />
+      <apex:pageBlockSection columns="1"> 
+          <apex:pageBlockTable value="{!create_deps}" var="newd">
+              <apex:column headerValue="Select">
+                  <apex:inputCheckbox value="{!newd.isselected}"/>
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Dependent__c.fields.First_Name__c.Label}">
+                  <apex:outputfield value="{!newd.depend.First_Name__c}" />
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Dependent__c.fields.Last_Name__c.Label}">
+                  <apex:outputfield value="{!newd.depend.Last_Name__c}" />
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Dependent__c.fields.Relationship__c.Label}">
+                  <apex:outputfield value="{!newd.depend.Relationship__c}" />
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Dependent__c.fields.Gender__c.Label}">
+                  <apex:outputfield value="{!newd.depend.Gender__c}" />
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Dependent__c.fields.Date_of_Birth__c.Label}">
+                  <apex:outputfield value="{!newd.depend.Date_of_Birth__c}" />
+              </apex:column>
+              
+              
+          </apex:pageBlockTable>          
+      </apex:pageBlockSection>
+      <apex:pageBlockButtons location="Top">
+<!--              <apex:commandButton action="{!add_blankdep}" value="Add New" reRender="frm1"/>-->
+              <apex:commandButton action="{!save_deps}" value="Save" reRender="frm1"/>
+              <apex:commandButton action="{!cancl}" value="Cancel" reRender="frm1"/>
+      </apex:pageBlockButtons>
+  </apex:pageBlock>
+  </apex:form>
+</apex:page>

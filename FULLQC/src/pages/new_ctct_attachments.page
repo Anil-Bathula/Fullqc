@@ -1,0 +1,64 @@
+<apex:page standardController="contact" extensions="new_ctct_attachments_ctlr">
+<!--
+    Developer : Harsha Simha
+        This VF used as an inline VF page of Contact detail page, 
+        displays list of Attachments,
+        Create New Attachment, 
+        Edit & Delete Existing Attachment
+ -->
+          <apex:form id="form3_1" >
+   
+   <apex:pageBlock >
+   <b style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:13.1px;font-weight:700;">Attachments</b>&nbsp;&nbsp;  
+     <apex:commandButton value="New" action="{!newattach}" rendered="{!AND(showattchtable,NOT(addatach))}" reRender="form3_1"/> 
+   
+<!--<apex:pageBlockButtons location="Top">--><center>
+        
+       <apex:commandButton value="SAVE" action="{!saveattach}" rendered="{!NOT(showattchtable)}" reRender="form3_1"/>
+       <apex:commandButton value="CANCEL" action="{!cancelattach}" rendered="{!NOT(showattchtable)}" reRender="form3_1"/>
+<!--</Apex:pageBlockButtons>--></center><br/>
+  
+     <apex:pageBlockSection rendered="{!NOT(showattchtable)}">
+         <apex:inputfield value="{!attchmnt.Name}" style="width:350px;"/><br/>
+         <apex:inputfield value="{!attchmnt.Description}" style="width:350px;height:150px;"/>
+     </apex:pageBlockSection>  
+       <apex:pageblockTable value="{!currecattachmnts}" var="att" rendered="{!AND(showattchtable,NOT(addatach))}">
+           
+           <apex:column headerValue="Actions" >
+               <apex:commandLink value="Edit" action="{!editattach}" rerender="form3_1">                   
+                   <apex:param assignTo="{!editattchid}" value="{!att.id}" name="{!att.id}"/>
+           </apex:commandLink>
+           |
+           <apex:commandLink value="Del" action="{!delattach}" rerender="form3_1">                   
+                   <apex:param assignTo="{!editattchid}" value="{!att.id}" name="{!att.id}"/>
+           </apex:commandLink>    
+           </apex:column>
+           
+           <apex:column headerValue="Name"> 
+               <a href="/servlet/servlet.FileDownload?file={!att.id}"   target="_blank">{!att.Name}</a>
+           </apex:column>    
+           <apex:column headerValue="Description">
+               {!If(LEN(att.Description)<25,att.Description,RPAD(LEFT(att.Description,22), 25,'...'))}
+           </apex:column>
+           <apex:column headerValue="Created Date">
+                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                    <apex:param value="{!att.CreatedDate}" /> 
+                </apex:outputText> 
+           </apex:column>
+       </apex:pageblockTable>
+       
+       
+      <apex:pageBlockSection rendered="{!addatach}" columns="1">
+
+               <apex:inputFile value="{!attchmnt.Body}" contentType="{!attchmnt.ContentType}" fileName="{!attchmnt.Name}" fileSize="{!attchmnt.BodyLength}" style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:10.1px;font-weight:700;"> </apex:inputFile>   
+               <apex:pageBlockSectionItem >
+               <apex:commandButton action="{!upattach}" value="Upload" style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:10.1px;font-weight:700;width:70px;"/>        
+               <apex:commandButton action="{!initattachments}" value="Back" style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:10.1px;font-weight:700;width:70px;"/>
+               </apex:pageBlockSectionItem>
+               <apex:inputfield value="{!attchmnt.Description}" style="width:40%;height:20px;"/>
+      </apex:pageBlockSection>
+       
+  </apex:pageBlock>
+   
+</apex:form>
+</apex:page>

@@ -1,0 +1,182 @@
+<apex:page controller="visarequirements">
+    <apex:form >
+         <apex:pageBlock >
+             
+             <Table width="100%">
+             <tr> <!-- for Visa Co-ordinator pick list field -->
+                 <td>  
+                     <apex:outputLabel value="VC User: " style="font-weight:800"/> 
+                     <apex:selectList value="{!rolevals}" onchange="vcUser();" size="1">
+                           <apex:selectOptions value="{!roles}"/>   
+                     </apex:selectList>
+                     <apex:actionStatus startstyle="color:green;" stopStyle="font-weight:800" startText=" (Searching for Applications...)"  stopText="({!countrec} records found)" id="Status"/>
+                    
+                 </td>
+                 <!-- for Campus Pick list field-->
+                 <td>  
+                     <apex:outputLabel value="Campus: " style="font-weight:800"/> 
+                     <apex:selectList value="{!campusvals}" onchange="Fetchcampus();" size="1" id="camp">
+                           <apex:selectOptions value="{!campus}"/>   
+                     </apex:selectList>
+                    
+                 </td>
+                 <td> <!-- for Display Images on the Top of the Page -->
+                     <div align="Right">
+                         <apex:image url="{!URLFOR($Resource.Text)}"/> <b>Not Supplied</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <apex:image url="{!URLFOR($Resource.Note)}"/> <b>Supplied</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <apex:image url="{!URLFOR($Resource.verifiedimg)}" width="25" height="25"/> <b> Verified</b>&nbsp;&nbsp;&nbsp;
+                         <apex:image url="{!URLFOR($Resource.Accept)}"/> <b> AAM Approved</b><br/>
+                     </div>
+                 </td>
+             </tr>
+             </Table><br/>
+             <!-- calling Action function 'vcUserChange' onchanging VC User-->
+             <apex:actionFunction name="vcUser" action="{!vcUserChange}" reRender="camp,mn,Status" status="Status">
+             </apex:actionFunction>
+             <!-- calling Action function 'Search' onchanging the Campus -->
+             <apex:actionFunction name="Fetchcampus" action="{!Search}" reRender="camp,mn,Status" status="Status">
+             </apex:actionFunction>
+             <!-- calling Action function 'Search' onclicking on the Headers for display in alphabetical order-->
+             <apex:actionFunction name="fun" action="{!Search}" reRender="camp,mn,Status">
+                 <apex:param name="rec" value=""/>
+             </apex:actionFunction>
+             <!-- Pageblock table for display Visa Requirement Matrix --> 
+             <apex:pageBlockTable style="width:30%" value="{!matrixtbl}" var="mx" id="mn">
+             
+                 <apex:column >
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Candidate" onclick="fun('Name');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                     <apex:outputLink value="/{!mx.oppid}" target="_blank"> {!mx.oppname} </apex:outputLink>
+                 </apex:column>
+                   
+                 <apex:column value="{!mx.owner}" style="width:50px;" >
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Recruiter" onclick="fun('Owner.Name');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column value="{!mx.program}" style="width:50px;" onmouseover="cursor: hand;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Program" onclick="fun('Program_Parsed__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column style="width:50px;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Last day for<br/>Visa Docs<br/>Submission" escape="false" onclick="fun('Last_day_for_Visa_Submission__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                     <apex:outputText value="{0,date,E MMM dd yyyy}">
+                           <apex:param value="{!mx.lastday}" /> 
+                     </apex:outputText>
+                 </apex:column>
+                 
+                 <apex:column style="width:50px;" onmouseover="cursor: hand;">
+                     <apex:inputCheckbox value="{!mx.highrisk}" disabled="true"/>
+                     <apex:facet name="header">
+                         <apex:outputLabel value="High Risk<br/>Nationality" escape="false" onclick="fun('High_Risk_Nationality__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column value="{!mx.visaactv}" style="width:50px;" onmouseover="cursor: hand;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Visa<br/>ActivityLevel" escape="false" onclick="fun('Visa_Activity_Level__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column value="{!mx.substages}" style="width:50px;" onmouseover="cursor: hand;">
+                     <apex:facet name="header">
+                         <apex:outputLabel value="Visa related<br/>Sub-stages" escape="false" onclick="fun('Visa_Related_Sub_Stages__c');" style="text-decoration: underline; cursor: pointer;">
+                         </apex:outputLabel>
+                     </apex:facet>
+                 </apex:column>
+                 
+                 <apex:column rendered="{!declarefin}"> 
+                      <apex:facet name="header">Declaration <br/>Finance</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.declarefin=='Approved',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.declarefin=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.declarefin=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.declarefin=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 
+                 <apex:column rendered="{!poffin}">
+                      <apex:facet name="header">Proof of Finan<br/>cial Means</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.poffin=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.poffin=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.poffin=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.poffin=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 
+                 <apex:column rendered="{!pofbank}">
+                      <apex:facet name="header">Proof of <br/>Bank Stmt</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.pofbank=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.pofbank=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.pofbank=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.pofbank=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column rendered="{!pofloan}">
+                      <apex:facet name="header">Loan<br/>Letter</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.pofloan=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.pofloan=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.pofloan=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.pofloan=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column rendered="{!pofsponsor}">
+                      <apex:facet name="header">Proof of Funds<br/>-Sponsorship</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.pofsponsor=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.pofsponsor=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.pofsponsor=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.pofsponsor=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column rendered="{!socPassport}">
+                      <apex:facet name="header">Current<br/>Passport</apex:facet> 
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.socPassport=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.socPassport=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.socPassport=='Supplied',True, False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.socPassport=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column rendered="{!trasferform}">
+                      <apex:facet name="header">SEVIS Transfer</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.trasferform=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.trasferform=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.trasferform=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.trasferform=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+                 <apex:column rendered="{!casform}">
+                      <apex:facet name="header">CAS Request</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.casform=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.casform=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.casform=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.casform=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+                 <apex:column rendered="{!signed}">
+                       <apex:facet name="header">Signed<br/>Undertaking<br/>Letter</apex:facet>
+                       <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.signed=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                       <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.signed=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                       <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.signed=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                       <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.signed=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                 </apex:column>
+                 <apex:column rendered="{!visareg}">
+                      <apex:facet name="header">Visa<br/> Registration</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.visareg=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.visareg=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.visareg=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.visareg=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+                 <apex:column rendered="{!personaldet}">
+                      <apex:facet name="header">Personal Details<br/>for Visa</apex:facet>
+                      <apex:image url="{!URLFOR($Resource.Accept)}" rendered="{!IF(mx.personaldet=='Approved',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.verifiedimg)}" rendered="{!IF(mx.personaldet=='verified',True, False)}" width="25" height="25" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Note)}" rendered="{!IF(mx.personaldet=='Supplied',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/>
+                      <apex:image url="{!URLFOR($Resource.Text)}" rendered="{!IF(mx.personaldet=='docneed',True,False)}" style="display:block;margin-left:auto;margin-right:auto;"/> 
+                 </apex:column>
+             </apex:pageBlockTable>
+        </apex:pageBlock> 
+    </apex:form>
+</apex:page>

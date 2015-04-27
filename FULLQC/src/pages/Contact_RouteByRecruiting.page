@@ -1,0 +1,7 @@
+<!-- <apex:page standardController="Contact" extensions="Contact_RouteByRecruiting" action="{!execute}" /> -->
+
+<!-- 	Updated By 	: Niket Chandane -->
+<!-- 	Updated At 	: 27 July 2012 -->
+<!-- 	Summary 	: Need to call the dynamic routing engine so it can not only  -->
+<!-- 				  check for Ruote by recruiting and route by Zip code -->
+<apex:page standardController="Contact" extensions="Contact_New_DynamicRouting" action="{!execute}"/>

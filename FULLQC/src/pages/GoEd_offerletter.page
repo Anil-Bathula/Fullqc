@@ -1,0 +1,133 @@
+<apex:page controller="GoEd_offerletter" renderAs="pdf">
+<head>
+    <style type="text/css" media="print">
+        @page {
+            @top-center {
+                content: element(header);
+            }
+            @bottom-left {
+                content: element(footer);
+            }
+        }
+        div.header {
+            padding: 10px;
+            padding-top: 20px;
+            position: running(header);
+            overflow: auto;
+        }
+        div.header:after {
+            content: ".";
+            display: block;
+            clear: both;
+            visibility: hidden;
+            line-height: 0;
+            height: 0;
+        }
+        div.footer {
+            display: block;
+            padding:1px;  
+            padding-top:0px;   
+            padding-bottom:90px;
+            position: running(footer);
+        }
+        .pagenumber:before {
+            content: counter(page);
+        }
+        .pagecount:before {
+            content: counter(pages);
+        }
+        div.content {
+           padding-top: 10px;   
+        }
+    </style>
+</head>
+    <!-- This block is for display the Header of Acceptance Letter -->
+    <div class="header">
+     <div><form >
+        <apex:outputpanel style="width:100%" rendered="{!disp_block}">
+            <table width="100%"><tr>
+                <td align="right" width="50%">
+                <apex:image url="{!$Resource.GoEd_Logo}" height="110px" width="90px"/></td>
+            </tr></table>
+        </apex:outputpanel>
+    </form></div>
+    </div>
+    <div class="footer">
+        <div><div style="display:none;">Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+            <div width="100%" height="200px" style="font-size:0.8em;color:#6E6E6E;">________________________________________________________________________________________________________________<br/>
+            GoEd Student Financing Limited <br/>2301-08 Tower Two, Times Square, Causeway Bay, Hong Kong     Tel +852 2111 2370  Fax +852 3010 1812 www.goed.com <br/> </div>
+        </div>
+    </div>
+    <div class="content">
+    <apex:pageMessages />
+    <div>
+    <form style="padding-top: 15%;">
+        
+        <apex:outputLabel >
+        <apex:outputText rendered="{!disp_block}">
+            <font style="font-size:0.9em">
+                {!curr_date}
+                <br/><br/>
+                Dear {!goed.Finance__r.Opportunity__r.contact__r.Name}<br/><br/>
+            </font>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!disp_block}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of GoEd Student Financing Ltd (GoEd), I am pleased to notify you that pending your completion of the enclosed GoEd Loan Application Form 
+                   and submission of the required documentation (listed below); you will be approved for a GoEd Loan with the value of {!goed_amt} 
+                   for your enrolment at Hult International Business School.<br/><br/>
+                   To start the loan application process you need to pay the loan application fee through www.goed.com “Application Fee” using a VISA or MasterCard credit/debit.
+                   The application fee is {!goed.CurrencyIsoCode} {!goed.Finance__r.Application_Fee__c}. Once this payment has been registered you will be able to upload the required documents listed below on our website www.goed.com “Complete Loan Application”. <br/><br/>
+                   Documents required for your loan application (photo copies are OK): <br/><br/>
+                   <b>Applicant Cosigner</b> <br/>
+                 </p>
+                 <ul style="font-size:0.9em;line-height:1.4;">
+                    <li>A signed copy of this Loan Offer Letter (2 signatures requires) – Page. 2 of this document (Loan Offer Letter)</li>
+                    <li>A completed GoEd Loan Application Form, see enclosed (P.4-10 of this document)</li>
+                    <li>A copy of your current passport (must be valid for at least six months from the date of signing this letter)</li>
+                    <li>Proof of current address with your name written on it (must be in English, translated by an official translator. E.g. Bank acc. statement, latest electricity/mobile/telephone bills, latest credit card statement or existing house lease agreement from this year, or an affidavit from the government or the attorney)</li>
+                    <li>3 months of salary payment slips (most recent)</li>
+                    <li>3 months of bank statements (most recent)Bananas</li>
+                    <li>Latest income tax return for the last 2 years (copy)</li>
+                    <li>National ID/Personal No/Social Security Number (SSN,NIN,CPF,CC,DNI,PAN,UID,CURP,NSS,IIN,SIN,NIR, INESS,TAX.ID etc - copy of card or other official proof from government)</li>
+                    <li>Other relevant government-issued ID; Security/Social Number, Drivers license etc (copy of the card)</li>
+                    <li>Signed consent form to facilitate “credit score check”.</li>
+                    <li>Additional upload: existing loan documents (most recent), past loan closure documents, property documents, investment documents </li>
+                 </ul>
+                 <p style="font-size:0.9em">  
+                   All of the documents must be uploaded to the Online Application Service available at http://goed.com/completeloan in order for your loan to be approved.<br/><br/>
+                 </p>
+                 <ul style="list-style-type:circle;font-size:0.9em;line-height:1.4;">
+                   <li>This (official) offer is only valid for the {!goed.Finance__r.Start_Term__c} enrolment/intake</li>
+                   <li>The APR for the loan is 5-8% (compounded monthly)- interest starts accumulating on the value date/start of class or 1st of {!goed.Finance__r.Start_Term__c} (which ever comes earlier). Interest rate depends on the outcome of the loan application. </li>
+                   <li>The loan is repayable over 5 years (60 equal installments) on a monthly basis</li>
+                   <li>Repayments of the loan (start date) will depend on the outcome of the loan application (most MBA and Master students will have a grace period of 18 months while EMBA and BBA students will need to start repayments immediately)<br/><br/><br/><br/><br/><br/></li>
+                   <li>Signing this loan offer letter does not imply automatic approval</li>
+                   <li>For students who attend the Hult China campus, the loan amount in CNY as per USD/CNY fx-rate is according to the date of when the offer letter is sent to you.</li>
+                 </ul>
+                 <p style="font-size:0.9em">
+                  GoEd Student Financing Limited is a licensed Money Lender (License No 622/2014), as required by the Hong Kong Money Lenders Ordinance. For more information on GoEd loans, including Terms and Conditions and repayment schedules, please visit www.goed.com. <br/><br/>
+                  GoEd ask that all recipients of loans keep this information strictly private. GoEd reserves the right to withdraw any offered financial aid in the event of unauthorized disclosure.<br/><br/>
+                 </p> 
+            </table>
+        </apex:outputText>
+        <apex:outputText rendered="{!disp_block}">
+            <font style="font-size:0.9em">
+                Sincerely yours,<br/>
+                Tobias Lindquist<br/>
+                Director, GoEd Student Financing Ltd.<br/><br/>
+                Please pay the application fee ({!goed.CurrencyIsoCode} {!goed.Finance__r.Application_Fee__c}) and sign this document. This document will be part of the application dossiers. Once signed please upload this offer letter and the GoEd Loan Application Form using the Online Application Service at http://goed.com/completeloan<br/><br/>
+                <p style="font-size:0.9em;line-height:2.5;">
+                Signature (loan applicant)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___________________________  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date___________________  <br/>
+                Name (BLOCK LETTERS)&nbsp;&nbsp; ___________________________<br/><br/>
+                Signature (cosigner)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___________________________  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date___________________ <br/>
+                Name (BLOCK LETTERS)&nbsp;&nbsp;___________________________<br/>
+                </p>
+            </font>
+        </apex:outputText>
+        </apex:outputLabel>
+    </form>
+    </div></div>
+</apex:page>

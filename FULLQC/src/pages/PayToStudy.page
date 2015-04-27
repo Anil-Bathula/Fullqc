@@ -1,0 +1,54 @@
+<apex:page showHeader="false" controller="FinanceStatementController">
+  <apex:form >
+<table class="innertable" border="0" cellpadding="0" cellspacing="0">
+
+<tr>
+     
+<td>
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+        <tr>
+            <td  class="menu"><c:ApplicantHeader /></td>
+        </tr>
+        <tr>
+            <td colspan="2"  style="padding-top:70px;">
+           
+        <table width="100%" class="innerpadding"  border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td colspan="2" class="formheader4">Payment</td>
+        </tr>    
+      <tr>
+          <td background="{!URLFOR($Resource.Images, 'new-images/line.jpg')}" style="background-repeat:repeat-x;">&nbsp;</td>
+      </tr>
+      <tr>
+          <td class="formlable">
+             Hult International Business School, in partnership with PaytoStudy, are delighted to introduce the most modern, cost efficient and safe way to make payments overseas!  (<apex:outputLink value="servlet/servlet.FileDownload?file=015U00000007zAa" target="blank" > For more information on Pay To Study's payment services, click on this link </apex:outputLink>) 
+          </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td valign="top">
+            <apex:iframe src="{!paytoStudyURL}" height="500" scrolling="true"/>
+               <!-- Add code here -->
+              
+
+
+</td></tr>
+<tr><td >&nbsp;</td></tr>
+<tr><td  class="formlable">Payment Services Powered By PaytoStudy - A partner of Hult International Business School</td></tr>
+<tr><td >&nbsp;</td></tr>
+<tr><td style="padding-left:20px;padding-right:20px;vertical-align:text-bottom">
+
+</td></tr></table></td>
+</tr></table>
+<script>
+document.getElementById('Payment').style.backgroundImage="url('{!URLFOR($Resource.Images, 'new-images/tabwhiteimage.jpg')}')";
+document.getElementById('Payment').style.backgroundPosition="center";
+document.getElementById('Payment1').className="headertabonload";
+</script>
+
+
+</td></tr></table>
+ </apex:form>
+
+</apex:page>

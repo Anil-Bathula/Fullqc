@@ -1,0 +1,50 @@
+<apex:page standardController="Lead" >
+<apex:form >
+
+<table border="5"> <tr><td>
+<div style="overflow: auto; height: 250px;">
+   This is a test page <br/><br/>
+   
+   <apex:outputLabel value="THIS IS DUMMY TEXT" style="font-size:40px;"></apex:outputLabel>
+
+                <apex:outputText value="{!Lead.Phone}" style="font-size:40px;"/>
+</div>
+</td><td>
+  <div style="overflow: auto; height: 250px;">
+  <apex:detail relatedList="false" relatedListHover="false" inlineEdit="true" title="false" />
+  </div>
+</td></tr>
+<!-- 2 row-->
+<tr><td>
+<div style="overflow: auto; height: 250px;">
+   This is a test page <br/><br/>
+   
+   <apex:outputLabel value="THIS IS DUMMY TEXT" style="font-size:40px;"></apex:outputLabel>
+
+                <apex:outputText value="{!Lead.Phone}" style="font-size:40px;"/>
+</div>
+</td><td>
+  <div style="overflow: auto; height: 250px;">
+  <apex:detail relatedList="false" relatedListHover="false" inlineEdit="true" title="false" />
+  </div>
+</td></tr>
+
+
+<!-- 3 row-->
+<tr><td>
+<div style="overflow: auto; height: 250px;">
+   This is a test page <br/><br/>
+   
+   <apex:outputLabel value="THIS IS DUMMY TEXT" style="font-size:40px;"></apex:outputLabel>
+
+                <apex:outputText value="{!Lead.Phone}" style="font-size:40px;"/>
+</div>
+</td><td>
+  <div style="overflow: auto; height: 250px;">
+  <apex:detail relatedList="false" relatedListHover="false" inlineEdit="true" title="false" />
+  </div>
+</td></tr>
+
+</table>
+</apex:form>
+</apex:page>

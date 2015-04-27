@@ -1,0 +1,403 @@
+<apex:page controller="Acceptanceletters_project" renderAs="{!ispdf}" contentType="{!isword}" sidebar="false">
+<head>
+    <style type="text/css" media="print">
+        @page {
+            @top-center {
+                content: element(header);
+            }
+            @bottom-left {
+                content: element(footer);
+            }
+        }
+        div.header {
+            padding: 10px;
+            position: running(header);
+        }
+        div.footer {
+            padding:1px;  
+        padding-top:0px;   
+        padding-bottom:90px;
+            position: running(footer);
+        }
+        .pagenumber:before {
+            content: counter(page);
+        }
+        .pagecount:before {
+            content: counter(pages);
+        }
+         div.content {
+            padding-top: 10px;
+           
+        }
+    </style>
+</head>
+
+<!-- This block is for display the Header of Acceptance Letter -->
+  <div class="header">
+    <div><form >
+     <apex:outputpanel rendered="{!firstblock}" style="width:100%">
+            <table width="100%"><tr>
+                <td align="left" width="{!IF(isword=='application/msWord','40%','60%')}"><apex:image url="{!logoURL}" rendered="{!logo_disp}"/></td>
+                <td align="right" width="{!IF(isword=='application/msWord','60%','30%')}">
+                <table style="padding-left:15%"><tr><td style="text-align:left;font-size:0.8em">
+                <b>Hult International Business School</b><br/>
+                {!street}<br/> 
+                {!addr}<br/>
+                Tel :  {!ph}<br/>
+                www.hult.edu 
+                </td></tr></table>
+            </td></tr></table>
+         
+       </apex:outputpanel>
+    </form></div>
+    </div>
+    <div class="footer" style="{!IF(ispdf=='pdf',"display:block;","display:none;")}"> <!--style="{!disppdf}">-->
+    <div><div style="display:none;">Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+        <div><apex:image url="{!footerURL}" width="100%" height="70px;" rendered="{!footer_bool}"/></div>
+    </div>
+    
+    </div>
+    <div class="content">
+    <div>
+    <form >
+        
+        <apex:pageMessages />
+         <apex:outputText rendered="{!firstblock}">
+            <br/>
+            <table width="100%" ><tr>
+                <td align="left" width="{!IF(isword=='application/msWord','40%','60%')}">
+                <h3 style="{!IF(congratsblock==true,"display:block;","display:none;")}">Congratulations </h3></td>
+                <td align="right" width="{!IF(isword=='application/msWord','60%',IF(exceed==false,'30%','40%'))}">
+                    <table style="padding-left:15%"><tr><td style="text-align:left;font-size:0.9em">
+                         <p>{!prog_name}</p>
+                    </td></tr></table>
+                </td>
+            </tr></table><br/>
+            
+            <table>
+                <font style="font-size:0.9em">
+                    {!opp.Contact__r.Name}<br/>
+                    {!opp.Contact__r.Mailingstreet}<br/>
+                    {!opp.Contact__r.Mailingcity}, {!opp.Contact__r.Mailingstate}<br/>
+                    {!opp.Contact__r.Mailingpostalcode}<br/>
+                    {!opp.Contact__r.MailingCountry}<br/><br/>
+                    {!curr_date}
+                    <br/><br/>
+                    
+                    Dear {!opp.Contact__r.FirstName},<br/>
+                </font>
+            </table>
+        </apex:outputText>
+       
+        <!--If Program is BIBA-->
+        
+        <!--Full Accepted - UG -->
+        <apex:outputText rendered="{!block1}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!FallvsSpring} {!opp.Start_Year__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration will help you realize your leadership potential and will also give you confidence 
+                   as a decision-maker in a global environment. The Hult student body is unique, talented and culturally diverse making classroom discussions
+                   engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   <apex:outputLabel value="{!Para_age}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the {!FallvsSpring}.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with AP Credits/Trnsfer Credits - UG -->
+        <apex:outputText rendered="{!block2}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult Bachelor of Business Administration (BBA) Program for the {!FallvsSpring} {!opp.Start_Year__c} class. A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/><br/>
+                   
+                   {!Paragraph3}<br/><br/>
+                   
+                   As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist.
+                   Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment.
+                   The Hult student body is unique, talented, and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/><br/>
+                   
+                   <apex:outputLabel value="{!Para_age}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                    
+                   Once again, congratulations on your admission to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the {!FallvsSpring}.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions - UG -->
+        <apex:outputText rendered="{!block3}">
+           <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult's Bachelor of Business Administration (BBA) Program, 
+                   {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class.
+                   Please note that you are required to submit as soon as possible and no later than 12 weeks before the start of the program, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. 
+                    The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures. <br/> <br/>
+                    <apex:outputLabel value="{!Para_age}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                    Once again, congratulations on your acceptance to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions and AP Credits/Trnsfer Credits - UG -->
+        <apex:outputText rendered="{!block4}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission 
+                   into the Hult Bachelor of Business Administration (BBA) Program, {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class. 
+                   Please note that you are required to submit as soon as possible and no later than 12 weeks before the start of the program, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+              <p style="font-size:0.9em">
+                {!Paragraph2}<br/><br/>
+                   
+                As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. 
+                The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures. <br/> <br/>
+                  
+                <apex:outputLabel value="{!Para_age}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                Once again, congratulations on your acceptance to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+             </p>  
+            </table>
+        </apex:outputText>
+        
+        <!-- Conditionally Accepted - UG -->
+        <apex:outputText rendered="{!block5}">
+            <table>
+                <p style="font-size:0.85em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission into the Hult Bachelor of Business Administration (BBA) Program, 
+                   {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class.Please note that you are required to submit as soon as possible the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!adminpick}" var="admin">
+                    <li style="font-size:0.85em"><apex:outputText value="{!admin}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.85em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. 
+                    The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                    <apex:outputLabel value="{!conf_dpstpara}" escape="false" style="font-size:9.5;font-family:Helvetica;"/>
+                    <apex:outputLabel value="{!Para_age}" escape="false" style="font-size:9.5;font-family:Helvetica;"/>
+                    Once again, congratulations on your acceptance to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Rejected - UG -->
+        <apex:outputText rendered="{!block6}">
+            <table>
+                <p style="font-size:0.9em">
+                    The Admissions Committee of Hult International Business School has reviewed your application, and regrets to inform you that your candidacy to the {!opp.Program_formatted_for_emails_letters__c} program has been unsuccessful. 
+                </p>
+            <!--    <ul>
+                    <apex:repeat value="{!rejectpick}" var="rej">
+                        <li style="font-size:0.9em"><apex:outputText value="{!rej}"/></li>
+                    </apex:repeat>
+                </ul> -->
+                <p style="font-size:0.9em">   
+                   We very much appreciate the interest you have shown in Hult International Business School and the {!opp.Program_formatted_for_emails_letters__c} Program.<br/><br/>
+                   We wish you success in all future endeavors.<br/><br/> 
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- EF Pathway Conditional Acceptance - UG -->
+        <apex:outputText rendered="{!block7}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission into the Hult Bachelor of Business Administration (BBA) Program, 
+                   {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class.
+                   Please note that you are required to submit as soon as possible the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!adminpick}" var="admin">
+                    <li style="font-size:0.9em"><apex:outputText value="{!admin}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    As you know, Hult International Business School is ranked among the best in the world by both the Financial Times and the Economist. Hult's Bachelor of Business Administration Program will help you realize your leadership potential and will also give you confidence as a decision-maker in a global environment. 
+                    The Hult student body is unique, talented and culturally diverse making classroom discussions engaging and enriching. Our graduates are qualified to work and communicate across communities, countries, and cultures.<br/> <br/>
+                    <apex:outputLabel value="{!Para_age}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                    Once again, congratulations on your acceptance to our world-class Bachelor of Business Administration Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- If Program is Not BIBA-->
+        
+        <!-- Full Acceptance - PG --> 
+        <apex:outputText rendered="{!block8}">
+            <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission
+                   into the Hult {!opp.Program_formatted_for_emails_letters__c} ({!opp.Program__r.Department__r.Name}) program for the {!FallvsSpring} {!opp.Start_Year__c} class. 
+                   A place has been reserved for you at Hult's {!opp.Primary_Campus__c} campus. <br/> <br/>
+                   
+                   {!Paragraph}<br/><br/>
+                   
+                   <apex:outputLabel value="{!conf_dpstpara}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                   
+                   Once again, congratulations on your admission to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Accepted with Conditions - PG -->
+        <apex:outputText rendered="{!block9}">
+           <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been accepted for admission into the Hult {!opp.Program_formatted_for_emails_letters__c}
+                   ({!opp.Program__r.Department__r.Name}) Program, {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class.
+                   Please note that you are required to submit as soon as possible and no later than 12 weeks before the start of the program, the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!condpick}" var="cond">
+                    <li style="font-size:0.9em"><apex:outputText value="{!cond}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    {!Paragraph}<br/> <br/>
+                    <apex:outputLabel value="{!conf_dpstpara}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                    Once again, congratulations on your acceptance to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Conditionally Accepted - PG -->
+        <apex:outputText rendered="{!block10}">
+           <table>
+                <p style="font-size:0.85em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission into the Hult {!opp.Program_formatted_for_emails_letters__c}
+                   ({!opp.Program__r.Department__r.Name}) Program, {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class.<br/><br/>
+                    Please note that you are required to submit as soon as possible the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!adminpick}" var="admin">
+                    <li style="font-size:0.85em"><apex:outputText value="{!admin}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.85em">
+                    {!Paragraph}<br/> <br/>
+                    <apex:outputLabel value="{!conf_dpstpara}" escape="false" style="font-size:9.5;font-family:Helvetica;"/>
+               
+                    Once again, congratulations on your acceptance to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        <!--Soft Rejected - PG --> 
+        <apex:outputText rendered="{!block11}">
+            <table>
+                <p style="font-size:0.9em">
+                   The Admissions Committee of Hult International Business School has reviewed your application and is pleased to inform you that your profile meets the criteria we look for in a candidate. However, to be accepted onto the {!opp.Program_formatted_for_emails_letters__c} you still need to provide satisfactory test results for the following: 
+                </p>
+                <ul>
+                    <apex:repeat value="{!rejectpick}" var="rej">
+                        <li style="font-size:0.9em"><apex:outputText value="{!rej}"/></li>
+                    </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">   
+                   As soon as you submit satisfactory test results your application can be processed further.<br/><br/> 
+                   The Admissions Committee would like to reassure you that it is very common for applicants to have to re-take the standardized tests required for the School's admission standards and to subsequently gain admission. Given that you are applying to a program starting in {!FallvsSpring} {!opp.Start_Year__c}, there is ample time for you to resubmit your application with improved test results.<br/><br/>
+                   
+                   <apex:outputLabel value="{!conf_dpstpara}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+                   We very much appreciate the interest you have shown in Hult International Business School and the {!opp.Program_formatted_for_emails_letters__c} Program.<br/><br/>
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- Rejected - PG --> 
+        <apex:outputText rendered="{!block12}">
+            <table>
+                <p style="font-size:0.9em">
+                    The Admissions Committee of Hult International Business School has reviewed your application, and regrets to inform you that your candidacy to the {!opp.Program_formatted_for_emails_letters__c} program has been unsuccessful. 
+                </p>
+              <!--  <ul>
+                    <apex:repeat value="{!rejectpick}" var="rej">
+                        <li style="font-size:0.9em"><apex:outputText value="{!rej}"/></li>
+                    </apex:repeat>
+                </ul> -->
+                <p style="font-size:0.9em">   
+                   We very much appreciate the interest you have shown in Hult International Business School and the {!opp.Program_formatted_for_emails_letters__c} Program.<br/><br/>
+                   We wish you success in all future endeavors.<br/><br/> 
+             </p> 
+            </table>
+        </apex:outputText>
+        
+        <!-- EF Pathway Conditional Acceptance - PG -->
+        <apex:outputText rendered="{!block13}">
+           <table>
+                <p style="font-size:0.9em">
+                   On behalf of the Admissions Committee of Hult International Business School, I am pleased to inform you that you have been conditionally accepted for admission into the Hult {!opp.Program_formatted_for_emails_letters__c}
+                   ({!opp.Program__r.Department__r.Name}) Program, {!opp.Primary_Campus__c} campus for the {!FallvsSpring} {!opp.Start_Year__c} class.
+                    Please note that you are required to submit as soon as possible the following <u>original or notarized copies:</u><br/>
+                </p>
+                <ul>
+                <apex:repeat value="{!adminpick}" var="admin">
+                    <li style="font-size:0.9em"><apex:outputText value="{!admin}"/></li>
+                </apex:repeat>
+                </ul>
+                <p style="font-size:0.9em">
+                    {!Paragraph}<br/> <br/>
+                    <apex:outputLabel value="{!conf_dpstpara}" escape="false" style="font-size:10;font-family:Helvetica;"/>
+               
+                    Once again, congratulations on your acceptance to our world-class {!opp.Program_formatted_for_emails_letters__c} Program. I look forward to seeing you in the {!FallvsSpring}.<br/>
+               </p> 
+            </table>
+        </apex:outputText>
+        
+        
+        <apex:outputText rendered="{!henriksign}">
+            <font style="font-size:0.9em">
+                Sincerely,<br/>
+                <apex:image url="{!signURL}" width="150" height="50"/><br/>
+                Dr. Henrik Totterman<br/>
+                Dean, Hult International Business School<br/><br/>
+                Enclosures<br/>
+                cc: Hult Admissions Office
+            </font>
+        </apex:outputText>
+        
+        <apex:outputText rendered="{!iansign}">
+            <font style="font-size:0.9em">
+                Sincerely,<br/>
+                <apex:image url="{!signURL1}" width="150" height="50"/><br/>
+                Dr. Ian Dougal<br/>
+                Global Dean, BBA Program<br/>
+                Hult International Business School<br/><br/>
+                Enclosures<br/>
+                cc: Hult Admissions Office
+            </font>
+        </apex:outputText>
+        <apex:outputLabel style="font-size:0.8em" value="{!note}" escape="false"/>
+    </form>
+        <center>
+        <apex:form rendered="{!isvf}" id="frm1">
+            <apex:commandButton reRender="frm1" action="{!donothing}" value="Open in PDF" onclick="window.open('/apex/Acceptanceletters_project?id={!$CurrentPage.parameters.id}&button={!buttontype}&type=pdf','_blank')" rendered="{!buttons}"/>
+            <apex:commandButton reRender="frm1" action="{!donothing}" value="Open in Word" onclick="window.open('/apex/Acceptanceletters_project?id={!$CurrentPage.parameters.id}&button={!buttontype}&type=word','_blank')" rendered="{!buttons}"/>
+        </apex:form>
+    </center>
+    
+</div></div>
+<div class="footer">
+ <div>
+    <apex:image value="{!footerURL}" style="{!IF(ispdf=='word',"display:block;Padding-bottom:0px;","display:none;")}" width="720" height="120" rendered="{!footer_bool}"/>
+ </div>
+</div>
+</apex:page>

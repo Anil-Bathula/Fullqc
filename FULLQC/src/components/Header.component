@@ -1,0 +1,10 @@
+<apex:component controller="headerController" >
+<apex:stylesheet value="{!$Resource.style}" />
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">  
+  <tr height="0" valign="center">
+        <td >&nbsp;</td>
+        <td style="text-align:right; padding-right:10px" class="formlable">
+      </td>
+          </tr>  
+ </table>
+</apex:component>

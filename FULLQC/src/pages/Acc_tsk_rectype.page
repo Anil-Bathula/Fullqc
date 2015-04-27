@@ -1,0 +1,20 @@
+<apex:page standardController="Task" extensions="Account_rectype">
+  <apex:form >
+      <apex:pageBlock >
+          <apex:outputLabel value="*Select an Activity" style="text-align:Right;font-size:91%;font-weight: bold;color: #333;"/>&nbsp;&nbsp;
+          <apex:selectList value="{!selctdrec}" size="1">
+              <apex:selectOptions value="{!rect}"/>
+          </apex:selectList>
+          <apex:pageBlockButtons location="bottom">
+              <apex:commandButton value="Continue" action="{!cusContinue}"/>
+              <apex:commandButton value="Cancel" action="{!cusCancel}"/>
+          </apex:pageBlockButtons>
+     </apex:pageBlock>
+     <apex:pageBlock title="Available Task Record Types">
+          <apex:pageBlockTable value="{!descvals}" var="t">
+              <apex:column headerValue="Record Type Name" value="{!t.recName}"/>
+              <apex:column headerValue="Description" value="{!t.recdesc}"/>
+          </apex:pageBlockTable>
+      </apex:pageBlock>
+  </apex:form>
+</apex:page>

@@ -1,0 +1,4 @@
+<apex:page controller="Fin_Statement" showHeader="false"  action="{!threepage}">
+    <!-- for Fin statement pdf Vf code check controller last comment section  -->
+
+</apex:page>

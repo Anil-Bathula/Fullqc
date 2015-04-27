@@ -1,0 +1,233 @@
+<apex:page standardController="Contact" extensions="new_ui_event_ctrlr" action="{!init}">
+<!--
+    Developer : Harsha Simha
+        This VF used as an inline VF page of contact detail page, 
+        displays Eventtable from 9am to 8pm for the contact owner on selected date ,
+        Option to create New event for current Record and Current Owner
+        Displays Contact interview Status,Interview date if any open event exist for this record
+ -->
+ <div >
+ <script>
+    function DynamicDatePicker(d_id)
+    {        
+            DatePicker.pickDate(true,d_id.id,false);
+    } 
+    function disphideonr(val)
+    {
+    
+        //alert(val);
+        if(val){
+        document.getElementById('xyz').style.display="block";
+        }
+        else{
+            document.getElementById('xyz').style.display="none";
+            if(escape(document.getElementById("{!$Component.form2_1.pbk.onrfld}").value)==null||escape(document.getElementById("{!$Component.form2_1.pbk.onrfld}").value)=="")
+            {
+                document.getElementById("{!$Component.form2_1.pbk.onrfld}").value=escape("{!def_owner_name}");
+                unchkusr();
+            }
+            
+        }
+      /*  var x=document.getElementById('{!$Component.form2_1.intrvw_tbledisp.onrfld}').value;
+        alert(x);*/
+        
+    }   
+
+    function disphide_reminder(val)
+    {    
+
+        if(val){
+        document.getElementById('xyz1').style.display="block";
+        }
+        else{
+            document.getElementById('xyz1').style.display="none";
+        }
+    }
+    
+   
+</script>
+ 
+ <apex:form id="form2_1">     
+ <Apex:pageBlock rendered="{!showintvw}" id="pbk">
+    <apex:facet name="header"><b style="color:#27282E;font-family:Arial,Helvetica,sans-serif;font-size:13.1px;font-weight:700;">Interview Scheduler </b></apex:facet>
+ <apex:pageMessages id="msgs" />  <input type="text" Value="" style="width:0px;height:0px;background-color:#F3F4EF;"/> <!--used for changing focus from datetime picker-->
+
+ <!--Section to schedule Event -->
+<table><tr valign="middle">
+
+     <td>
+         <table width="130px;"><tr><td>
+     <b style="color:#4A4A56;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;" >Date </b><apex:inputText value="{!set_intrvw_date}" id="time" onfocus="DynamicDatePicker(this);" onchange="checkDateFormatt(this.value);" size="20" disabled="false" style="font-size:10.9167px;width:80px;"/>                 
+           <apex:actionFunction name="checkDateFormatt" action="{!intrvw_datechange}" reRender="intrvw_tbledisp,rdio,msgs" >
+                <apex:param name="sd" value="" assignTo="{!set_intrvw_date}"/>
+            </apex:actionFunction>
+            </td></tr>
+            <tr><td>            
+            <b style="color:#4A4A56;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;" >Time</b>
+            <apex:selectList value="{!set_intrvw_time}" size="1" id="lst" onchange="donothing();" style="width:80px;font-size:10.9167px;">     
+                 <apex:selectOptions value="{!stimeslot}"></apex:selectOptions>
+            </apex:selectList> 
+            <apex:actionFunction name="donothing" action="{!donothing}" reRender="msgs"/>
+            </td></tr></table>
+     </td>
+     <td width="120px;" style="color:#4A4A56;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;" align="center">    
+  
+     <apex:selectradio value="{!selectedt_intrvw_time}" layout="pageDirection" id="rdio" onchange="donothing();">
+        <apex:selectOptions value="{!selectedtimeslot}"></apex:selectOptions>
+     </apex:selectradio>
+     </td>
+     
+     <td>
+         <table width="130px;"><tr><td>
+             <apex:selectList value="{!set_subject}" size="1" style="font-size:10.9167px;">     
+                 <apex:selectOptions value="{!subvals}"></apex:selectOptions>
+            </apex:selectList> 
+         </td></tr>
+         <tr><td>
+              <apex:commandButton value="Schedule" action="{!schedule_intrvw}" style="width:100px;" reRender="intrvw_tbledisp,msgs,rdio,lst"  /><!--reRender="intrvw_tbledisp,msgs,rdio,lst"  -->
+         </td></tr></table>
+     </td> 
+    
+    </tr></table> 
+     
+     <apex:outputPanel id="diffusr">
+         <table><tr><td>
+         <font style="color:#4A4A56;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;">          
+         <apex:inputCheckbox onchange="disphideonr(this.checked);" value="{!other_owner}" rendered="{!showownerchk}"/>
+             <apex:actionFunction action="{!uncheckuser}" reRender="intrvw_tbledisp,rdio,msgs,diffusr,onrfld" name="unchkusr"/>
+         <apex:outputLabel value="Assign to different user?" rendered="{!showownerchk}"></apex:outputLabel>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <br/>
+            <table id="xyz" style="display:none;"><tr><td><apex:inputfield value="{!currctct_rec.ownerid}" id="onrfld" onchange="ownchngd();" />
+                 <apex:actionFunction name="ownchngd" action="{!ownerchngd}" reRender="intrvw_tbledisp,rdio,msgs" />            
+            </td></tr></table></font>
+          </td><td>
+<!--               <font style="color:#4A4A56;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;">          
+         <apex:inputCheckbox onchange="disphide_reminder(this.checked);" value="{!reminderset}"/>
+         <apex:outputLabel value="Reminder"></apex:outputLabel>                             
+            <table id="xyz1" style="display:none;"><tr><td>
+                <apex:selectList value="{!remtime}" size="1" id="rem" style="width:80px;font-size:10.9167px;">     
+                 <apex:selectOptions value="{!remaindertime}"></apex:selectOptions>
+                </apex:selectList> 
+            </td></tr></table></font>-->
+          </td></tr>
+          </table>  
+     </apex:outputPanel>
+        
+     <apex:outputPanel id="intrvw_tbledisp">         
+                
+     <P  style="color:#4A4A56;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;">
+         This is how {!owner_name}'s schedule is looking on the&nbsp; <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                     <apex:param value="{!disp_intrvw_date}"/> 
+                </apex:outputText> </P>
+         <br/>
+
+         <!-- Event Table for selected Date--> 
+
+         <table cellpadding="3" cellspacing="0" border="1">
+         <tr>
+             <apex:repeat value="{!lst_interview_schdls}" var="a" >
+                 <td id="{!a.tbleid}" style="background-image:url({!URLFOR($Resource.logo_images,a.bgcol)});background-size: 100%; width:160px;" title="{!a.tooltip}">
+                 <center>{!if(OR(a.value=="9",a.value=="8"),RPAD('0',2,a.value),a.value)}</center>                 
+                 </td>
+             </apex:repeat>     
+         </tr>
+         </table><br/>
+         
+          <!-- Section to display Leade interview status Fields on exist of open Event for this record--> 
+    <apex:outputPanel rendered="{!showstatus}">         
+    <table cellpadding="3" cellspacing="0" style="background-color:#D8D8D8"><tr>
+        <td><b style="color:#414141;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;" align="center">Status &nbsp;&nbsp;</b><apex:outputText style="color:#414141;"  value="{!currctct_rec.Interview_Status__c}"/></td>
+        <td><b style="color:#414141;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;" align="center">Start Time &nbsp;&nbsp;</b><apex:outputtext style="color:#414141;" value="{0,date,dd'/'MM'/'yyyy}">
+                     <apex:param value="{!currctct_rec.Interview_Date__c}"/>
+                </apex:outputText></td>
+        <td><b style="color:#414141;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;" align="center">Date Booked &nbsp;&nbsp;</b>
+            <apex:outputtext style="color:#414141;"  value="{0,date,dd'/'MM'/'yyyy}" rendered="{!IF(currctct_rec.Interview_Status__c=='Booked',true,false)}">
+                     <apex:param value="{!currctct_rec.Interview_Date_Booked__c}"/>
+            </apex:outputText>
+            <apex:outputtext style="color:#414141;"  value="{0,date,MM'/'dd'/'yyyy}" rendered="{!IF(AND(currctct_rec.Interview_Status__c!='Booked',currctct_rec.Interview_Status__c!=null),true,false)}">
+                     <apex:param value="{!currctct_rec.Interview_Follow_Up_Date__c}"/>
+            </apex:outputText>
+            
+            </td>
+    </tr></table>
+    </apex:outputPanel>      
+         
+         <!-- Display all events for the current Owner(Not using) -->
+     <!--
+         <apex:pageBlock tabstyle="country__c">
+         <apex:pageblockTable value="{!disp_events}" var="e">
+             <apex:column headerValue="Action">
+                 <apex:commandLink value="Del" action="{!del_intervw}" rerender="form2_1">
+                     <apex:param value="{!e.Id}" name="{!e.Id}" assignTo="{!editeventid}"/>
+                 </apex:commandLink>
+             </apex:column>
+             <apex:column headerValue="Subject">
+                 <Apex:commandLink value="{!e.subject}" action="{!viewintrvw}" rerender="form2_1">
+                     <apex:param value="{!e.Id}" name="{!e.Id}" assignTo="{!editeventid}"/>
+                 </apex:commandLink>
+             </apex:column>
+             <apex:column headerValue="Description" rendered="{!show_description}" >
+                 {!If(LEN(e.Description)<25,e.Description,LEFT(e.Description,25))}
+             </apex:column>
+             <apex:column headerValue="Related To">
+                 <Apex:outputLink value="/{!e.whoid}" >{!e.who.Name}
+                 </apex:outputLink>
+             </apex:column>
+             <apex:column headerValue="Start Time" value="{!e.StartDateTime}"/>
+             <apex:column headerValue="End Time" value="{!e.EndDateTime}"/>
+             
+         </apex:pageblockTable>
+         </apex:pageBlock>-->
+     
+      </apex:outputPanel>  
+      
+      
+       <apex:outputPanel rendered="{!show_event_rel_btns}" id="opnl"><br/>
+            <apex:commandLink action="{!init_interview_Status_table}" value="Set Interview Status"  reRender="opnl,pbt_int_Stats,svebtn_int_stats"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <apex:commandLink action="{!edit_closed_interviews}" value="Edit Closed Interviews"  reRender="opnl,pbt_int_Stats,svebtn_int_stats" rendered="{!prof_admin_rec}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <apex:commandLink action="{!ask_save_interview_Status_table}" value="Save Interview Status"  reRender="msgs,opnl,pbt_int_Stats,intrvw_tbledisp" id="svebtn_int_stats" rendered="{!show_inter_stats_savebtn}" /> <br/>
+            <P  style="color:#FF0000;font-family:Arial,Helvetica,sans-serif;font-size:10.9167px;font-weight:700;">
+              <apex:outputLabel rendered="{!confirmdel}" >Would you like to DELETE this interview, or KEEP it as a cancelled interview? <apex:commandLink Value="DELETE" action="{!save_interview_Status_table}" reRender="msgs,opnl,pbt_int_Stats,intrvw_tbledisp"/>/ <apex:commandLink Value="KEEP" action="{!save_canceledintrvs}" reRender="msgs,opnl,pbt_int_Stats,intrvw_tbledisp"/>          
+              </apex:outputLabel> 
+            </P><br/>
+            <apex:pageblocktable value="{!intstatsset}" var="ev" id="pbt_int_Stats" rendered="{!show_inter_stats_table}">
+                <Apex:column value="{!ev.evttype}" headerValue="Event Type"/>
+                <Apex:column headerValue="Subject">
+                    <a href="/{!ev.evt.id}"   target="_blank">{!ev.evt.Subject}</a>
+                </apex:column>
+                <Apex:column value="{!ev.evt.StartDateTime}" headerValue="Scheduled Time"/>        
+                <apex:column headerValue="Interview Status">        
+                    <apex:selectList value="{!ev.intstats}"  size="1" >
+                        <apex:selectOptions value="{!ev.optns}"></apex:selectOptions>
+                    </apex:selectList>
+                </apex:column>
+                
+                <Apex:column headerValue="Description" rendered="{!show_description}">
+                    <apex:inputfield value="{!ev.evt.Description}"/>
+                </apex:column>
+            </apex:pageblocktable>            
+      </apex:outputPanel>
+      
+      
+  </Apex:pageBlock>    
+ 
+  <!-- Detailed view Section of selected Event --> 
+  
+  <apex:pageBlock rendered="{!not(showintvw)}">
+      <apex:pageBlockSection columns="1">
+            <apex:commandButton value="Back" action="{!donothing}" rerender="form2_1"/>
+            <apex:outputField value="{!event_intvw.Subject}"/>
+            <apex:outputField value="{!event_intvw.ownerid}"/>
+            <apex:outputField value="{!event_intvw.StartDateTime}"/>
+            <apex:outputField value="{!event_intvw.EndDateTime}"/>
+            <apex:outputField value="{!event_intvw.Description}"/>
+            <apex:outputField value="{!event_intvw.Phone__c}"/>
+      </apex:pageBlockSection>
+     
+  </apex:pageBlock>
+   </apex:form>
+</div>
+ <br/><br/><br/>
+</apex:page>

@@ -1,0 +1,30 @@
+<apex:page standardController="Event" extensions="Event_prevent_edit" action="{!prevention}">
+    <apex:form >
+        <apex:pageBlock title="Event/Interview Edit">
+            <apex:pageBlockButtons rendered="{!section1}">
+                <apex:commandButton value="Save" action="{!Save}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pagemessages ></apex:pagemessages>
+            <apex:pageBlockSection title="Calendar Details" rendered="{!section1}">
+                <apex:inputField value="{!Event.OwnerID}"/>
+                <apex:inputField value="{!Event.IsAllDayEvent}"/>
+                <apex:inputField value="{!Event.Subject}" required="true"/><br/>
+                <apex:inputField value="{!Event.whoId}"/>
+                <apex:inputField value="{!Event.WhatId}"/>
+                <apex:inputField value="{!Event.Interview_Status__c}" required="true"/><br/>
+                <apex:inputField value="{!Event.Interview_Comments__c}"/>
+                <apex:inputField value="{!Event.ShowAs}"/>
+                <apex:inputField value="{!Event.Phone__c}"/>
+                <apex:inputField value="{!Event.StartDateTime}" required="True"/>
+                <apex:inputField value="{!Event.How_did_you_hear_about_Hult__c}"/>
+                <apex:inputField value="{!Event.EndDateTime}" required="true"/>
+                <apex:inputField value="{!Event.Web_Campaign_Source__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Other Information" rendered="{!section1}">
+                <apex:inputField value="{!Event.Description}"/>
+            </apex:pageBlockSection>
+            <apex:commandLink value="Back" action="{!cusback}" rendered="{!!section1}"/>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
