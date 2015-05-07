@@ -22,6 +22,7 @@ trigger AAM_Team_Memeber on Opportunity (after update) {
             System.debug('************>>>'+o.Stage_HighLevel__c);
              oppids.add(o.id);
              System.debug('==>'+oppids);
+			 System.debug('==>'+oppids);
          }
     }
     if(!oppids.IsEmpty()){
